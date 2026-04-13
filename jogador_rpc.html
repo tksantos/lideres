@@ -39,8 +39,7 @@ body { background: #0d1b2a; color: #fff; min-height: 100%; display: flex; flex-d
 .join-brand {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 15px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase;
-  background: var(--grad); -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; background-clip: text;
+  color: #ffffff;
 }
 .join-title {
   font-family: 'Barlow Condensed', sans-serif;
@@ -185,8 +184,7 @@ body { background: #0d1b2a; color: #fff; min-height: 100%; display: flex; flex-d
 .end-brand {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-  background: var(--grad); -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; background-clip: text;
+  color: #ffffff;
 }
 .end-title {
   font-family: 'Barlow Condensed', sans-serif;
@@ -271,29 +269,29 @@ body { background: #0d1b2a; color: #fff; min-height: 100%; display: flex; flex-d
 const DILEMAS = [
   {
     id:'d1',num:'Dilema 01',
-    context:'Contexto: Hellen está em uma fase de crescimento. Você percebe que ela está pronta para mais responsabilidade, mas ainda busca validação constante antes de agir.',
-    question:'Ela precisa assumir uma reunião de diretoria amanhã — no seu lugar. O que você faz?',
+    context:'Contexto: Liderado 01 está em uma fase de crescimento. Você percebe que está pronto para mais responsabilidade, mas ainda busca validação constante antes de agir.',
+    question:'Liderado 01 precisa assumir uma reunião de diretoria amanhã — no seu lugar. O que você faz?',
     options:[
       {letter:'A',text:'Vai junto à reunião para apoiá-la caso precise de ajuda.',style:'Direção compartilhada',color:'#297DC1'},
       {letter:'B',text:'Passa contexto, objetivos e limites — e deixa ela conduzir sozinha.',style:'Delegação com clareza',color:'#62BFB4'},
       {letter:'C',text:'Cancela ou adia — ainda é cedo para esse nível de exposição.',style:'Proteção',color:'#E74038'},
     ],
     correctIdx:1,
-    revealWhat:'Passei o contexto completo, o objetivo, as regras e o prazo — e deixei ela conduzir sozinha.',
-    revealWhy:'A liderança situacional pede que o estilo acompanhe a maturidade na tarefa. Hellen estava pronta — precisava de espaço e clareza, não de presença.',
+    revealWhat:'Passei o contexto completo, o objetivo, as regras e o prazo — e deixei Liderado 01 conduzir sozinho.',
+    revealWhy:'A liderança situacional pede que o estilo acompanhe a maturidade na tarefa. Liderado 01 estava pronto — precisava de espaço e clareza, não de presença.',
   },
   {
     id:'d2',num:'Dilema 02',
-    context:'Contexto: Zaitter é proativo e dedicado, mas absorve demandas de outras áreas e começa a perder foco no próprio papel.',
-    question:'Zaitter faz hora extra apoiando outros times toda semana — mas as prioridades dele ficam pra depois. O que você faz?',
+    context:'Contexto: Liderado 02 é proativo e dedicado, mas absorve demandas de outras áreas e começa a perder foco no próprio papel.',
+    question:'Liderado 02 faz hora extra apoiando outros times toda semana — mas as prioridades dele ficam pra depois. O que você faz?',
     options:[
       {letter:'A',text:'Elogia a dedicação e pede que equilibre melhor o tempo por conta própria.',style:'Feedback genérico',color:'#297DC1'},
       {letter:'B',text:'Tem uma conversa direta sobre papel, prioridade e onde a contribuição gera mais valor.',style:'Alinhamento intencional',color:'#62BFB4'},
       {letter:'C',text:'Bloqueia a agenda dele para que outras áreas parem de acionar.',style:'Controle externo',color:'#E74038'},
     ],
     correctIdx:1,
-    revealWhat:'Tive uma conversa direta sobre papel e responsabilidade — e estimulei ideias dentro da especialidade dele em UX/UI.',
-    revealWhy:'No pipeline de liderança, o gestor de si precisa entender prioridade e escopo. A conversa intencional gerou amadurecimento real.',
+    revealWhat:'Tive uma conversa direta sobre papel e responsabilidade — e estimulei Liderado 02 a trazer ideias dentro da sua especialidade.',
+    revealWhy:'No pipeline de liderança, o gestor de si precisa entender prioridade e escopo. A conversa intencional com Liderado 02 gerou amadurecimento real.',
   },
   {
     id:'d3',num:'Dilema 03',
