@@ -4,302 +4,297 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Você no Meu Lugar — Desenvolve Líderes 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root {
-  --rpc-blue:   #297DC1;
-  --rpc-red:    #E74038;
-  --rpc-yellow: #FBD21D;
-  --rpc-teal:   #62BFB4;
-  --rpc-white:  #FFFFFF;
-  --rpc-dark:   #1a1a2e;
-  --grad: linear-gradient(135deg, #E74038 0%, #F07030 40%, #FBD21D 100%);
-  --grad-blue: linear-gradient(135deg, #1a5fa0 0%, #297DC1 50%, #3db8c8 100%);
+  --red:    #E74038;
+  --blue:   #297DC1;
+  --yellow: #FBD21D;
+  --teal:   #62BFB4;
+  --dark:   #1a1a2e;
+  --ink:    #1C1C2E;
+  --paper:  #F4F6FB;
+  --card:   #FFFFFF;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; overflow: hidden; font-family: 'Barlow', sans-serif; }
-body { background: #0d1b2a; color: #fff; }
+html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; }
+body { background: var(--paper); color: var(--ink); }
+
+/* TOP STRIPE */
+.stripe {
+  height: 6px;
+  background: linear-gradient(to right, var(--red) 0%, var(--yellow) 33%, var(--teal) 66%, var(--blue) 100%);
+  flex-shrink: 0;
+}
 
 /* NAV */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  height: 56px; background: #0d1b2a;
-  border-bottom: 2px solid var(--rpc-blue);
-  display: flex; align-items: center; padding: 0 28px; gap: 16px;
+  background: var(--ink);
+  height: 58px; display: flex; align-items: center;
+  padding: 0 32px; gap: 16px; flex-shrink: 0;
 }
-.nav-logo {
-  display: flex; align-items: center; gap: 10px;
+.nav-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: .06em; color: #fff;
 }
-.nav-rpc-text {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 22px; font-weight: 900; letter-spacing: .04em;
-  color: #ffffff;
-}
-.nav-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.15); }
-.nav-title {
-  font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.5);
-  letter-spacing: .04em;
-}
-.nav-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+.nav-brand span { color: var(--yellow); }
+.nav-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.15); }
+.nav-sub { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.45); letter-spacing:.04em; text-transform:uppercase; }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
 .player-dots { display: flex; gap: 8px; align-items: center; }
 .pdot {
-  width: 10px; height: 10px; border-radius: 50%;
-  background: rgba(255,255,255,0.12); transition: all .4s; position: relative;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all .4s; position: relative;
 }
-.pdot.online { background: var(--rpc-teal); }
+.pdot.online { background: var(--teal); }
 .pdot.online::after {
-  content: ''; position: absolute; inset: -3px;
-  border-radius: 50%; border: 1.5px solid rgba(98,191,180,0.4);
+  content: ''; position: absolute; inset: -4px;
+  border-radius: 50%; border: 2px solid rgba(98,191,180,0.35);
   animation: ping .9s ease-out infinite;
 }
-@keyframes ping { 0% { transform:scale(1);opacity:1; } 100% { transform:scale(2.2);opacity:0; } }
-.player-label { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing:.03em; }
-.phase-chip {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-  padding: 4px 12px; border-radius: 2px;
-  background: var(--rpc-blue); color: #fff;
+@keyframes ping { 0%{transform:scale(1);opacity:1;} 100%{transform:scale(2.2);opacity:0;} }
+.player-label { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.4); }
+.phase-pill {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: .08em;
+  background: var(--yellow); color: var(--ink);
+  padding: 4px 14px; border-radius: 20px;
 }
 
-/* MAIN */
-#main { display: none; height: 100vh; flex-direction: column; padding-top: 56px; }
-
-.body-area {
-  flex: 1; display: grid; grid-template-columns: 1fr 300px;
-  overflow: hidden;
-}
+/* LAYOUT */
+#main { display: none; height: 100vh; flex-direction: column; }
+.body-wrap { flex: 1; display: grid; grid-template-columns: 1fr 280px; overflow: hidden; }
 
 /* LEFT */
-.q-area {
-  padding: 36px 52px; display: flex; flex-direction: column;
-  justify-content: center; overflow-y: auto;
-}
+.left { display: flex; flex-direction: column; overflow: hidden; }
+.q-area { flex: 1; padding: 32px 44px; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; }
 
-.q-eyebrow {
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 16px;
+/* DILEMA BADGE */
+.dilema-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--red); color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: .1em;
+  padding: 6px 18px; border-radius: 30px;
+  margin-bottom: 16px; width: fit-content;
 }
-.q-arrow {
-  width: 28px; height: 11px;
-  background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBjb250ZW50U2NyaXB0VHlwZT0idGV4dC9lY21hc2NyaXB0IiBmaWxsPSIjMDAwMDAwIiB6b29tQW5kUGFuPSJtYWduaWZ5IiBjb250ZW50U3R5bGVUeXBlPSJ0ZXh0L2NzcyIgdmlld0JveD0iMCAwIDE3MC4yNSA2OS4wNyIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgbWVldCIgb3ZlcmZsb3c9ImhpZGRlbiIgdmVyc2lvbj0iMSI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSI0IiBkPSJNMiAzNC41M0wxNjYuOSAzNC41MyIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2U9IiNmZmZmZmYiLz48cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjQiIGQ9Ik0xMjYuMDggMkwxNjguMjUgMzQuMzMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlPSIjZmZmZmZmIi8+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSI0IiBkPSJNMTY4LjI1IDM0Ljc0TDEyNi4wOCA2Ny4wNyIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2U9IiNmZmZmZmYiLz48L3N2Zz4=') center/contain no-repeat;
-  filter: brightness(0) saturate(100%) invert(40%) sepia(80%) saturate(600%) hue-rotate(340deg);
+.dilema-badge::before {
+  content: ''; display: block;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+  animation: blink-dot 1s step-end infinite;
 }
-.q-num {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--rpc-red);
-}
+@keyframes blink-dot { 0%,100%{opacity:1;} 50%{opacity:.2;} }
 
+/* CONTEXT */
 .q-context {
-  font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.4);
-  line-height: 1.6; max-width: 640px; margin-bottom: 14px;
-  border-left: 3px solid var(--rpc-blue);
-  padding-left: 14px;
+  font-size: 15px; font-weight: 600; color: #6B7280;
+  line-height: 1.55; max-width: 700px; margin-bottom: 14px;
+  padding: 12px 16px; background: #fff;
+  border-left: 4px solid var(--blue);
+  border-radius: 0 8px 8px 0;
 }
+
+/* QUESTION */
 .q-text {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(28px, 3.2vw, 44px); font-weight: 800;
-  line-height: 1.1; text-transform: uppercase; letter-spacing: .01em;
-  max-width: 680px; margin-bottom: 28px; color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 4vw, 58px);
+  line-height: 1.05; letter-spacing: .02em;
+  color: var(--ink); max-width: 760px;
+  margin-bottom: 28px;
 }
 
 /* OPTIONS */
-.options { display: flex; flex-direction: column; gap: 8px; max-width: 700px; }
+.options { display: flex; flex-direction: column; gap: 10px; max-width: 760px; }
 .opt {
-  display: flex; align-items: flex-start; gap: 14px;
-  padding: 14px 18px;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 3px; background: rgba(255,255,255,0.03);
-  position: relative; overflow: hidden; transition: border-color .3s;
+  display: flex; align-items: center; gap: 16px;
+  background: #fff; border-radius: 12px;
+  border: 2.5px solid #E8ECF4;
+  padding: 14px 20px; position: relative; overflow: hidden;
+  transition: border-color .3s, transform .15s;
+  cursor: default;
 }
+.opt:hover { transform: translateX(3px); }
+.opt.has-votes { border-color: #CBD5E1; }
+.opt.winner { border-color: var(--teal) !important; background: #F0FAFA; }
 .opt-fill {
   position: absolute; left:0; top:0; bottom:0; width:0%;
-  transition: width .6s cubic-bezier(.4,0,.2,1); opacity: .15;
+  transition: width .7s cubic-bezier(.4,0,.2,1);
+  border-radius: 12px 0 0 12px;
 }
 .opt-letter {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 24px; font-weight: 900; text-transform: uppercase;
-  color: rgba(255,255,255,0.15); flex-shrink: 0; width: 26px;
-  line-height: 1; margin-top: 1px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; letter-spacing: .04em;
+  color: #CBD5E1; flex-shrink: 0; width: 28px;
+  line-height: 1; z-index: 1;
 }
+.opt.has-votes .opt-letter { color: #94A3B8; }
+.opt.winner .opt-letter { color: var(--teal); }
 .opt-content { flex: 1; z-index: 1; }
-.opt-text { font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.7); line-height: 1.4; }
+.opt-text { font-size: 16px; font-weight: 700; color: var(--ink); line-height: 1.35; }
 .opt-style {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-  margin-top: 4px;
+  font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  margin-top: 3px; color: #94A3B8;
 }
-.opt-votes {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 900;
-  color: rgba(255,255,255,0.12); z-index: 1; align-self: center;
-  min-width: 40px; text-align: right; transition: color .4s;
+.opt.winner .opt-style { color: var(--teal); }
+.opt-bar-wrap {
+  flex-shrink: 0; display: flex; align-items: center; gap: 10px; z-index: 1;
 }
-.opt.has-votes .opt-votes { color: rgba(255,255,255,0.7); }
-.opt.winner { border-color: rgba(255,255,255,0.3); }
+.opt-pct {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px; letter-spacing: .02em;
+  color: #CBD5E1; min-width: 60px; text-align: right;
+  transition: color .4s;
+}
+.opt.has-votes .opt-pct { color: var(--ink); }
+.opt-bar-bg {
+  width: 80px; height: 8px; background: #F1F5F9;
+  border-radius: 4px; overflow: hidden;
+}
+.opt-bar-fill { height: 100%; border-radius: 4px; transition: width .7s; width: 0%; }
 
 /* REVEAL */
 .reveal-panel {
-  display: none; max-width: 700px; margin-top: 14px;
-  border-left: 4px solid var(--rpc-yellow);
-  background: rgba(251,210,29,0.06);
-  border-radius: 0 3px 3px 0; padding: 16px 20px;
+  display: none; max-width: 760px; margin-top: 16px;
+  background: #FFFBEB; border: 2px solid var(--yellow);
+  border-radius: 12px; padding: 18px 22px;
 }
-.reveal-panel.show { display: block; animation: fadeUp .4s ease; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.reveal-panel.show { display: block; animation: popIn .4s cubic-bezier(.34,1.56,.64,1); }
+@keyframes popIn { from{opacity:0;transform:scale(.96)} to{opacity:1;transform:scale(1)} }
 .reveal-badge {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--rpc-yellow); margin-bottom: 8px;
+  font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  color: #B45309; margin-bottom: 8px;
 }
-.reveal-what { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.85); margin-bottom: 6px; }
-.reveal-why { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.45); line-height: 1.6; }
+.reveal-what { font-size: 16px; font-weight: 800; color: var(--ink); margin-bottom: 6px; }
+.reveal-why { font-size: 14px; font-weight: 600; color: #6B7280; line-height: 1.6; }
 
 /* CONTROLS */
 .controls {
-  padding: 14px 52px; border-top: 1px solid rgba(255,255,255,0.07);
-  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
-  background: #0d1b2a;
+  padding: 14px 44px; background: #fff;
+  border-top: 2px solid #E8ECF4;
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
 }
 .ctrl-btn {
-  padding: 9px 20px; border-radius: 3px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.6); font-family: 'Barlow', sans-serif; font-size: 13px;
-  cursor: pointer; transition: all .2s; font-weight: 500;
+  padding: 10px 22px; border-radius: 10px;
+  border: 2px solid #E8ECF4; background: #fff;
+  color: var(--ink); font-family: 'Nunito', sans-serif;
+  font-size: 14px; font-weight: 800; cursor: pointer;
+  transition: all .2s;
 }
-.ctrl-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.ctrl-btn:hover { background: var(--paper); border-color: #CBD5E1; }
 .ctrl-btn.primary {
-  background: var(--rpc-blue); border-color: var(--rpc-blue); color: #fff; font-weight: 600;
+  background: var(--blue); border-color: var(--blue);
+  color: #fff;
 }
 .ctrl-btn.primary:hover { opacity: .88; }
-.ctrl-btn.ghost { background:transparent; border-color:rgba(255,255,255,0.06); color:rgba(255,255,255,0.25); }
+.ctrl-btn.ghost { border-color: transparent; color: #94A3B8; }
 .ctrl-sep { flex: 1; }
+.timer-wrap { display: flex; align-items: center; gap: 10px; }
 .ctrl-timer {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 900;
-  color: rgba(255,255,255,0.2); letter-spacing: .04em;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px; letter-spacing: .04em; color: #CBD5E1;
 }
-.ctrl-timer.urgent { color: var(--rpc-red); animation: blink .8s step-end infinite; }
-@keyframes blink { 50%{opacity:.3} }
-.ctrl-status { font-size: 11px; color: rgba(255,255,255,0.25); letter-spacing:.04em; }
+.ctrl-timer.urgent { color: var(--red); animation: blink .7s step-end infinite; }
+@keyframes blink { 50%{opacity:.3;} }
+.ctrl-status { font-size: 12px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing:.06em; }
 
 /* RIGHT PANEL */
 .r-panel {
-  border-left: 1px solid rgba(255,255,255,0.06);
-  background: #101e30;
-  display: flex; flex-direction: column; padding: 24px 20px; gap: 20px;
+  background: var(--ink); display: flex; flex-direction: column;
+  padding: 24px 20px; gap: 20px;
 }
-.qr-wrap {
-  background: #fff; border-radius: 6px;
-  padding: 12px; display: flex; align-items: center; justify-content: center;
+.qr-box {
+  background: #fff; border-radius: 12px;
+  padding: 14px; display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
 }
 .qr-label {
-  font-size: 11px; text-align: center; color: rgba(255,255,255,0.3);
-  letter-spacing:.04em; margin-top: 6px;
+  font-size: 12px; font-weight: 800; text-align: center;
+  color: var(--ink); text-transform: uppercase; letter-spacing: .08em;
 }
 .qr-url {
-  font-size: 10px; text-align: center; color: rgba(255,255,255,0.2);
-  margin-top: 3px; word-break: break-all; cursor: text;
+  font-size: 9px; text-align: center; color: #94A3B8;
+  word-break: break-all; cursor: text; padding: 0 4px;
 }
 
-/* PROGRESS DOTS */
-.prog-dots { display: flex; gap: 5px; justify-content: center; }
+/* PROGRESS */
+.prog-dots { display: flex; gap: 6px; justify-content: center; }
 .prog-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: rgba(255,255,255,0.1); transition: all .3s;
+  height: 6px; border-radius: 3px; background: rgba(255,255,255,0.12);
+  transition: all .3s;
+  width: 24px;
 }
-.prog-dot.done { background: var(--rpc-teal); }
-.prog-dot.active { background: var(--rpc-red); width: 22px; border-radius: 3px; }
+.prog-dot.done { background: var(--teal); }
+.prog-dot.active { background: var(--yellow); width: 40px; }
 
-/* STAT BLOCKS */
-.stat-block { display: flex; flex-direction: column; gap: 6px; }
-.stat-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 9px 12px; border-radius: 3px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
+/* STATS */
+.stat-block { display: flex; flex-direction: column; gap: 8px; }
+.stat-card {
+  background: rgba(255,255,255,0.06); border-radius: 10px;
+  padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
+  border: 1px solid rgba(255,255,255,0.08);
 }
-.sr-label { font-size: 11px; color: rgba(255,255,255,0.35); }
-.sr-val {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 22px; font-weight: 900; color: rgba(255,255,255,0.8);
-}
-
-/* RPC STRIPE */
-.rpc-stripe {
-  height: 3px; width: 100%;
-  background: linear-gradient(to right, var(--rpc-red), var(--rpc-yellow), var(--rpc-teal), var(--rpc-blue));
-  flex-shrink: 0;
+.stat-label { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.4); }
+.stat-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: .04em; color: #fff;
 }
 
 /* WAITING */
 .waiting {
   display: flex; flex-direction: column; align-items: center;
-  justify-content: center; height: 100%; gap: 14px; text-align: center;
+  justify-content: center; height: 100%; gap: 16px; text-align: center;
 }
 .waiting-num {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 100px; font-weight: 900; line-height: 1;
-  color: #ffffff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 120px; line-height: 1; color: var(--blue);
 }
 .waiting-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 28px; font-weight: 800; text-transform: uppercase; color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; color: var(--ink);
 }
-.waiting-sub { font-size: 14px; color: rgba(255,255,255,0.3); max-width: 360px; line-height: 1.6; }
+.waiting-sub { font-size: 15px; font-weight: 600; color: #94A3B8; max-width: 360px; line-height: 1.5; }
 
-/* SCORE SCREEN */
+/* SCORE */
 #score-screen {
   display: none; position: fixed; inset: 0; z-index: 800;
-  background: #0d1b2a;
-  flex-direction: column; align-items: center; justify-content: center; gap: 28px;
-  padding: 60px;
-}
-.sc-logo {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-  color: #ffffff;
+  background: var(--ink);
+  flex-direction: column; align-items: center; justify-content: center; gap: 32px; padding: 60px;
 }
 .sc-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(36px, 5vw, 60px); font-weight: 900; text-transform: uppercase;
-  color: #fff; text-align: center; line-height: 1.1;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 6vw, 80px); color: #fff; letter-spacing: .04em; text-align: center;
 }
-.sc-sub { font-size: 15px; color: rgba(255,255,255,0.4); text-align: center; max-width: 560px; line-height: 1.7; }
+.sc-sub { font-size: 16px; font-weight: 600; color: rgba(255,255,255,0.4); text-align: center; max-width: 560px; line-height: 1.7; }
 .sc-scores { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
 .sc-card {
-  background: rgba(255,255,255,0.04); border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.08);
-  padding: 24px 36px; text-align: center; min-width: 180px;
+  background: rgba(255,255,255,0.06); border-radius: 16px;
+  border: 2px solid rgba(255,255,255,0.1); padding: 28px 40px; text-align: center;
 }
-.sc-name { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 8px; letter-spacing:.04em; }
+.sc-name { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.4); margin-bottom: 8px; text-transform: uppercase; letter-spacing:.06em; }
 .sc-num {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 64px; font-weight: 900; line-height: 1;
-  background: var(--grad-blue); -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; background-clip: text;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 72px; color: var(--yellow); line-height: 1;
 }
-.sc-label { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 4px; }
+.sc-label { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.25); margin-top: 4px; }
 .sc-quote {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(20px, 2.5vw, 28px); font-weight: 700; text-transform: uppercase;
-  color: rgba(255,255,255,0.5); text-align: center; max-width: 600px; line-height: 1.3;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(22px, 3vw, 32px); color: rgba(255,255,255,0.35); text-align: center; max-width: 640px; letter-spacing:.04em;
 }
 </style>
 </head>
 <body>
-<div class="rpc-stripe"></div>
+<div class="stripe"></div>
 
-<!-- MAIN -->
 <div id="main">
   <nav>
-    <div class="nav-logo">
-      <div class="nav-rpc-text">RPC</div>
-      <div class="nav-divider"></div>
-      <div class="nav-title">Você no Meu Lugar</div>
-    </div>
+    <div class="nav-brand">RPC<span>·</span></div>
+    <div class="nav-divider"></div>
+    <div class="nav-sub">Desenvolve Líderes 2026</div>
     <div class="nav-right">
       <div class="player-dots">
         <div class="pdot" id="dot-0"></div>
@@ -307,23 +302,22 @@ nav {
         <div class="pdot" id="dot-2"></div>
       </div>
       <div class="player-label" id="player-label">aguardando...</div>
-      <div class="phase-chip" id="tb-phase">Lobby</div>
+      <div class="phase-pill" id="tb-phase">Lobby</div>
     </div>
   </nav>
 
-  <div class="body-area">
-    <div style="display:flex;flex-direction:column;overflow:hidden;">
+  <div class="body-wrap">
+    <div class="left">
       <div class="q-area" id="q-area">
+
         <div class="waiting" id="waiting-screen">
           <div class="waiting-num" id="waiting-count">0</div>
           <div class="waiting-title">Aguardando participantes</div>
-          <div class="waiting-sub">Peça para os participantes escanearem o QR code ao lado</div>
+          <div class="waiting-sub">Peça para todos escanearem o QR code ao lado</div>
         </div>
+
         <div id="question-screen" style="display:none;">
-          <div class="q-eyebrow">
-            <div class="q-arrow"></div>
-            <div class="q-num" id="q-num">Dilema 01</div>
-          </div>
+          <div class="dilema-badge" id="q-num">Dilema 01</div>
           <div class="q-context" id="q-context"></div>
           <div class="q-text" id="q-text"></div>
           <div class="options" id="options-container"></div>
@@ -333,47 +327,48 @@ nav {
             <div class="reveal-why" id="reveal-why"></div>
           </div>
         </div>
+
       </div>
       <div class="controls" id="controls" style="display:none;">
         <button class="ctrl-btn ghost" onclick="prevQuestion()">← Anterior</button>
         <button class="ctrl-btn" id="btn-reveal" onclick="toggleReveal()">Revelar resposta</button>
         <button class="ctrl-btn primary" id="btn-next" onclick="nextQuestion()">Próximo dilema →</button>
         <div class="ctrl-sep"></div>
-        <div class="ctrl-timer" id="ctrl-timer">0:30</div>
-        <div class="ctrl-status" id="ctrl-status">votação aberta</div>
+        <div class="timer-wrap">
+          <div class="ctrl-timer" id="ctrl-timer">0:30</div>
+          <div class="ctrl-status" id="ctrl-status">votação aberta</div>
+        </div>
       </div>
     </div>
 
     <div class="r-panel">
-      <div>
-        <div class="qr-wrap" id="qr-container"></div>
+      <div class="qr-box">
+        <div id="qr-container"></div>
         <div class="qr-label">Escaneie para votar</div>
         <div class="qr-url" id="qr-url-label" contenteditable="true"></div>
       </div>
       <div class="prog-dots" id="progress-dots"></div>
       <div class="stat-block">
-        <div class="stat-row">
-          <span class="sr-label">Votantes online</span>
-          <span class="sr-val" id="stat-online">0</span>
+        <div class="stat-card">
+          <span class="stat-label">Online</span>
+          <span class="stat-val" id="stat-online">0</span>
         </div>
-        <div class="stat-row">
-          <span class="sr-label">Votos neste dilema</span>
-          <span class="sr-val" id="stat-votes">0</span>
+        <div class="stat-card">
+          <span class="stat-label">Votos</span>
+          <span class="stat-val" id="stat-votes">0</span>
         </div>
-        <div class="stat-row">
-          <span class="sr-label">Dilema atual</span>
-          <span class="sr-val" id="stat-q">—</span>
+        <div class="stat-card">
+          <span class="stat-label">Dilema</span>
+          <span class="stat-val" id="stat-q">—</span>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SCORE -->
 <div id="score-screen">
-  <div class="rpc-stripe" style="position:absolute;top:0;left:0;right:0;"></div>
-  <div class="sc-logo">Desenvolve Líderes 2026</div>
-  <div class="sc-title">Jogo encerrado!</div>
+  <div class="stripe" style="position:absolute;top:0;left:0;right:0;"></div>
+  <div class="sc-title">Jogo Encerrado!</div>
   <div class="sc-sub" id="sc-sub"></div>
   <div class="sc-scores" id="sc-scores"></div>
   <div class="sc-quote">"O que muda no time quando o líder muda? Tudo."</div>
@@ -383,11 +378,11 @@ nav {
 const DILEMAS = [
   {
     id:'d1', num:'Dilema 01',
-    context:'Contexto: Liderado 01 está em uma fase de crescimento. Você percebe que está pronto para mais responsabilidade, mas ainda busca validação constante antes de agir.',
-    question:'Liderado 01 precisa assumir uma reunião de diretoria amanhã — no seu lugar. O que você faz?',
+    context:'Caso 01',
+    question:'Um liderado precisa assumir uma reunião de diretoria no seu lugar. O que você faz?',
     options:[
-      {letter:'A',text:'Vai junto à reunião para apoiá-la caso precise de ajuda.',style:'Direção compartilhada',color:'#297DC1'},
-      {letter:'B',text:'Passa contexto, objetivos e limites — e deixa ela conduzir sozinha.',style:'Delegação com clareza',color:'#62BFB4'},
+      {letter:'A',text:'Vai junto à reunião para apoiá-lo caso precise de ajuda.',style:'Direção compartilhada',color:'#297DC1'},
+      {letter:'B',text:'Passa contexto, objetivos e limites — e deixa conduzir sozinho.',style:'Delegação com clareza',color:'#62BFB4'},
       {letter:'C',text:'Cancela ou adia — ainda é cedo para esse nível de exposição.',style:'Proteção',color:'#E74038'},
     ],
     correctIdx:1,
@@ -396,20 +391,20 @@ const DILEMAS = [
   },
   {
     id:'d2', num:'Dilema 02',
-    context:'Contexto: Liderado 02 é proativo e dedicado, mas absorve demandas de outras áreas e começa a perder foco no próprio papel.',
+    context:'Liderado 02 é proativo e dedicado, mas absorve demandas de outras áreas e começa a perder foco no próprio papel.',
     question:'Liderado 02 faz hora extra apoiando outros times toda semana — mas as prioridades dele ficam pra depois. O que você faz?',
     options:[
       {letter:'A',text:'Elogia a dedicação e pede que equilibre melhor o tempo por conta própria.',style:'Feedback genérico',color:'#297DC1'},
       {letter:'B',text:'Tem uma conversa direta sobre papel, prioridade e onde a contribuição gera mais valor.',style:'Alinhamento intencional',color:'#62BFB4'},
-      {letter:'C',text:'Bloqueia a agenda dele para que outras áreas parem de acionar.',style:'Controle externo',color:'#E74038'},
+      {letter:'C',text:'Bloqueia a agenda para que outras áreas parem de acionar.',style:'Controle externo',color:'#E74038'},
     ],
     correctIdx:1,
     revealWhat:'Tive uma conversa direta sobre papel e responsabilidade — e estimulei Liderado 02 a trazer ideias dentro da sua especialidade.',
-    revealWhy:'No pipeline de liderança, o gestor de si precisa entender prioridade e escopo. A conversa intencional com Liderado 02 gerou amadurecimento real.',
+    revealWhy:'No pipeline de liderança, o gestor de si precisa entender prioridade e escopo. A conversa intencional gerou amadurecimento real.',
   },
   {
     id:'d3', num:'Dilema 03',
-    context:'Contexto: Situação crítica no projeto precisa de decisão rápida. Você sabe a resposta — seria mais rápido resolver sozinho.',
+    context:'Situação crítica no projeto precisa de decisão rápida. Você sabe a resposta — seria mais rápido resolver sozinho.',
     question:'O time olha para você esperando uma decisão. Você está sem tempo. O que você faz?',
     options:[
       {letter:'A',text:'Toma a decisão você mesmo — eficiência em momento crítico é prioridade.',style:'Centralização',color:'#E74038'},
@@ -432,8 +427,7 @@ const FIREBASE_CFG = {
 let db=null, currentQ=0, revealed=false, timerInterval=null, timerSecs=30, gameStarted=false;
 
 window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('main').style.display = 'flex';
-  document.getElementById('main').style.flexDirection = 'column';
+  document.getElementById('main').style.cssText = 'display:flex;flex-direction:column;';
   try {
     const app = firebase.initializeApp(FIREBASE_CFG);
     db = firebase.database(app);
@@ -449,21 +443,20 @@ function setupGame() {
   let playerUrl = window.location.href.replace('apresentador_rpc.html','jogador_rpc.html');
   const urlEl = document.getElementById('qr-url-label');
   urlEl.textContent = playerUrl;
-  urlEl.contentEditable = true;
   function buildQR(url) {
     const el = document.getElementById('qr-container');
     el.innerHTML = '';
-    new QRCode(el, {text:url,width:220,height:220,colorDark:'#0d1b2a',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+    new QRCode(el, {text:url,width:200,height:200,colorDark:'#1C1C2E',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
   }
   buildQR(playerUrl);
   urlEl.addEventListener('blur', () => buildQR(urlEl.textContent.trim()));
-  urlEl.addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); urlEl.blur(); } });
+  urlEl.addEventListener('keydown', e => { if(e.key==='Enter'){e.preventDefault();urlEl.blur();} });
 
   const dots = document.getElementById('progress-dots');
   dots.innerHTML = '';
   DILEMAS.forEach((_,i) => {
     const d = document.createElement('div');
-    d.className = 'prog-dot' + (i===0?' active':'');
+    d.className = 'prog-dot'+(i===0?' active':'');
     d.id = 'pd-'+i;
     dots.appendChild(d);
   });
@@ -498,7 +491,8 @@ function showQuestion(idx) {
   document.getElementById('question-screen').style.display='block';
   document.getElementById('tb-phase').textContent = d.num;
   document.getElementById('stat-q').textContent = (idx+1)+'/'+DILEMAS.length;
-  document.getElementById('q-num').textContent = d.num;
+  document.getElementById('q-num').childNodes[1] ? null : null;
+  document.getElementById('q-num').lastChild.textContent = ' '+d.num;
   document.getElementById('q-context').textContent = d.context;
   document.getElementById('q-text').textContent = d.question;
 
@@ -519,7 +513,10 @@ function showQuestion(idx) {
         <div class="opt-text">${opt.text}</div>
         <div class="opt-style" style="color:${opt.color};">${opt.style}</div>
       </div>
-      <div class="opt-votes" id="votes-${i}">0</div>`;
+      <div class="opt-bar-wrap">
+        <div class="opt-pct" id="pct-${i}">0%</div>
+        <div class="opt-bar-bg"><div class="opt-bar-fill" id="bar-${i}" style="background:${opt.color};"></div></div>
+      </div>`;
     container.appendChild(el);
   });
 
@@ -538,13 +535,14 @@ function updateVotes(qVotes) {
   Object.values(qVotes).forEach(v => { if(v>=0&&v<3) counts[v]++; });
   const total = counts.reduce((a,b)=>a+b,0);
   counts.forEach((c,i) => {
-    const ve = document.getElementById('votes-'+i);
-    const fe = document.getElementById('fill-'+i);
+    const pe = document.getElementById('pct-'+i);
+    const be = document.getElementById('bar-'+i);
     const oe = document.getElementById('opt-'+i);
-    if(!ve) return;
-    ve.textContent = c;
+    if(!pe) return;
+    const pct = total>0 ? Math.round((c/total)*100) : 0;
+    pe.textContent = total>0 ? pct+'%' : '0%';
+    be.style.width = pct+'%';
     if(c>0) oe.classList.add('has-votes');
-    fe.style.width = (total>0?(c/total)*100:0)+'%';
   });
   if(revealed) {
     const maxC = Math.max(...counts);
@@ -552,7 +550,6 @@ function updateVotes(qVotes) {
       const oe = document.getElementById('opt-'+i);
       if(!oe) return;
       if(c===maxC&&maxC>0) oe.classList.add('winner');
-      if(i===d.correctIdx) oe.style.borderColor='rgba(98,191,180,0.6)';
     });
   }
 }
@@ -563,13 +560,13 @@ function toggleReveal() {
   const btn = document.getElementById('btn-reveal');
   if(revealed) {
     rp.classList.add('show');
-    btn.textContent='Ocultar resposta';
+    btn.textContent = 'Ocultar resposta';
     db.ref('game/revealed').set(true);
     stopTimer();
     db.ref('votes/'+DILEMAS[currentQ].id).get().then(s=>updateVotes(s.val()||{}));
   } else {
     rp.classList.remove('show');
-    btn.textContent='Revelar resposta';
+    btn.textContent = 'Revelar resposta';
     db.ref('game/revealed').set(false);
   }
 }
@@ -579,33 +576,37 @@ function prevQuestion() { if(currentQ>0) showQuestion(currentQ-1); }
 
 function startTimer() {
   stopTimer(); timerSecs=30; updateTimer();
-  timerInterval = setInterval(() => { timerSecs--; updateTimer(); if(timerSecs<=0) { stopTimer(); document.getElementById('ctrl-status').textContent='votação encerrada'; } },1000);
+  timerInterval = setInterval(() => {
+    timerSecs--; updateTimer();
+    if(timerSecs<=0) { stopTimer(); document.getElementById('ctrl-status').textContent='ENCERRADO'; }
+  },1000);
 }
 function stopTimer() { clearInterval(timerInterval); timerInterval=null; }
 function updateTimer() {
-  const el=document.getElementById('ctrl-timer');
-  el.textContent='0:'+String(timerSecs).padStart(2,'0');
-  el.classList.toggle('urgent',timerSecs<=10);
-  if(timerSecs>0) document.getElementById('ctrl-status').textContent='votação aberta';
+  const el = document.getElementById('ctrl-timer');
+  el.textContent = '0:'+String(timerSecs).padStart(2,'0');
+  el.classList.toggle('urgent', timerSecs<=10);
+  if(timerSecs>0) document.getElementById('ctrl-status').textContent = 'VOTAÇÃO ABERTA';
 }
 
 function showScore() {
-  stopTimer(); db.ref('game/state').set('ended');
-  const sc=document.getElementById('score-screen');
-  sc.style.display='flex'; sc.style.flexDirection='column';
+  stopTimer();
+  db.ref('game/state').set('ended');
+  const sc = document.getElementById('score-screen');
+  sc.style.cssText = 'display:flex;flex-direction:column;';
   db.ref('votes').get().then(snap => {
-    const all=snap.val()||{};
-    const pc={};
-    DILEMAS.forEach(d=>{ const qv=all[d.id]||{}; Object.entries(qv).forEach(([pid,c])=>{ if(!pc[pid])pc[pid]=0; if(c===d.correctIdx)pc[pid]++; }); });
-    db.ref('players').get().then(ps=>{
-      const players=ps.val()||{};
-      document.getElementById('sc-scores').innerHTML=Object.entries(players).map(([pid,p])=>`
+    const all = snap.val()||{};
+    const pc = {};
+    DILEMAS.forEach(d => { const qv=all[d.id]||{}; Object.entries(qv).forEach(([pid,c])=>{ if(!pc[pid])pc[pid]=0; if(c===d.correctIdx)pc[pid]++; }); });
+    db.ref('players').get().then(ps => {
+      const players = ps.val()||{};
+      document.getElementById('sc-scores').innerHTML = Object.entries(players).map(([pid,p])=>`
         <div class="sc-card">
           <div class="sc-name">${p.name||'Participante'}</div>
           <div class="sc-num">${pc[pid]||0}/${DILEMAS.length}</div>
           <div class="sc-label">acertos</div>
-        </div>`).join('')||'<div style="color:rgba(255,255,255,.3)">Nenhum voto registrado</div>';
-      document.getElementById('sc-sub').textContent='Três dilemas reais. Três decisões de liderança. O curso Desenvolve Líderes entregou a lente para enxergar — e agir — diferente.';
+        </div>`).join('')||'<div style="color:rgba(255,255,255,.3);font-size:16px;font-weight:700;">Nenhum voto registrado</div>';
+      document.getElementById('sc-sub').textContent = 'Três dilemas. Três decisões. O Desenvolve Líderes 2026 entregou a lente para enxergar — e agir — diferente.';
     });
   });
 }
