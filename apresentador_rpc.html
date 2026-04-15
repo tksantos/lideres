@@ -292,9 +292,9 @@ nav {
 
 <div id="main">
   <nav>
-    <div class="nav-brand">RPC<span>·</span></div>
+    <div class="nav-brand">DESENVOLVE <span>LÍDERES</span></div>
     <div class="nav-divider"></div>
-    <div class="nav-sub">Desenvolve Líderes 2026</div>
+    <div class="nav-sub">Painel de Evidências · 2026</div>
     <div class="nav-right">
       <div class="player-dots">
         <div class="pdot" id="dot-0"></div>
@@ -440,7 +440,7 @@ function setupGame() {
   db.ref('votes').remove();
   db.ref('players').remove();
 
-  let playerUrl = window.location.href.replace('apresentador_rpc.html','jogador_rpc.html');
+  let playerUrl = window.location.href.replace('enquete_apresentador.html','enquete_jogador.html');
   const urlEl = document.getElementById('qr-url-label');
   urlEl.textContent = playerUrl;
   function buildQR(url) {

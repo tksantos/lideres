@@ -36,8 +36,9 @@ body { background: var(--paper); color: var(--ink); min-height: 100%; display: f
 }
 .join-brand {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 14px; letter-spacing: .12em; color: rgba(255,255,255,0.4);
+  font-size: 16px; letter-spacing: .12em; color: rgba(255,255,255,0.6);
 }
+.join-brand span { color: var(--yellow); }
 .join-title {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 52px; line-height: 1; color: #fff; letter-spacing: .02em;
@@ -178,9 +179,11 @@ body { background: var(--paper); color: var(--ink); min-height: 100%; display: f
   background: var(--ink);
 }
 .end-brand {
-  font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: .12em;
+  color: rgba(255,255,255,0.6);
 }
+.end-brand span { color: var(--yellow); }
 .end-title {
   font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #fff; letter-spacing: .02em;
 }
@@ -200,14 +203,14 @@ body { background: var(--paper); color: var(--ink); min-height: 100%; display: f
 <div class="stripe"></div>
 
 <div class="screen active" id="join">
-  <div class="join-brand">Desenvolve Líderes 2026</div>
+  <div class="join-brand">DESENVOLVE <span>LÍDERES</span> · 2026</div>
   <div class="join-title">Você no<br><span>Meu Lugar</span></div>
   <div class="join-sub">Você vai tomar decisões de liderança em tempo real. Toque para entrar.</div>
   <button class="join-btn" onclick="joinGame()">ENTRAR NO JOGO →</button>
 </div>
 
 <div class="screen" id="waiting">
-  <div class="join-brand">Desenvolve Líderes 2026</div>
+  <div class="join-brand">DESENVOLVE <span>LÍDERES</span> · 2026</div>
   <div class="wait-pulse"></div>
   <div class="wait-name" id="wait-name">Olá!</div>
   <div class="wait-sub">Aguardando o apresentador iniciar. Fique atento à tela projetada.</div>
