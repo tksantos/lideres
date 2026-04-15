@@ -197,6 +197,51 @@ body { background: var(--paper); color: var(--ink); min-height: 100%; display: f
 }
 .es-label { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); margin-top: 4px; }
 .end-sub { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.35); line-height: 1.7; max-width: 300px; }
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 420px) {
+  #join, #waiting, #end { padding: 32px 20px; gap: 16px; }
+  .join-brand, .end-brand { font-size: 14px; }
+  .join-title { font-size: 44px; }
+  .wait-name { font-size: 32px; }
+  .end-title { font-size: 40px; }
+  .join-sub, .wait-sub, .end-sub { font-size: 14px; }
+  .join-btn { padding: 16px; font-size: 20px; }
+  .end-score { padding: 22px 36px; }
+  .es-num { font-size: 64px; }
+
+  .vote-header { padding: 12px 16px; }
+  .vh-badge { font-size: 16px; padding: 3px 12px; }
+  .vh-name { font-size: 12px; }
+  .vote-body { padding: 16px 14px 10px; }
+  .v-context { font-size: 12px; padding: 10px 12px; }
+  .v-question { font-size: 24px; margin-bottom: 18px; }
+  .v-opt { padding: 12px 14px; }
+  .vo-letter { font-size: 24px; }
+  .vo-text { font-size: 14px; }
+  .vo-style { font-size: 10px; }
+  .vote-footer { padding: 10px 14px 22px; }
+
+  #reveal-mobile { padding: 18px 14px; gap: 12px; }
+  .rm-header { padding: 14px 16px; }
+  .rm-eyebrow { font-size: 10px; }
+  .rm-result { font-size: 20px; }
+  .rm-title { font-size: 24px; }
+  .rm-what { font-size: 14px; padding: 12px 14px; }
+  .rm-why { font-size: 13px; padding: 12px 14px; }
+}
+
+@media (max-width: 340px) {
+  .join-title { font-size: 36px; }
+  .wait-name { font-size: 28px; }
+  .end-title { font-size: 34px; }
+  .v-question { font-size: 21px; }
+  .es-num { font-size: 54px; }
+  .end-score { padding: 18px 24px; }
+}
+
+/* Prevent text overflow on long option text */
+.vo-text, .v-question, .rm-what, .rm-why { word-wrap: break-word; overflow-wrap: break-word; hyphens: auto; }
 </style>
 </head>
 <body>
@@ -248,7 +293,7 @@ body { background: var(--paper); color: var(--ink); min-height: 100%; display: f
 </div>
 
 <div class="screen" id="end">
-  <div class="end-brand">Desenvolve Líderes 2026</div>
+  <div class="end-brand">DESENVOLVE <span>LÍDERES</span> · 2026</div>
   <div class="end-title">Obrigado<br>por jogar!</div>
   <div class="end-score">
     <div class="es-num" id="es-num">0/3</div>
