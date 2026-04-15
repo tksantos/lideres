@@ -3,294 +3,227 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Você no Meu Lugar</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
+<title>Você no Meu Lugar — Desenvolve Líderes 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <style>
 :root {
-  --ink: #0a0a0a;
-  --paper: #f5f1eb;
-  --red: #c0392b;
-  --blue: #1a3a5c;
-  --gold: #b8972a;
-  --green: #2d6a4f;
-  --muted: #7a7068;
+  --red:    #E74038;
+  --blue:   #297DC1;
+  --yellow: #FBD21D;
+  --teal:   #62BFB4;
+  --ink:    #1C1C2E;
+  --paper:  #F4F6FB;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html { height: 100%; }
-body {
-  background: var(--ink);
-  color: var(--paper);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
-  min-height: 100%;
-  display: flex; flex-direction: column;
-  overflow-x: hidden;
+html, body { height: 100%; font-family: 'Nunito', sans-serif; }
+body { background: var(--paper); color: var(--ink); min-height: 100%; display: flex; flex-direction: column; }
+
+.stripe {
+  height: 5px; flex-shrink: 0;
+  background: linear-gradient(to right, var(--red), var(--yellow), var(--teal), var(--blue));
 }
 
-/* ── SCREENS ── */
-.screen { display: none; flex: 1; flex-direction: column; min-height: 100vh; }
+.screen { display: none; flex: 1; flex-direction: column; }
 .screen.active { display: flex; }
 
-/* ══ JOIN SCREEN ══ */
+/* JOIN */
 #join {
   align-items: center; justify-content: center;
-  padding: 40px 28px; gap: 24px; text-align: center;
+  padding: 40px 28px; gap: 20px; text-align: center;
+  background: var(--ink);
 }
-.join-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 13px; font-style: italic;
-  color: rgba(255,255,255,0.3); letter-spacing: .06em;
+.join-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: .12em; color: rgba(255,255,255,0.6);
 }
+.join-brand span { color: var(--yellow); }
 .join-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 36px; font-weight: 900;
-  color: var(--paper); line-height: 1.1;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px; line-height: 1; color: #fff; letter-spacing: .02em;
 }
+.join-title span { color: var(--yellow); }
 .join-sub {
-  font-size: 14px; font-weight: 300;
-  color: rgba(255,255,255,0.4); line-height: 1.6;
+  font-size: 15px; font-weight: 600;
+  color: rgba(255,255,255,0.45); line-height: 1.6; max-width: 300px;
 }
-.join-input {
-  width: 100%; padding: 16px 20px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 8px; color: var(--paper);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 18px; font-weight: 400;
-  text-align: center; outline: none;
-  -webkit-appearance: none;
-}
-.join-input::placeholder { color: rgba(255,255,255,0.2); }
-.join-input:focus { border-color: var(--red); }
 .join-btn {
-  width: 100%; padding: 18px;
-  background: var(--red); color: #fff;
-  border: none; border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px; font-weight: 500;
-  cursor: pointer; -webkit-appearance: none;
-  transition: opacity .2s;
+  width: 100%; max-width: 320px; padding: 18px;
+  background: var(--yellow); color: var(--ink);
+  border: none; border-radius: 14px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: .06em;
+  cursor: pointer; transition: transform .15s;
 }
-.join-btn:active { opacity: .8; }
+.join-btn:active { transform: scale(.97); }
 
-/* ══ WAITING SCREEN ══ */
+/* WAITING */
 #waiting {
   align-items: center; justify-content: center;
   padding: 40px 28px; gap: 20px; text-align: center;
+  background: var(--ink);
 }
+.wait-pulse {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--teal); animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.6);opacity:.4;} }
 .wait-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px; font-weight: 700;
-  color: var(--paper);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px; color: #fff; letter-spacing: .02em;
 }
-.wait-sub {
-  font-size: 14px; color: rgba(255,255,255,0.35);
-  line-height: 1.6; max-width: 280px;
-}
-.wait-dot {
-  width: 12px; height: 12px; border-radius: 50%;
-  background: var(--red);
-  animation: pulse 1.5s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%,100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.4); opacity: .5; }
-}
-.wait-players {
-  display: flex; gap: 10px;
-}
-.wp-dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  background: rgba(255,255,255,0.12); transition: .4s;
-}
-.wp-dot.on { background: #2d9a4f; }
+.wait-sub { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.35); max-width: 280px; line-height: 1.6; }
+.wait-dots { display: flex; gap: 10px; }
+.wd { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.1); transition: .4s; }
+.wd.on { background: var(--teal); }
 
-/* ══ VOTE SCREEN ══ */
-#vote { padding: 0; }
+/* VOTE */
+#vote { background: var(--paper); }
 
 .vote-header {
-  padding: 20px 24px 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  background: var(--ink); padding: 14px 20px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.vh-num {
-  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--red);
+.vh-badge {
+  font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: .08em;
+  background: var(--red); color: #fff;
+  padding: 3px 14px; border-radius: 20px;
 }
-.vh-name {
-  font-size: 12px; color: rgba(255,255,255,0.3);
-}
+.vh-name { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.4); }
 
-.vote-body { padding: 24px 24px 16px; flex: 1; }
-
+.vote-body { padding: 20px 18px 12px; flex: 1; }
 .v-context {
-  font-size: 12px; font-weight: 300;
-  color: rgba(255,255,255,0.35);
-  line-height: 1.6; margin-bottom: 16px;
-  padding: 10px 14px;
-  border-left: 2px solid rgba(255,255,255,0.1);
+  font-size: 13px; font-weight: 700; color: #6B7280;
+  line-height: 1.55; margin-bottom: 14px;
+  background: #fff; padding: 12px 14px;
+  border-left: 4px solid var(--blue); border-radius: 0 8px 8px 0;
 }
 .v-question {
-  font-family: 'Playfair Display', serif;
-  font-size: 20px; font-weight: 700;
-  color: var(--paper); line-height: 1.3;
-  margin-bottom: 28px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; line-height: 1.1; letter-spacing: .02em;
+  color: var(--ink); margin-bottom: 22px;
 }
-
 .v-options { display: flex; flex-direction: column; gap: 10px; }
-
 .v-opt {
-  padding: 16px 18px;
-  border: 1.5px solid rgba(255,255,255,0.1);
-  border-radius: 10px;
-  background: rgba(255,255,255,0.03);
-  cursor: pointer; transition: all .2s;
+  background: #fff; border-radius: 12px;
+  border: 2.5px solid #E8ECF4;
+  padding: 14px 16px; cursor: pointer; transition: all .18s;
   position: relative; overflow: hidden;
-  -webkit-tap-highlight-color: transparent;
 }
 .v-opt:active { transform: scale(.98); }
-.v-opt.selected {
-  border-color: rgba(255,255,255,0.5);
-  background: rgba(255,255,255,0.08);
-}
-.v-opt.correct-reveal { border-color: rgba(45,154,79,0.7); background: rgba(45,154,79,0.07); }
-.v-opt.wrong-reveal { border-color: rgba(255,255,255,0.05); opacity: .5; }
+.v-opt.selected { border-color: var(--teal); background: #F0FAFA; }
+.v-opt.correct-reveal { border-color: var(--teal); background: #F0FAFA; }
+.v-opt.wrong-reveal { opacity: .45; }
 
+.vo-top { display: flex; align-items: flex-start; justify-content: space-between; }
 .vo-letter {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px; font-weight: 900;
-  color: rgba(255,255,255,0.15);
-  margin-bottom: 6px; line-height: 1;
+  font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: .04em;
+  color: #CBD5E1; line-height: 1;
 }
-.v-opt.selected .vo-letter { color: rgba(255,255,255,0.7); }
-.vo-text {
-  font-size: 14px; font-weight: 400;
-  color: rgba(255,255,255,0.7); line-height: 1.45;
-}
+.v-opt.selected .vo-letter { color: var(--teal); }
+.vo-check { font-size: 20px; opacity: 0; transition: .2s; color: var(--teal); }
+.v-opt.selected .vo-check { opacity: 1; }
+.vo-text { font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.4; margin-top: 4px; }
 .vo-style {
-  font-size: 10px; letter-spacing: .08em;
-  text-transform: uppercase; font-weight: 500;
-  margin-top: 6px;
+  font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  margin-top: 5px; color: #94A3B8;
 }
-.v-opt.selected .vo-style { opacity: 1; }
+.v-opt.selected .vo-style { color: var(--teal); }
 
-.check-icon {
-  position: absolute; top: 14px; right: 16px;
-  font-size: 18px; opacity: 0; transition: opacity .2s;
-}
-.v-opt.selected .check-icon { opacity: 1; }
-
-.vote-footer { padding: 12px 24px 32px; }
+.vote-footer { padding: 10px 18px 28px; }
 .voted-msg {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px; padding: 14px 18px;
-  font-size: 13px; color: rgba(255,255,255,0.5);
-  text-align: center; line-height: 1.5; display: none;
+  background: #fff; border: 2px solid var(--teal); border-radius: 12px;
+  padding: 14px 16px; font-size: 14px; font-weight: 700;
+  color: var(--teal); text-align: center; line-height: 1.5; display: none;
 }
 .voted-msg.show { display: block; }
 
-/* ══ REVEAL SCREEN ══ */
+/* REVEAL */
 #reveal-mobile {
-  padding: 32px 24px; gap: 16px;
-  align-items: flex-start;
+  background: var(--paper); padding: 24px 18px; gap: 14px;
+}
+.rm-header {
+  background: var(--ink); border-radius: 12px; padding: 16px 18px;
 }
 .rm-eyebrow {
-  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--gold); font-weight: 500;
+  font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--yellow); margin-bottom: 8px;
 }
-.rm-badge {
-  padding: 4px 12px; border-radius: 4px;
-  font-size: 12px; font-weight: 500;
+.rm-result {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: .04em;
 }
 .rm-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 24px; font-weight: 700;
-  color: var(--paper); line-height: 1.2;
+  font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: .02em;
+  color: var(--ink);
 }
 .rm-what {
-  font-size: 14px; font-weight: 400;
-  color: rgba(255,255,255,0.8); line-height: 1.6;
-  border-left: 2px solid var(--red);
-  padding-left: 14px;
+  font-size: 15px; font-weight: 800; color: var(--ink); line-height: 1.55;
+  background: #fff; border-left: 4px solid var(--red);
+  border-radius: 0 10px 10px 0; padding: 14px 16px;
 }
 .rm-why {
-  font-size: 13px; font-weight: 300;
-  color: rgba(255,255,255,0.45); line-height: 1.7;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 8px; padding: 14px 16px;
+  font-size: 14px; font-weight: 600; color: #6B7280; line-height: 1.7;
+  background: #fff; border-radius: 10px; padding: 14px 16px;
 }
 .rm-next {
-  color: rgba(255,255,255,0.25); font-size: 13px;
-  text-align: center; width: 100%;
-  padding-top: 8px;
+  font-size: 13px; font-weight: 700; color: #94A3B8;
+  text-align: center; padding-top: 4px;
 }
 
-/* ══ END SCREEN ══ */
+/* END */
 #end {
   align-items: center; justify-content: center;
   padding: 40px 28px; gap: 20px; text-align: center;
+  background: var(--ink);
 }
-.end-big {
-  font-family: 'Playfair Display', serif;
-  font-size: 56px; font-weight: 900;
-  color: var(--red); line-height: 1;
+.end-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: .12em;
+  color: rgba(255,255,255,0.6);
 }
+.end-brand span { color: var(--yellow); }
 .end-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px; font-weight: 700; color: var(--paper);
-}
-.end-sub {
-  font-size: 14px; color: rgba(255,255,255,0.35);
-  line-height: 1.7; max-width: 300px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #fff; letter-spacing: .02em;
 }
 .end-score {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px; padding: 24px 40px;
-  text-align: center;
+  background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 16px; padding: 28px 52px; text-align: center;
 }
 .es-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 64px; font-weight: 900; color: #fff; line-height: 1;
+  font-family: 'Bebas Neue', sans-serif; font-size: 80px; line-height: 1;
+  color: var(--yellow);
 }
-.es-label { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 4px; }
+.es-label { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); margin-top: 4px; }
+.end-sub { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.35); line-height: 1.7; max-width: 300px; }
 </style>
 </head>
 <body>
+<div class="stripe"></div>
 
-<!-- JOIN -->
 <div class="screen active" id="join">
-  <div class="join-logo">Você no Meu Lugar</div>
-  <div class="join-title">Qual é<br>o seu nome?</div>
-  <div class="join-sub">Você vai tomar decisões de liderança em tempo real.</div>
-  <input class="join-input" id="name-input" type="text" placeholder="Digite seu nome" maxlength="20" autocomplete="off">
-  <button class="join-btn" onclick="joinGame()">Entrar no jogo →</button>
+  <div class="join-brand">DESENVOLVE <span>LÍDERES</span> · 2026</div>
+  <div class="join-title">Você no<br><span>Meu Lugar</span></div>
+  <div class="join-sub">Você vai tomar decisões de liderança em tempo real. Toque para entrar.</div>
+  <button class="join-btn" onclick="joinGame()">ENTRAR NO JOGO →</button>
 </div>
 
-<!-- WAITING -->
 <div class="screen" id="waiting">
-  <div class="join-logo">Você no Meu Lugar</div>
-  <div class="wait-dot"></div>
+  <div class="join-brand">DESENVOLVE <span>LÍDERES</span> · 2026</div>
+  <div class="wait-pulse"></div>
   <div class="wait-name" id="wait-name">Olá!</div>
-  <div class="wait-sub">Aguardando o apresentador iniciar o jogo. Fique atento à tela.</div>
-  <div class="wait-players" id="wait-players">
-    <div class="wp-dot" id="wp0"></div>
-    <div class="wp-dot" id="wp1"></div>
-    <div class="wp-dot" id="wp2"></div>
+  <div class="wait-sub">Aguardando o apresentador iniciar. Fique atento à tela projetada.</div>
+  <div class="wait-dots">
+    <div class="wd" id="wp0"></div>
+    <div class="wd" id="wp1"></div>
+    <div class="wd" id="wp2"></div>
   </div>
 </div>
 
-<!-- VOTE -->
 <div class="screen" id="vote">
   <div class="vote-header">
-    <div class="vh-num" id="vh-num">Dilema 01</div>
+    <div class="vh-badge" id="vh-num">Dilema 01</div>
     <div class="vh-name" id="vh-name"></div>
   </div>
   <div class="vote-body">
@@ -299,24 +232,24 @@ body {
     <div class="v-options" id="v-options"></div>
   </div>
   <div class="vote-footer">
-    <div class="voted-msg" id="voted-msg">Voto registrado! Aguarde o apresentador revelar a resposta.</div>
+    <div class="voted-msg" id="voted-msg">✓ Voto registrado! Aguarde a revelação na tela principal.</div>
   </div>
 </div>
 
-<!-- REVEAL MOBILE -->
 <div class="screen" id="reveal-mobile">
-  <div class="rm-eyebrow">O que aconteceu de verdade</div>
-  <div class="rm-badge" id="rm-badge"></div>
+  <div class="rm-header">
+    <div class="rm-eyebrow">O que aconteceu de verdade</div>
+    <div class="rm-result" id="rm-result"></div>
+  </div>
   <div class="rm-title" id="rm-title"></div>
   <div class="rm-what" id="rm-what"></div>
   <div class="rm-why" id="rm-why"></div>
   <div class="rm-next" id="rm-next">Aguarde o próximo dilema...</div>
 </div>
 
-<!-- END -->
 <div class="screen" id="end">
-  <div class="end-big">"</div>
-  <div class="end-title">Obrigado<br>por jogar.</div>
+  <div class="end-brand">Desenvolve Líderes 2026</div>
+  <div class="end-title">Obrigado<br>por jogar!</div>
   <div class="end-score">
     <div class="es-num" id="es-num">0/3</div>
     <div class="es-label">decisões alinhadas com o curso</div>
@@ -325,214 +258,98 @@ body {
 </div>
 
 <script>
-// ══════════════════════════════════════
-// DILEMAS (mesmo do apresentador)
-// ══════════════════════════════════════
 const DILEMAS = [
-  {
-    id: 'd1', num: 'Dilema 01',
-    context: 'Contexto: Hellen está em uma fase de crescimento. Você percebe que ela está pronta para mais responsabilidade, mas ainda busca validação constante antes de agir.',
-    question: 'Ela precisa assumir uma reunião importante de diretoria amanhã — no seu lugar. O que você faz?',
-    options: [
-      { letter: 'A', text: 'Vai junto à reunião para apoiá-la caso precise de ajuda no momento.', style: 'Direção compartilhada', color: '#5b8db8' },
-      { letter: 'B', text: 'Passa o contexto, os objetivos e os limites — e deixa ela conduzir sozinha.', style: 'Delegação com clareza', color: '#2d9a4f' },
-      { letter: 'C', text: 'Cancela ou adia a reunião — ainda é cedo para esse nível de exposição.', style: 'Proteção', color: '#c0392b' },
-    ],
-    correctIdx: 1,
-    revealWhat: 'Passei o contexto completo, o objetivo, as regras e o prazo — e deixei ela conduzir sozinha.',
-    revealWhy: 'A liderança situacional pede que o estilo acompanhe a maturidade na tarefa. Hellen estava pronta — o que ela precisava não era de presença, mas de espaço e clareza.',
-  },
-  {
-    id: 'd2', num: 'Dilema 02',
-    context: 'Contexto: Zaitter é proativo e dedicado, mas absorve demandas de outras áreas e começa a perder foco no próprio papel.',
-    question: 'Zaitter faz hora extra apoiando outros times toda semana — mas as prioridades do papel dele ficam para depois. O que você faz?',
-    options: [
-      { letter: 'A', text: 'Elogia a dedicação e pede que equilibre melhor o tempo por conta própria.', style: 'Feedback genérico', color: '#5b8db8' },
-      { letter: 'B', text: 'Tem uma conversa direta sobre papel, prioridade e onde a contribuição gera mais valor.', style: 'Alinhamento intencional', color: '#2d9a4f' },
-      { letter: 'C', text: 'Bloqueia a agenda para que outras áreas parem de acioná-lo.', style: 'Controle externo', color: '#c0392b' },
-    ],
-    correctIdx: 1,
-    revealWhat: 'Tive uma conversa direta sobre papel e responsabilidade — e estimulei ideias dentro da especialidade dele em UX/UI.',
-    revealWhy: 'No pipeline de liderança, o gestor de si precisa entender prioridade e escopo. A conversa intencional foi o que gerou amadurecimento real.',
-  },
-  {
-    id: 'd3', num: 'Dilema 03',
-    context: 'Contexto: Uma situação crítica no projeto precisa de uma decisão rápida. Você sabe a resposta — seria mais rápido resolver sozinho.',
-    question: 'Você está sem tempo. O time olha para você esperando uma decisão. O que você faz?',
-    options: [
-      { letter: 'A', text: 'Toma a decisão você mesmo — eficiência em momento crítico é prioridade.', style: 'Centralização', color: '#c0392b' },
-      { letter: 'B', text: 'Apresenta os dados rapidamente, facilita a discussão e deixa o time decidir.', style: 'Desenvolvimento sob pressão', color: '#2d9a4f' },
-      { letter: 'C', text: 'Adia a decisão para ter tempo de envolver o time do jeito certo.', style: 'Processo antes do resultado', color: '#5b8db8' },
-    ],
-    correctIdx: 1,
-    revealWhat: 'Apresentei o cenário, o objetivo e as restrições — e facilitei a decisão do time mesmo sob pressão.',
-    revealWhy: 'Liderar não é fazer mais — é desenvolver melhor. Mesmo em momentos críticos, criar espaço para o time decidir constrói maturidade real.',
-  },
+  {id:'d1',num:'Dilema 01',context:'Caso 01',question:'Um liderado precisa assumir uma reunião de diretoria no seu lugar. O que você faz?',options:[{letter:'A',text:'Vai junto à reunião para apoiá-lo caso precise de ajuda.',style:'Direção compartilhada',color:'#297DC1'},{letter:'B',text:'Passa contexto, objetivos e limites — e deixa conduzir sozinho.',style:'Delegação com clareza',color:'#62BFB4'},{letter:'C',text:'Cancela ou adia — ainda é cedo para esse nível de exposição.',style:'Proteção',color:'#E74038'}],correctIdx:1,revealWhat:'Passei o contexto completo, o objetivo, as regras e o prazo — e deixei Liderado 01 conduzir sozinho.',revealWhy:'A liderança situacional pede que o estilo acompanhe a maturidade na tarefa. Liderado 01 estava pronto — precisava de espaço e clareza, não de presença.'},
+  {id:'d2',num:'Dilema 02',context:'Liderado 02 é proativo e dedicado, mas absorve demandas de outras áreas e começa a perder foco no próprio papel.',question:'Liderado 02 faz hora extra apoiando outros times toda semana — mas as prioridades dele ficam pra depois. O que você faz?',options:[{letter:'A',text:'Elogia a dedicação e pede que equilibre melhor o tempo por conta própria.',style:'Feedback genérico',color:'#297DC1'},{letter:'B',text:'Tem uma conversa direta sobre papel, prioridade e onde a contribuição gera mais valor.',style:'Alinhamento intencional',color:'#62BFB4'},{letter:'C',text:'Bloqueia a agenda para que outras áreas parem de acionar.',style:'Controle externo',color:'#E74038'}],correctIdx:1,revealWhat:'Tive uma conversa direta sobre papel e responsabilidade — e estimulei Liderado 02 a trazer ideias dentro da sua especialidade.',revealWhy:'No pipeline de liderança, o gestor de si precisa entender prioridade e escopo. A conversa intencional gerou amadurecimento real.'},
+  {id:'d3',num:'Dilema 03',context:'Situação crítica no projeto precisa de decisão rápida. Você sabe a resposta — seria mais rápido resolver sozinho.',question:'O time olha para você esperando uma decisão. Você está sem tempo. O que você faz?',options:[{letter:'A',text:'Toma a decisão você mesmo — eficiência em momento crítico é prioridade.',style:'Centralização',color:'#E74038'},{letter:'B',text:'Apresenta os dados rapidamente, facilita a discussão e deixa o time decidir.',style:'Desenvolvimento sob pressão',color:'#62BFB4'},{letter:'C',text:'Adia a decisão para ter tempo de envolver o time do jeito certo.',style:'Processo antes do resultado',color:'#297DC1'}],correctIdx:1,revealWhat:'Apresentei o cenário, o objetivo e as restrições — e facilitei a decisão do time mesmo sob pressão.',revealWhy:'Liderar não é fazer mais — é desenvolver melhor. Mesmo em momentos críticos, criar espaço para o time decidir constrói maturidade real.'},
 ];
 
-// ══════════════════════════════════════
-// STATE
-// ══════════════════════════════════════
-let db = null;
-let playerId = null;
-let playerName = '';
-let myVotes = {};
-let correctCount = 0;
+const FIREBASE_CFG = {apiKey:"AIzaSyCgG5weiL9IIJNqEKMnyOfJsFSUXWCPYgw",authDomain:"lideres-32a57.firebaseapp.com",databaseURL:"https://lideres-32a57-default-rtdb.firebaseio.com",projectId:"lideres-32a57"};
+let db=null,playerId=null,playerName='',myVotes={},correctCount=0;
 
-// ══════════════════════════════════════
-// INIT — pega config do apresentador via localStorage (mesmo domínio)
-// ou usa fallback de URL param
-// ══════════════════════════════════════
-const FIREBASE_CFG = {
-  apiKey: "AIzaSyCgG5weiL9IIJNqEKMnyOfJsFSUXWCPYgw",
-  authDomain: "lideres-32a57.firebaseapp.com",
-  databaseURL: "https://lideres-32a57-default-rtdb.firebaseio.com",
-  projectId: "lideres-32a57",
-};
-
-window.addEventListener('DOMContentLoaded', () => {
-  try {
-    let app;
-    try { app = firebase.app(); }
-    catch(e) { app = firebase.initializeApp(FIREBASE_CFG); }
-    db = firebase.database(app);
-  } catch(e) {
-    console.error('Firebase error:', e);
-  }
+window.addEventListener('DOMContentLoaded',()=>{
+  try{let app;try{app=firebase.app();}catch(e){app=firebase.initializeApp(FIREBASE_CFG);}db=firebase.database(app);}catch(e){console.error(e);}
 });
 
-// ══════════════════════════════════════
-// JOIN
-// ══════════════════════════════════════
-function joinGame() {
-  const name = document.getElementById('name-input').value.trim();
-  if (!name) { document.getElementById('name-input').focus(); return; }
-  if (!db) { alert('Firebase não configurado. Abra o apresentador primeiro.'); return; }
-
-  playerName = name;
-  playerId = 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
-
-  db.ref('players/' + playerId).set({ name, joinedAt: Date.now() });
-  db.ref('players/' + playerId).onDisconnect().remove();
-
-  document.getElementById('wait-name').textContent = 'Olá, ' + name + '!';
-  showScreen('waiting');
-
-  // Watch online players
-  db.ref('players').on('value', snap => {
-    const players = snap.val() || {};
-    const count = Object.keys(players).length;
-    for (let i = 0; i < 3; i++) {
-      document.getElementById('wp' + i).classList.toggle('on', i < count);
-    }
-  });
-
-  // Watch game state
-  db.ref('game').on('value', snap => {
-    const game = snap.val();
-    if (!game) return;
-
-    if (game.state === 'voting') {
-      showDilema(game.currentQ, game.revealed);
-    } else if (game.state === 'ended') {
-      showEnd();
-    }
-
-    if (game.revealed && document.getElementById('vote').classList.contains('active')) {
-      showReveal(game.currentQ);
-    }
+function joinGame(){
+  if(!db){alert('Erro de conexão.');return;}
+  playerId='p_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+  db.ref('players').get().then(snap=>{
+    const players=snap.val()||{};
+    const taken=Object.values(players).map(p=>p.name);
+    let name='Liderado 1';
+    if(taken.includes('Liderado 1'))name='Liderado 2';
+    if(taken.includes('Liderado 1')&&taken.includes('Liderado 2'))name='Liderado 3';
+    playerName=name;
+    db.ref('players/'+playerId).set({name,joinedAt:Date.now()});
+    db.ref('players/'+playerId).onDisconnect().remove();
+    document.getElementById('wait-name').textContent='Olá, '+name+'!';
+    showScreen('waiting');
+    db.ref('players').on('value',snap=>{
+      const count=Object.keys(snap.val()||{}).length;
+      for(let i=0;i<3;i++)document.getElementById('wp'+i).classList.toggle('on',i<count);
+    });
+    db.ref('game').on('value',snap=>{
+      const game=snap.val();if(!game)return;
+      if(game.state==='voting')showDilema(game.currentQ,game.revealed);
+      else if(game.state==='ended')showEnd();
+      if(game.revealed&&document.getElementById('vote').classList.contains('active'))showReveal(game.currentQ);
+    });
   });
 }
 
-// ══════════════════════════════════════
-// SCREENS
-// ══════════════════════════════════════
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 
-function showDilema(idx, revealed) {
-  const d = DILEMAS[idx];
-  if (!d) return;
-
-  if (revealed) { showReveal(idx); return; }
-
-  document.getElementById('vh-num').textContent = d.num;
-  document.getElementById('vh-name').textContent = playerName;
-  document.getElementById('v-context').textContent = d.context;
-  document.getElementById('v-question').textContent = d.question;
-
-  const container = document.getElementById('v-options');
-  container.innerHTML = '';
-  const myVote = myVotes[d.id];
-  const hasVoted = myVote !== undefined;
-
-  d.options.forEach((opt, i) => {
-    const el = document.createElement('div');
-    el.className = 'v-opt' + (myVote === i ? ' selected' : '');
-    el.innerHTML = `
-      <div class="vo-letter">${opt.letter}</div>
-      <div class="vo-text">${opt.text}</div>
-      <div class="vo-style" style="color:${opt.color};">${opt.style}</div>
-      <div class="check-icon">✓</div>
-    `;
-    if (!hasVoted) {
-      el.addEventListener('click', () => castVote(idx, i));
-    }
+function showDilema(idx,revealed){
+  const d=DILEMAS[idx];if(!d)return;
+  if(revealed){showReveal(idx);return;}
+  document.getElementById('vh-num').textContent=d.num;
+  document.getElementById('vh-name').textContent=playerName;
+  document.getElementById('v-context').textContent=d.context;
+  document.getElementById('v-question').textContent=d.question;
+  const container=document.getElementById('v-options');
+  container.innerHTML='';
+  const myVote=myVotes[d.id];
+  const hasVoted=myVote!==undefined;
+  d.options.forEach((opt,i)=>{
+    const el=document.createElement('div');
+    el.className='v-opt'+(myVote===i?' selected':'');
+    el.innerHTML=`<div class="vo-top"><div class="vo-letter">${opt.letter}</div><div class="vo-check">✓</div></div><div class="vo-text">${opt.text}</div><div class="vo-style" style="color:${opt.color};">${opt.style}</div>`;
+    if(!hasVoted)el.addEventListener('click',()=>castVote(idx,i));
     container.appendChild(el);
   });
-
-  const votedMsg = document.getElementById('voted-msg');
-  votedMsg.classList.toggle('show', hasVoted);
-
+  document.getElementById('voted-msg').classList.toggle('show',hasVoted);
   showScreen('vote');
 }
 
-function castVote(qIdx, optIdx) {
-  const d = DILEMAS[qIdx];
-  if (!d || !db) return;
-
-  myVotes[d.id] = optIdx;
-  if (optIdx === d.correctIdx) correctCount++;
-
-  db.ref('votes/' + d.id + '/' + playerId).set(optIdx);
-  showDilema(qIdx, false);
+function castVote(qIdx,optIdx){
+  const d=DILEMAS[qIdx];if(!d||!db)return;
+  myVotes[d.id]=optIdx;
+  if(optIdx===d.correctIdx)correctCount++;
+  db.ref('votes/'+d.id+'/'+playerId).set(optIdx);
+  showDilema(qIdx,false);
 }
 
-function showReveal(idx) {
-  const d = DILEMAS[idx];
-  if (!d) return;
-
-  const myVote = myVotes[d.id];
-  const correct = myVote === d.correctIdx;
-
-  document.getElementById('rm-badge').textContent = correct ? '✓ Você acertou!' : '✗ Decisão diferente';
-  document.getElementById('rm-badge').style.background = correct ? 'rgba(45,106,79,0.3)' : 'rgba(192,57,43,0.2)';
-  document.getElementById('rm-badge').style.color = correct ? '#5dc4a0' : '#e08070';
-  document.getElementById('rm-title').textContent = d.num + ' — Revelação';
-  document.getElementById('rm-what').textContent = d.revealWhat;
-  document.getElementById('rm-why').textContent = d.revealWhy;
-
-  const isLast = idx >= DILEMAS.length - 1;
-  document.getElementById('rm-next').textContent = isLast
-    ? 'Fim do jogo! Veja a tela principal.'
-    : 'Aguarde o próximo dilema...';
-
+function showReveal(idx){
+  const d=DILEMAS[idx];if(!d)return;
+  const myVote=myVotes[d.id];
+  const correct=myVote===d.correctIdx;
+  const hasVoted=myVote!==undefined;
+  const resultEl=document.getElementById('rm-result');
+  if(!hasVoted){resultEl.textContent='Você não votou neste dilema';resultEl.style.color='rgba(255,255,255,0.4)';}
+  else if(correct){resultEl.textContent='✓ VOCÊ ACERTOU!';resultEl.style.color='#62BFB4';}
+  else{resultEl.textContent='✗ DECISÃO DIFERENTE';resultEl.style.color='#E74038';}
+  document.getElementById('rm-title').textContent=d.num+' — Revelação';
+  document.getElementById('rm-what').textContent=d.revealWhat;
+  document.getElementById('rm-why').textContent=d.revealWhy;
+  document.getElementById('rm-next').textContent=idx>=DILEMAS.length-1?'Fim do jogo! Veja a tela principal.':'Aguarde o próximo dilema...';
   showScreen('reveal-mobile');
 }
 
-function showEnd() {
-  document.getElementById('es-num').textContent = correctCount + '/' + DILEMAS.length;
-
-  const msgs = [
-    'Você concordou com todas as decisões do curso. Liderança situacional na veia!',
-    'Boa parte das suas decisões alinharam com o framework. Continue desenvolvendo!',
-    'Decisões diferentes — isso é o começo da conversa mais importante da liderança.',
-  ];
-  const msgIdx = correctCount === DILEMAS.length ? 0 : correctCount >= 2 ? 1 : 2;
-  document.getElementById('end-sub').textContent = msgs[msgIdx];
-
+function showEnd(){
+  document.getElementById('es-num').textContent=correctCount+'/'+DILEMAS.length;
+  const msgs=['Todas as decisões alinhadas com o curso. Liderança situacional na veia!','Boa parte das decisões alinhadas. Continue desenvolvendo!','Decisões diferentes — esse é o começo da conversa mais importante da liderança.'];
+  document.getElementById('end-sub').textContent=msgs[correctCount===DILEMAS.length?0:correctCount>=2?1:2];
   showScreen('end');
 }
 </script>

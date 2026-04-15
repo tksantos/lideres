@@ -3,573 +3,420 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Você no Meu Lugar — Apresentador</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
-<!-- Firebase -->
+<title>Você no Meu Lugar — Desenvolve Líderes 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<!-- QRCode -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 <style>
 :root {
-  --ink: #0a0a0a;
-  --paper: #f5f1eb;
-  --cream: #ede8e0;
-  --red: #c0392b;
-  --blue: #1a3a5c;
-  --gold: #b8972a;
-  --muted: #7a7068;
-  --line: rgba(10,10,10,0.1);
-  --green: #2d6a4f;
+  --red:    #E74038;
+  --blue:   #297DC1;
+  --yellow: #FBD21D;
+  --teal:   #62BFB4;
+  --dark:   #1a1a2e;
+  --ink:    #1C1C2E;
+  --paper:  #F4F6FB;
+  --card:   #FFFFFF;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; overflow: hidden; }
+html, body { height: 100%; font-family: 'Nunito', sans-serif; overflow: hidden; }
+body { background: var(--paper); color: var(--ink); }
 
-body {
+/* TOP STRIPE */
+.stripe {
+  height: 6px;
+  background: linear-gradient(to right, var(--red) 0%, var(--yellow) 33%, var(--teal) 66%, var(--blue) 100%);
+  flex-shrink: 0;
+}
+
+/* NAV */
+nav {
   background: var(--ink);
-  color: var(--paper);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
+  height: 58px; display: flex; align-items: center;
+  padding: 0 32px; gap: 16px; flex-shrink: 0;
+}
+.nav-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: .06em; color: #fff;
+}
+.nav-brand span { color: var(--yellow); }
+.nav-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.15); }
+.nav-sub { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.45); letter-spacing:.04em; text-transform:uppercase; }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+.player-dots { display: flex; gap: 8px; align-items: center; }
+.pdot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all .4s; position: relative;
+}
+.pdot.online { background: var(--teal); }
+.pdot.online::after {
+  content: ''; position: absolute; inset: -4px;
+  border-radius: 50%; border: 2px solid rgba(98,191,180,0.35);
+  animation: ping .9s ease-out infinite;
+}
+@keyframes ping { 0%{transform:scale(1);opacity:1;} 100%{transform:scale(2.2);opacity:0;} }
+.player-label { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.4); }
+.phase-pill {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: .08em;
+  background: var(--yellow); color: var(--ink);
+  padding: 4px 14px; border-radius: 20px;
 }
 
-/* ── GRAIN ── */
-body::after {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 1000; opacity: 0.5;
-}
-
-/* ── CONFIG OVERLAY ── */
-#config-overlay {
-  position: fixed; inset: 0;
-  background: var(--ink);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 900; flex-direction: column; gap: 24px; padding: 40px;
-}
-.cfg-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 32px; font-weight: 900;
-  color: var(--paper); text-align: center;
-  margin-bottom: 8px;
-}
-.cfg-sub {
-  font-size: 14px; color: rgba(255,255,255,0.4);
-  text-align: center; max-width: 480px; line-height: 1.6;
-}
-.cfg-fields {
-  display: flex; flex-direction: column; gap: 12px;
-  width: 100%; max-width: 500px;
-}
-.cfg-label {
-  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
-  color: rgba(255,255,255,0.4); margin-bottom: 4px;
-}
-.cfg-input {
-  width: 100%; padding: 12px 16px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 4px; color: var(--paper);
-  font-family: 'DM Sans', sans-serif; font-size: 14px;
-  outline: none;
-}
-.cfg-input:focus { border-color: var(--red); }
-.cfg-btn {
-  padding: 14px 32px;
-  background: var(--red); color: #fff;
-  border: none; border-radius: 4px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 15px; font-weight: 500;
-  cursor: pointer; width: 100%; max-width: 500px;
-}
-.cfg-btn:hover { opacity: .88; }
-.cfg-help {
-  font-size: 12px; color: rgba(255,255,255,0.25);
-  text-align: center; max-width: 500px; line-height: 1.7;
-}
-.cfg-help a { color: rgba(255,255,255,0.45); }
-
-/* ── MAIN LAYOUT ── */
+/* LAYOUT */
 #main { display: none; height: 100vh; flex-direction: column; }
+.body-wrap { flex: 1; display: grid; grid-template-columns: 1fr 280px; overflow: hidden; }
 
-/* TOP BAR */
-.topbar {
-  display: flex; align-items: center;
-  padding: 16px 40px;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-  gap: 20px; flex-shrink: 0;
-}
-.tb-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 14px; font-style: italic;
-  color: rgba(255,255,255,0.4);
-}
-.tb-sep { flex: 1; }
-.tb-players {
-  display: flex; gap: 8px; align-items: center;
-}
-.player-dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  background: rgba(255,255,255,0.15);
-  transition: all .4s;
-  position: relative;
-}
-.player-dot.online { background: #2d9a4f; }
-.player-dot.online::after {
-  content: ''; position: absolute; inset: -3px;
-  border-radius: 50%; border: 1.5px solid rgba(45,154,79,0.4);
-  animation: ping .8s ease-out infinite;
-}
-@keyframes ping {
-  0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(2); opacity: 0; }
-}
-.player-label {
-  font-size: 12px; color: rgba(255,255,255,0.3);
-}
-.tb-phase {
-  font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
-  border: 1px solid rgba(255,255,255,0.1);
-  padding: 4px 12px; border-radius: 2px;
-}
+/* LEFT */
+.left { display: flex; flex-direction: column; overflow: hidden; }
+.q-area { flex: 1; padding: 32px 44px; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; }
 
-/* BODY AREA */
-.body-area {
-  flex: 1; display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 0; overflow: hidden;
+/* DILEMA BADGE */
+.dilema-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--red); color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: .1em;
+  padding: 6px 18px; border-radius: 30px;
+  margin-bottom: 16px; width: fit-content;
 }
+.dilema-badge::before {
+  content: ''; display: block;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+  animation: blink-dot 1s step-end infinite;
+}
+@keyframes blink-dot { 0%,100%{opacity:1;} 50%{opacity:.2;} }
 
-/* LEFT — QUESTION AREA */
-.q-area {
-  padding: 48px 56px;
-  display: flex; flex-direction: column;
-  justify-content: center; overflow-y: auto;
-}
-.q-num {
-  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--red); margin-bottom: 20px;
-  display: flex; align-items: center; gap: 10px;
-}
-.q-num::after { content: ''; flex: 1; height: 1px; background: rgba(192,57,43,0.3); max-width: 60px; }
+/* CONTEXT */
 .q-context {
-  font-size: 13px; font-weight: 300;
-  color: rgba(255,255,255,0.45); margin-bottom: 12px;
-  line-height: 1.6; max-width: 600px;
+  font-size: 15px; font-weight: 600; color: #6B7280;
+  line-height: 1.55; max-width: 700px; margin-bottom: 14px;
+  padding: 12px 16px; background: #fff;
+  border-left: 4px solid var(--blue);
+  border-radius: 0 8px 8px 0;
 }
+
+/* QUESTION */
 .q-text {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(24px, 3vw, 38px); font-weight: 700;
-  line-height: 1.2; color: var(--paper);
-  max-width: 640px; margin-bottom: 36px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 4vw, 58px);
+  line-height: 1.05; letter-spacing: .02em;
+  color: var(--ink); max-width: 760px;
+  margin-bottom: 28px;
 }
 
 /* OPTIONS */
-.options { display: flex; flex-direction: column; gap: 10px; max-width: 660px; }
+.options { display: flex; flex-direction: column; gap: 10px; max-width: 760px; }
 .opt {
-  display: flex; align-items: flex-start; gap: 16px;
-  padding: 16px 20px;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 4px;
-  background: rgba(255,255,255,0.03);
-  position: relative; overflow: hidden;
-  transition: border-color .3s;
+  display: flex; align-items: center; gap: 16px;
+  background: #fff; border-radius: 12px;
+  border: 2.5px solid #E8ECF4;
+  padding: 14px 20px; position: relative; overflow: hidden;
+  transition: border-color .3s, transform .15s;
+  cursor: default;
 }
+.opt:hover { transform: translateX(3px); }
+.opt.has-votes { border-color: #CBD5E1; }
+.opt.winner { border-color: var(--teal) !important; background: #F0FAFA; }
 .opt-fill {
-  position: absolute; left: 0; top: 0; bottom: 0;
-  width: 0%; transition: width .6s cubic-bezier(.4,0,.2,1);
-  opacity: 0.12;
+  position: absolute; left:0; top:0; bottom:0; width:0%;
+  transition: width .7s cubic-bezier(.4,0,.2,1);
+  border-radius: 12px 0 0 12px;
 }
 .opt-letter {
-  font-family: 'Playfair Display', serif;
-  font-size: 20px; font-weight: 900;
-  color: rgba(255,255,255,0.2); flex-shrink: 0;
-  width: 28px; text-align: center; line-height: 1;
-  margin-top: 2px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; letter-spacing: .04em;
+  color: #CBD5E1; flex-shrink: 0; width: 28px;
+  line-height: 1; z-index: 1;
 }
+.opt.has-votes .opt-letter { color: #94A3B8; }
+.opt.winner .opt-letter { color: var(--teal); }
 .opt-content { flex: 1; z-index: 1; }
-.opt-text {
-  font-size: 14px; font-weight: 400;
-  color: rgba(255,255,255,0.75); line-height: 1.5;
-}
+.opt-text { font-size: 16px; font-weight: 700; color: var(--ink); line-height: 1.35; }
 .opt-style {
-  font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
-  margin-top: 4px; font-weight: 500;
+  font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  margin-top: 3px; color: #94A3B8;
 }
-.opt-votes {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px; font-weight: 900;
-  color: rgba(255,255,255,0.15); z-index: 1;
-  min-width: 40px; text-align: right;
-  align-self: center;
+.opt.winner .opt-style { color: var(--teal); }
+.opt-bar-wrap {
+  flex-shrink: 0; display: flex; align-items: center; gap: 10px; z-index: 1;
+}
+.opt-pct {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px; letter-spacing: .02em;
+  color: #CBD5E1; min-width: 60px; text-align: right;
   transition: color .4s;
 }
-.opt.has-votes .opt-votes { color: rgba(255,255,255,0.7); }
-.opt.winner { border-color: rgba(255,255,255,0.35); }
-.opt.winner .opt-letter { color: rgba(255,255,255,0.7); }
+.opt.has-votes .opt-pct { color: var(--ink); }
+.opt-bar-bg {
+  width: 80px; height: 8px; background: #F1F5F9;
+  border-radius: 4px; overflow: hidden;
+}
+.opt-bar-fill { height: 100%; border-radius: 4px; transition: width .7s; width: 0%; }
 
-/* REVEAL PANEL */
+/* REVEAL */
 .reveal-panel {
-  display: none; max-width: 660px;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-left: 3px solid var(--gold);
-  background: rgba(255,255,255,0.03);
-  border-radius: 0 4px 4px 0;
-  padding: 20px 24px; margin-top: 16px;
+  display: none; max-width: 760px; margin-top: 16px;
+  background: #FFFBEB; border: 2px solid var(--yellow);
+  border-radius: 12px; padding: 18px 22px;
 }
-.reveal-panel.show { display: block; animation: fadeIn .5s ease; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.reveal-panel.show { display: block; animation: popIn .4s cubic-bezier(.34,1.56,.64,1); }
+@keyframes popIn { from{opacity:0;transform:scale(.96)} to{opacity:1;transform:scale(1)} }
 .reveal-badge {
-  font-size: 9px; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--gold); font-weight: 500; margin-bottom: 10px;
+  font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  color: #B45309; margin-bottom: 8px;
 }
-.reveal-what {
-  font-size: 14px; font-weight: 500;
-  color: rgba(255,255,255,0.85); margin-bottom: 8px;
-}
-.reveal-why {
-  font-size: 13px; font-weight: 300;
-  color: rgba(255,255,255,0.5); line-height: 1.65;
-}
+.reveal-what { font-size: 16px; font-weight: 800; color: var(--ink); margin-bottom: 6px; }
+.reveal-why { font-size: 14px; font-weight: 600; color: #6B7280; line-height: 1.6; }
 
-/* BOTTOM CONTROLS */
+/* CONTROLS */
 .controls {
-  padding: 16px 56px;
-  border-top: 1px solid rgba(255,255,255,0.07);
-  display: flex; align-items: center; gap: 12px;
+  padding: 14px 44px; background: #fff;
+  border-top: 2px solid #E8ECF4;
+  display: flex; align-items: center; gap: 10px;
   flex-shrink: 0;
 }
 .ctrl-btn {
-  padding: 10px 24px;
-  border-radius: 4px; border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.05);
-  color: rgba(255,255,255,0.7);
-  font-family: 'DM Sans', sans-serif; font-size: 13px;
-  cursor: pointer; transition: all .2s;
+  padding: 10px 22px; border-radius: 10px;
+  border: 2px solid #E8ECF4; background: #fff;
+  color: var(--ink); font-family: 'Nunito', sans-serif;
+  font-size: 14px; font-weight: 800; cursor: pointer;
+  transition: all .2s;
 }
-.ctrl-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.ctrl-btn:hover { background: var(--paper); border-color: #CBD5E1; }
 .ctrl-btn.primary {
-  background: var(--red); border-color: var(--red);
-  color: #fff; font-weight: 500;
+  background: var(--blue); border-color: var(--blue);
+  color: #fff;
 }
 .ctrl-btn.primary:hover { opacity: .88; }
-.ctrl-btn.ghost {
-  background: transparent; border-color: rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.35);
-}
+.ctrl-btn.ghost { border-color: transparent; color: #94A3B8; }
 .ctrl-sep { flex: 1; }
+.timer-wrap { display: flex; align-items: center; gap: 10px; }
 .ctrl-timer {
-  font-variant-numeric: tabular-nums;
-  font-size: 28px; font-weight: 300;
-  color: rgba(255,255,255,0.25);
-  font-family: 'Playfair Display', serif;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px; letter-spacing: .04em; color: #CBD5E1;
 }
-.ctrl-timer.urgent { color: var(--red); animation: blink .8s step-end infinite; }
-@keyframes blink { 50% { opacity: .4; } }
-.ctrl-status {
-  font-size: 12px; color: rgba(255,255,255,0.3);
-  letter-spacing: .04em;
-}
+.ctrl-timer.urgent { color: var(--red); animation: blink .7s step-end infinite; }
+@keyframes blink { 50%{opacity:.3;} }
+.ctrl-status { font-size: 12px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing:.06em; }
 
-/* RIGHT — QR + STATS */
+/* RIGHT PANEL */
 .r-panel {
-  border-left: 1px solid rgba(255,255,255,0.07);
-  display: flex; flex-direction: column;
-  padding: 32px 28px; gap: 24px;
+  background: var(--ink); display: flex; flex-direction: column;
+  padding: 24px 20px; gap: 20px;
 }
 .qr-box {
-  background: #fff; border-radius: 8px;
-  padding: 16px; display: flex; align-items: center;
-  justify-content: center;
+  background: #fff; border-radius: 12px;
+  padding: 14px; display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
 }
-.qr-box canvas, .qr-box img { border-radius: 4px; }
 .qr-label {
-  font-size: 11px; text-align: center;
-  color: rgba(255,255,255,0.35);
-  letter-spacing: .05em; margin-top: 8px;
+  font-size: 12px; font-weight: 800; text-align: center;
+  color: var(--ink); text-transform: uppercase; letter-spacing: .08em;
 }
 .qr-url {
-  font-size: 11px; text-align: center;
-  color: rgba(255,255,255,0.2); margin-top: 4px;
-  word-break: break-all;
+  font-size: 9px; text-align: center; color: #94A3B8;
+  word-break: break-all; cursor: text; padding: 0 4px;
 }
 
+/* PROGRESS */
+.prog-dots { display: flex; gap: 6px; justify-content: center; }
+.prog-dot {
+  height: 6px; border-radius: 3px; background: rgba(255,255,255,0.12);
+  transition: all .3s;
+  width: 24px;
+}
+.prog-dot.done { background: var(--teal); }
+.prog-dot.active { background: var(--yellow); width: 40px; }
+
+/* STATS */
 .stat-block { display: flex; flex-direction: column; gap: 8px; }
-.stat-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 14px;
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 4px;
-  background: rgba(255,255,255,0.02);
+.stat-card {
+  background: rgba(255,255,255,0.06); border-radius: 10px;
+  padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
+  border: 1px solid rgba(255,255,255,0.08);
 }
-.sr-label { font-size: 12px; color: rgba(255,255,255,0.4); }
-.sr-val {
-  font-family: 'Playfair Display', serif;
-  font-size: 20px; font-weight: 700;
-  color: rgba(255,255,255,0.8);
+.stat-label { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.4); }
+.stat-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: .04em; color: #fff;
 }
 
-/* PROGRESS DOTS */
-.progress-dots {
-  display: flex; gap: 6px; justify-content: center;
-}
-.pd {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: rgba(255,255,255,0.1); transition: all .3s;
-}
-.pd.done { background: var(--green); }
-.pd.active { background: var(--red); width: 24px; border-radius: 4px; }
-
-/* WAITING STATE */
+/* WAITING */
 .waiting {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  height: 100%; gap: 16px; text-align: center;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; height: 100%; gap: 16px; text-align: center;
+}
+.waiting-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 120px; line-height: 1; color: var(--blue);
 }
 .waiting-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 32px; font-weight: 900; color: var(--paper);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; color: var(--ink);
 }
-.waiting-sub { font-size: 14px; color: rgba(255,255,255,0.35); }
-.waiting-count {
-  font-family: 'Playfair Display', serif;
-  font-size: 80px; font-weight: 900;
-  color: rgba(255,255,255,0.06); line-height: 1;
-}
+.waiting-sub { font-size: 15px; font-weight: 600; color: #94A3B8; max-width: 360px; line-height: 1.5; }
 
-/* SCORE SCREEN */
+/* SCORE */
 #score-screen {
-  display: none; position: fixed; inset: 0;
-  background: var(--ink); z-index: 800;
-  align-items: center; justify-content: center;
-  flex-direction: column; gap: 32px; padding: 60px;
+  display: none; position: fixed; inset: 0; z-index: 800;
+  background: var(--ink);
+  flex-direction: column; align-items: center; justify-content: center; gap: 32px; padding: 60px;
 }
 .sc-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 48px; font-weight: 900; color: var(--paper);
-  text-align: center; line-height: 1.1;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 6vw, 80px); color: #fff; letter-spacing: .04em; text-align: center;
 }
-.sc-sub {
-  font-size: 16px; color: rgba(255,255,255,0.4);
-  text-align: center; max-width: 560px; line-height: 1.7;
-}
-.sc-scores {
-  display: flex; gap: 24px; justify-content: center;
-  flex-wrap: wrap;
-}
+.sc-sub { font-size: 16px; font-weight: 600; color: rgba(255,255,255,0.4); text-align: center; max-width: 560px; line-height: 1.7; }
+.sc-scores { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
 .sc-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px; padding: 24px 32px;
-  text-align: center; min-width: 180px;
+  background: rgba(255,255,255,0.06); border-radius: 16px;
+  border: 2px solid rgba(255,255,255,0.1); padding: 28px 40px; text-align: center;
 }
-.sc-name { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+.sc-name { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.4); margin-bottom: 8px; text-transform: uppercase; letter-spacing:.06em; }
 .sc-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 56px; font-weight: 900; color: #fff; line-height: 1;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 72px; color: var(--yellow); line-height: 1;
 }
-.sc-label { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 4px; }
-.sc-insight {
-  max-width: 640px; text-align: center;
-  font-family: 'Playfair Display', serif;
-  font-size: 22px; font-style: italic;
-  color: rgba(255,255,255,0.6); line-height: 1.6;
-}
-.sc-quote-mark {
-  font-family: 'Playfair Display', serif;
-  font-size: 80px; color: var(--red);
-  line-height: .8; margin-bottom: -16px;
+.sc-label { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.25); margin-top: 4px; }
+.sc-quote {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(22px, 3vw, 32px); color: rgba(255,255,255,0.35); text-align: center; max-width: 640px; letter-spacing:.04em;
 }
 </style>
 </head>
 <body>
+<div class="stripe"></div>
 
-<!-- ── CONFIG ── -->
-<div id="config-overlay">
-  <div class="cfg-title">Configurar Firebase</div>
-  <div class="cfg-sub">Cole as credenciais do seu projeto Firebase para ativar os votos em tempo real. Feito uma vez — salvo no navegador.</div>
-
-  <div class="cfg-fields">
-    <div>
-      <div class="cfg-label">API Key</div>
-      <input class="cfg-input" id="f-apiKey" placeholder="AIzaSy...">
-    </div>
-    <div>
-      <div class="cfg-label">Auth Domain</div>
-      <input class="cfg-input" id="f-authDomain" placeholder="seu-projeto.firebaseapp.com">
-    </div>
-    <div>
-      <div class="cfg-label">Database URL</div>
-      <input class="cfg-input" id="f-dbUrl" placeholder="https://seu-projeto-default-rtdb.firebaseio.com">
-    </div>
-    <div>
-      <div class="cfg-label">Project ID</div>
-      <input class="cfg-input" id="f-projectId" placeholder="seu-projeto">
-    </div>
-  </div>
-
-  <button class="cfg-btn" onclick="saveConfig()">Conectar e iniciar →</button>
-
-  <div class="cfg-help">
-    Não tem Firebase ainda? <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> → Criar projeto → Realtime Database → Criar banco → Regras: <code>{ "rules": { ".read": true, ".write": true } }</code> → Configurações do projeto → SDK → copiar as chaves acima.
-    <br><br>
-    A URL dos celulares será gerada automaticamente após conectar.
-  </div>
-</div>
-
-<!-- ── MAIN ── -->
 <div id="main">
-
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div class="tb-logo">Você no Meu Lugar</div>
-    <div class="tb-sep"></div>
-    <div class="tb-players" id="tb-players">
-      <div class="player-dot" id="dot-0"></div>
-      <div class="player-dot" id="dot-1"></div>
-      <div class="player-dot" id="dot-2"></div>
-      <div class="player-label" id="player-label">aguardando participantes...</div>
+  <nav>
+    <div class="nav-brand">DESENVOLVE <span>LÍDERES</span></div>
+    <div class="nav-divider"></div>
+    <div class="nav-sub">Painel de Evidências · 2026</div>
+    <div class="nav-right">
+      <div class="player-dots">
+        <div class="pdot" id="dot-0"></div>
+        <div class="pdot" id="dot-1"></div>
+        <div class="pdot" id="dot-2"></div>
+      </div>
+      <div class="player-label" id="player-label">aguardando...</div>
+      <div class="phase-pill" id="tb-phase">Lobby</div>
     </div>
-    <div class="tb-phase" id="tb-phase">Lobby</div>
-  </div>
+  </nav>
 
-  <div class="body-area">
-    <!-- LEFT -->
-    <div id="left-area">
+  <div class="body-wrap">
+    <div class="left">
       <div class="q-area" id="q-area">
+
         <div class="waiting" id="waiting-screen">
-          <div class="waiting-count" id="waiting-count">0</div>
+          <div class="waiting-num" id="waiting-count">0</div>
           <div class="waiting-title">Aguardando participantes</div>
-          <div class="waiting-sub">Peça para os 3 gestores escanearem o QR code ao lado</div>
+          <div class="waiting-sub">Peça para todos escanearem o QR code ao lado</div>
         </div>
+
         <div id="question-screen" style="display:none;">
-          <div class="q-num" id="q-num">Dilema 01</div>
+          <div class="dilema-badge" id="q-num">Dilema 01</div>
           <div class="q-context" id="q-context"></div>
           <div class="q-text" id="q-text"></div>
           <div class="options" id="options-container"></div>
           <div class="reveal-panel" id="reveal-panel">
-            <div class="reveal-badge">O que eu fiz de verdade</div>
+            <div class="reveal-badge">O que aconteceu de verdade</div>
             <div class="reveal-what" id="reveal-what"></div>
             <div class="reveal-why" id="reveal-why"></div>
           </div>
         </div>
-      </div>
 
+      </div>
       <div class="controls" id="controls" style="display:none;">
         <button class="ctrl-btn ghost" onclick="prevQuestion()">← Anterior</button>
         <button class="ctrl-btn" id="btn-reveal" onclick="toggleReveal()">Revelar resposta</button>
         <button class="ctrl-btn primary" id="btn-next" onclick="nextQuestion()">Próximo dilema →</button>
         <div class="ctrl-sep"></div>
-        <div class="ctrl-timer" id="ctrl-timer">0:30</div>
-        <div class="ctrl-status" id="ctrl-status">votação aberta</div>
+        <div class="timer-wrap">
+          <div class="ctrl-timer" id="ctrl-timer">0:30</div>
+          <div class="ctrl-status" id="ctrl-status">votação aberta</div>
+        </div>
       </div>
     </div>
 
-    <!-- RIGHT -->
     <div class="r-panel">
-      <div>
-        <div class="qr-box" id="qr-container"></div>
+      <div class="qr-box">
+        <div id="qr-container"></div>
         <div class="qr-label">Escaneie para votar</div>
-        <div class="qr-url" id="qr-url-label"></div>
+        <div class="qr-url" id="qr-url-label" contenteditable="true"></div>
       </div>
-
-      <div class="progress-dots" id="progress-dots"></div>
-
-      <div class="stat-block" id="stat-block">
-        <div class="stat-row">
-          <span class="sr-label">Votantes online</span>
-          <span class="sr-val" id="stat-online">0</span>
+      <div class="prog-dots" id="progress-dots"></div>
+      <div class="stat-block">
+        <div class="stat-card">
+          <span class="stat-label">Online</span>
+          <span class="stat-val" id="stat-online">0</span>
         </div>
-        <div class="stat-row">
-          <span class="sr-label">Votos neste dilema</span>
-          <span class="sr-val" id="stat-votes">0</span>
+        <div class="stat-card">
+          <span class="stat-label">Votos</span>
+          <span class="stat-val" id="stat-votes">0</span>
         </div>
-        <div class="stat-row">
-          <span class="sr-label">Dilema atual</span>
-          <span class="sr-val" id="stat-q">—</span>
+        <div class="stat-card">
+          <span class="stat-label">Dilema</span>
+          <span class="stat-val" id="stat-q">—</span>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SCORE SCREEN -->
 <div id="score-screen">
-  <div class="sc-quote-mark">"</div>
-  <div class="sc-insight" id="sc-insight"></div>
-  <div class="sc-title">Obrigado por jogar.</div>
+  <div class="stripe" style="position:absolute;top:0;left:0;right:0;"></div>
+  <div class="sc-title">Jogo Encerrado!</div>
   <div class="sc-sub" id="sc-sub"></div>
   <div class="sc-scores" id="sc-scores"></div>
+  <div class="sc-quote">"O que muda no time quando o líder muda? Tudo."</div>
 </div>
 
 <script>
-// ══════════════════════════════════════
-// DILEMAS
-// ══════════════════════════════════════
 const DILEMAS = [
   {
-    id: 'd1',
-    num: 'Dilema 01',
-    context: 'Contexto: Hellen está em uma fase de crescimento. Você percebe que ela está pronta para mais responsabilidade, mas ainda busca validação constante antes de agir.',
-    question: 'Ela precisa assumir uma reunião importante de diretoria amanhã — no seu lugar. O que você faz?',
-    options: [
-      { letter: 'A', text: 'Vai junto à reunião para apoiá-la caso precise de ajuda no momento.', style: 'Direção compartilhada', color: '#5b8db8' },
-      { letter: 'B', text: 'Passa o contexto, os objetivos e os limites — e deixa ela conduzir sozinha.', style: 'Delegação com clareza', color: '#2d9a4f' },
-      { letter: 'C', text: 'Cancela ou adia a reunião — ainda é cedo para esse nível de exposição.', style: 'Proteção', color: '#c0392b' },
+    id:'d1', num:'Dilema 01',
+    context:'Caso 01',
+    question:'Um liderado precisa assumir uma reunião de diretoria no seu lugar. O que você faz?',
+    options:[
+      {letter:'A',text:'Vai junto à reunião para apoiá-lo caso precise de ajuda.',style:'Direção compartilhada',color:'#297DC1'},
+      {letter:'B',text:'Passa contexto, objetivos e limites — e deixa conduzir sozinho.',style:'Delegação com clareza',color:'#62BFB4'},
+      {letter:'C',text:'Cancela ou adia — ainda é cedo para esse nível de exposição.',style:'Proteção',color:'#E74038'},
     ],
-    correctIdx: 1,
-    revealWhat: 'Passei o contexto completo, o objetivo da reunião, as regras e o prazo — e deixei ela conduzir sozinha.',
-    revealWhy: 'A liderança situacional pede que o estilo acompanhe a maturidade na tarefa. Hellen estava pronta — o que ela precisava não era de presença, mas de espaço e clareza.',
+    correctIdx:1,
+    revealWhat:'Passei o contexto completo, o objetivo, as regras e o prazo — e deixei Liderado 01 conduzir sozinho.',
+    revealWhy:'A liderança situacional pede que o estilo acompanhe a maturidade na tarefa. Liderado 01 estava pronto — precisava de espaço e clareza, não de presença.',
   },
   {
-    id: 'd2',
-    num: 'Dilema 02',
-    context: 'Contexto: Zaitter é proativo, dedicado e está sempre disponível para ajudar. Mas você percebe que ele absorve demandas de outras áreas e começa a perder foco no próprio papel.',
-    question: 'Você percebe que Zaitter faz hora extra toda semana apoiando outros times — mas as prioridades do papel dele ficam para depois. O que você faz?',
-    options: [
-      { letter: 'A', text: 'Elogia a dedicação dele e pede que equilibre melhor o tempo por conta própria.', style: 'Feedback genérico', color: '#5b8db8' },
-      { letter: 'B', text: 'Tem uma conversa direta sobre papel, prioridade e onde a contribuição dele gera mais valor.', style: 'Alinhamento intencional', color: '#2d9a4f' },
-      { letter: 'C', text: 'Bloqueia a agenda dele para que outras áreas parem de acionar.', style: 'Controle externo', color: '#c0392b' },
+    id:'d2', num:'Dilema 02',
+    context:'Liderado 02 é proativo e dedicado, mas absorve demandas de outras áreas e começa a perder foco no próprio papel.',
+    question:'Liderado 02 faz hora extra apoiando outros times toda semana — mas as prioridades dele ficam pra depois. O que você faz?',
+    options:[
+      {letter:'A',text:'Elogia a dedicação e pede que equilibre melhor o tempo por conta própria.',style:'Feedback genérico',color:'#297DC1'},
+      {letter:'B',text:'Tem uma conversa direta sobre papel, prioridade e onde a contribuição gera mais valor.',style:'Alinhamento intencional',color:'#62BFB4'},
+      {letter:'C',text:'Bloqueia a agenda para que outras áreas parem de acionar.',style:'Controle externo',color:'#E74038'},
     ],
-    correctIdx: 1,
-    revealWhat: 'Tive uma conversa direta sobre papel e responsabilidade — e estimulei ele a trazer ideias dentro da sua especialidade em UX/UI.',
-    revealWhy: 'No pipeline de liderança, o gestor de si precisa entender prioridade e escopo. A conversa intencional foi o que gerou amadurecimento — não a correção de comportamento externo.',
+    correctIdx:1,
+    revealWhat:'Tive uma conversa direta sobre papel e responsabilidade — e estimulei Liderado 02 a trazer ideias dentro da sua especialidade.',
+    revealWhy:'No pipeline de liderança, o gestor de si precisa entender prioridade e escopo. A conversa intencional gerou amadurecimento real.',
   },
   {
-    id: 'd3',
-    num: 'Dilema 03',
-    context: 'Contexto: Uma situação crítica no projeto precisa de uma decisão rápida. Você sabe a resposta — e seria mais rápido resolver sozinho do que explicar e esperar.',
-    question: 'Você está sem tempo. O time olha para você esperando uma decisão. O que você faz?',
-    options: [
-      { letter: 'A', text: 'Toma a decisão você mesmo — eficiência em momento crítico é prioridade.', style: 'Centralização', color: '#c0392b' },
-      { letter: 'B', text: 'Apresenta os dados rapidamente, facilita a discussão e deixa o time decidir.', style: 'Desenvolvimento sob pressão', color: '#2d9a4f' },
-      { letter: 'C', text: 'Adia a decisão para ter tempo de envolver o time do jeito certo.', style: 'Processo antes do resultado', color: '#5b8db8' },
+    id:'d3', num:'Dilema 03',
+    context:'Situação crítica no projeto precisa de decisão rápida. Você sabe a resposta — seria mais rápido resolver sozinho.',
+    question:'O time olha para você esperando uma decisão. Você está sem tempo. O que você faz?',
+    options:[
+      {letter:'A',text:'Toma a decisão você mesmo — eficiência em momento crítico é prioridade.',style:'Centralização',color:'#E74038'},
+      {letter:'B',text:'Apresenta os dados rapidamente, facilita a discussão e deixa o time decidir.',style:'Desenvolvimento sob pressão',color:'#62BFB4'},
+      {letter:'C',text:'Adia a decisão para ter tempo de envolver o time do jeito certo.',style:'Processo antes do resultado',color:'#297DC1'},
     ],
-    correctIdx: 1,
-    revealWhat: 'Apresentei o cenário, o objetivo e as restrições — e facilitei a decisão do time mesmo sob pressão de tempo.',
-    revealWhy: 'Liderar não é fazer mais — é desenvolver melhor. Mesmo em momentos críticos, criar espaço para o time decidir é o que constrói maturidade real ao longo do tempo.',
+    correctIdx:1,
+    revealWhat:'Apresentei o cenário, o objetivo e as restrições — e facilitei a decisão do time mesmo sob pressão.',
+    revealWhy:'Liderar não é fazer mais — é desenvolver melhor. Mesmo em momentos críticos, criar espaço para o time decidir constrói maturidade real.',
   },
 ];
 
-// ══════════════════════════════════════
-// ESTADO
-// ══════════════════════════════════════
-let db = null;
-let currentQ = 0;
-let revealed = false;
-let timerInterval = null;
-let timerSecs = 30;
-let onlineCount = 0;
-let gameStarted = false;
-let playerScores = {};
-
-// ══════════════════════════════════════
-// FIREBASE — PRÉ-CONFIGURADO
-// ══════════════════════════════════════
 const FIREBASE_CFG = {
   apiKey: "AIzaSyCgG5weiL9IIJNqEKMnyOfJsFSUXWCPYgw",
   authDomain: "lideres-32a57.firebaseapp.com",
@@ -577,145 +424,88 @@ const FIREBASE_CFG = {
   projectId: "lideres-32a57",
 };
 
+let db=null, currentQ=0, revealed=false, timerInterval=null, timerSecs=30, gameStarted=false;
+
 window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('config-overlay').style.display = 'none';
-  document.getElementById('main').style.display = 'flex';
-  document.getElementById('main').style.flexDirection = 'column';
+  document.getElementById('main').style.cssText = 'display:flex;flex-direction:column;';
   try {
     const app = firebase.initializeApp(FIREBASE_CFG);
     db = firebase.database(app);
     setupGame();
-  } catch(e) {
-    alert('Erro ao conectar Firebase: ' + e.message);
-  }
+  } catch(e) { alert('Erro Firebase: ' + e.message); }
 });
 
-// ══════════════════════════════════════
-// SETUP
-// ══════════════════════════════════════
 function setupGame() {
-  // Reset Firebase
-  db.ref('game').set({
-    state: 'lobby',
-    currentQ: 0,
-    revealed: false,
-  });
+  db.ref('game').set({state:'lobby',currentQ:0,revealed:false});
   db.ref('votes').remove();
   db.ref('players').remove();
 
-  // Build QR — URL da tela do jogador
-  // URL do jogador — tenta inferir automaticamente, ou usa o campo editável
-  let playerUrl = window.location.href.replace('apresentador.html', 'jogador.html');
-  if (playerUrl === window.location.href) {
-    playerUrl = window.location.href.split('?')[0].replace(/\/?$/, '/') + 'jogador.html';
-  }
-
+  let playerUrl = window.location.href.replace('enquete_apresentador.html','enquete_jogador.html');
   const urlEl = document.getElementById('qr-url-label');
   urlEl.textContent = playerUrl;
-  urlEl.contentEditable = true;
-  urlEl.style.cursor = 'text';
-  urlEl.style.color = 'rgba(255,255,255,0.4)';
-  urlEl.title = 'Clique para editar a URL';
-
   function buildQR(url) {
-    const qrEl = document.getElementById('qr-container');
-    qrEl.innerHTML = '';
-    new QRCode(qrEl, {
-      text: url,
-      width: 200, height: 200,
-      colorDark: '#0a0a0a', colorLight: '#ffffff',
-      correctLevel: QRCode.CorrectLevel.M,
-    });
+    const el = document.getElementById('qr-container');
+    el.innerHTML = '';
+    new QRCode(el, {text:url,width:200,height:200,colorDark:'#1C1C2E',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
   }
   buildQR(playerUrl);
-
   urlEl.addEventListener('blur', () => buildQR(urlEl.textContent.trim()));
-  urlEl.addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); urlEl.blur(); } });
+  urlEl.addEventListener('keydown', e => { if(e.key==='Enter'){e.preventDefault();urlEl.blur();} });
 
-  // Build progress dots
   const dots = document.getElementById('progress-dots');
   dots.innerHTML = '';
-  DILEMAS.forEach((_, i) => {
+  DILEMAS.forEach((_,i) => {
     const d = document.createElement('div');
-    d.className = 'pd' + (i === 0 ? ' active' : '');
-    d.id = 'pd-' + i;
+    d.className = 'prog-dot'+(i===0?' active':'');
+    d.id = 'pd-'+i;
     dots.appendChild(d);
   });
 
-  // Listen players online
   db.ref('players').on('value', snap => {
     const players = snap.val() || {};
-    onlineCount = Object.keys(players).length;
-    updatePlayerDots(players);
-    document.getElementById('stat-online').textContent = onlineCount;
-    document.getElementById('waiting-count').textContent = onlineCount;
-
-    if (onlineCount >= 1 && !gameStarted) {
-      document.getElementById('controls').style.display = 'flex';
-    }
+    const count = Object.keys(players).length;
+    for(let i=0;i<3;i++) document.getElementById('dot-'+i).classList.toggle('online', i<count);
+    document.getElementById('player-label').textContent = count===0?'aguardando...':count+' conectado'+(count>1?'s':'');
+    document.getElementById('stat-online').textContent = count;
+    document.getElementById('waiting-count').textContent = count;
+    if(count>=1 && !gameStarted) document.getElementById('controls').style.display='flex';
   });
 
-  // Listen votes
   db.ref('votes').on('value', snap => {
-    const allVotes = snap.val() || {};
-    const qVotes = allVotes[DILEMAS[currentQ]?.id] || {};
-    updateVoteDisplay(qVotes);
-    const total = Object.values(qVotes).length;
-    document.getElementById('stat-votes').textContent = total;
-  });
-
-  // Listen player scores
-  db.ref('scores').on('value', snap => {
-    playerScores = snap.val() || {};
+    const all = snap.val() || {};
+    const qv = all[DILEMAS[currentQ]?.id] || {};
+    updateVotes(qv);
+    document.getElementById('stat-votes').textContent = Object.values(qv).length;
   });
 
   showQuestion(0);
 }
 
-function updatePlayerDots(players) {
-  const ids = Object.keys(players);
-  for (let i = 0; i < 3; i++) {
-    const dot = document.getElementById('dot-' + i);
-    if (i < ids.length) dot.classList.add('online');
-    else dot.classList.remove('online');
-  }
-  const label = document.getElementById('player-label');
-  if (ids.length === 0) label.textContent = 'aguardando participantes...';
-  else if (ids.length === 1) label.textContent = '1 participante conectado';
-  else label.textContent = ids.length + ' participantes conectados';
-}
-
-// ══════════════════════════════════════
-// QUESTION
-// ══════════════════════════════════════
 function showQuestion(idx) {
-  currentQ = idx;
-  revealed = false;
+  currentQ = idx; revealed = false;
   const d = DILEMAS[idx];
-  if (!d) { showScore(); return; }
-
+  if(!d) { showScore(); return; }
   gameStarted = true;
-  document.getElementById('waiting-screen').style.display = 'none';
-  document.getElementById('question-screen').style.display = 'block';
-  document.getElementById('tb-phase').textContent = d.num;
-  document.getElementById('stat-q').textContent = (idx + 1) + '/' + DILEMAS.length;
 
-  document.getElementById('q-num').textContent = d.num;
+  document.getElementById('waiting-screen').style.display='none';
+  document.getElementById('question-screen').style.display='block';
+  document.getElementById('tb-phase').textContent = d.num;
+  document.getElementById('stat-q').textContent = (idx+1)+'/'+DILEMAS.length;
+  document.getElementById('q-num').childNodes[1] ? null : null;
+  document.getElementById('q-num').lastChild.textContent = ' '+d.num;
   document.getElementById('q-context').textContent = d.context;
   document.getElementById('q-text').textContent = d.question;
 
-  // Progress dots
-  DILEMAS.forEach((_, i) => {
-    const dot = document.getElementById('pd-' + i);
-    dot.className = 'pd' + (i < idx ? ' done' : i === idx ? ' active' : '');
+  DILEMAS.forEach((_,i) => {
+    const dot = document.getElementById('pd-'+i);
+    if(dot) dot.className = 'prog-dot'+(i<idx?' done':i===idx?' active':'');
   });
 
-  // Options
   const container = document.getElementById('options-container');
   container.innerHTML = '';
-  d.options.forEach((opt, i) => {
+  d.options.forEach((opt,i) => {
     const el = document.createElement('div');
-    el.className = 'opt'; el.id = 'opt-' + i;
+    el.className = 'opt'; el.id = 'opt-'+i;
     el.innerHTML = `
       <div class="opt-fill" id="fill-${i}" style="background:${opt.color};"></div>
       <div class="opt-letter">${opt.letter}</div>
@@ -723,72 +513,57 @@ function showQuestion(idx) {
         <div class="opt-text">${opt.text}</div>
         <div class="opt-style" style="color:${opt.color};">${opt.style}</div>
       </div>
-      <div class="opt-votes" id="votes-${i}">0</div>
-    `;
+      <div class="opt-bar-wrap">
+        <div class="opt-pct" id="pct-${i}">0%</div>
+        <div class="opt-bar-bg"><div class="opt-bar-fill" id="bar-${i}" style="background:${opt.color};"></div></div>
+      </div>`;
     container.appendChild(el);
   });
 
-  // Reveal panel
-  const rp = document.getElementById('reveal-panel');
-  rp.classList.remove('show');
+  document.getElementById('reveal-panel').classList.remove('show');
   document.getElementById('reveal-what').textContent = d.revealWhat;
   document.getElementById('reveal-why').textContent = d.revealWhy;
   document.getElementById('btn-reveal').textContent = 'Revelar resposta';
 
-  // Firebase state
-  db.ref('game').set({ state: 'voting', currentQ: idx, revealed: false });
-
-  // Timer
+  db.ref('game').set({state:'voting',currentQ:idx,revealed:false});
   startTimer();
 }
 
-function updateVoteDisplay(qVotes) {
-  const d = DILEMAS[currentQ];
-  if (!d) return;
-
-  const counts = [0, 0, 0];
-  Object.values(qVotes).forEach(v => { if (v >= 0 && v < 3) counts[v]++; });
-  const total = counts.reduce((a, b) => a + b, 0);
-
-  counts.forEach((c, i) => {
-    const votesEl = document.getElementById('votes-' + i);
-    const fillEl = document.getElementById('fill-' + i);
-    const optEl = document.getElementById('opt-' + i);
-    if (!votesEl) return;
-    votesEl.textContent = c;
-    if (c > 0) optEl.classList.add('has-votes');
-    const pct = total > 0 ? (c / total) * 100 : 0;
-    fillEl.style.width = pct + '%';
+function updateVotes(qVotes) {
+  const d = DILEMAS[currentQ]; if(!d) return;
+  const counts = [0,0,0];
+  Object.values(qVotes).forEach(v => { if(v>=0&&v<3) counts[v]++; });
+  const total = counts.reduce((a,b)=>a+b,0);
+  counts.forEach((c,i) => {
+    const pe = document.getElementById('pct-'+i);
+    const be = document.getElementById('bar-'+i);
+    const oe = document.getElementById('opt-'+i);
+    if(!pe) return;
+    const pct = total>0 ? Math.round((c/total)*100) : 0;
+    pe.textContent = total>0 ? pct+'%' : '0%';
+    be.style.width = pct+'%';
+    if(c>0) oe.classList.add('has-votes');
   });
-
-  // Highlight winner if revealed
-  if (revealed) {
+  if(revealed) {
     const maxC = Math.max(...counts);
-    counts.forEach((c, i) => {
-      const optEl = document.getElementById('opt-' + i);
-      if (!optEl) return;
-      if (c === maxC && maxC > 0) optEl.classList.add('winner');
-      if (i === d.correctIdx) optEl.style.borderColor = 'rgba(45,154,79,0.6)';
+    counts.forEach((c,i) => {
+      const oe = document.getElementById('opt-'+i);
+      if(!oe) return;
+      if(c===maxC&&maxC>0) oe.classList.add('winner');
     });
   }
 }
 
-// ══════════════════════════════════════
-// CONTROLS
-// ══════════════════════════════════════
 function toggleReveal() {
   revealed = !revealed;
   const rp = document.getElementById('reveal-panel');
   const btn = document.getElementById('btn-reveal');
-  if (revealed) {
+  if(revealed) {
     rp.classList.add('show');
     btn.textContent = 'Ocultar resposta';
     db.ref('game/revealed').set(true);
     stopTimer();
-    // Refresh display with highlights
-    db.ref('votes/' + DILEMAS[currentQ].id).get().then(snap => {
-      updateVoteDisplay(snap.val() || {});
-    });
+    db.ref('votes/'+DILEMAS[currentQ].id).get().then(s=>updateVotes(s.val()||{}));
   } else {
     rp.classList.remove('show');
     btn.textContent = 'Revelar resposta';
@@ -796,83 +571,42 @@ function toggleReveal() {
   }
 }
 
-function nextQuestion() {
-  if (currentQ < DILEMAS.length - 1) showQuestion(currentQ + 1);
-  else showScore();
-}
+function nextQuestion() { if(currentQ<DILEMAS.length-1) showQuestion(currentQ+1); else showScore(); }
+function prevQuestion() { if(currentQ>0) showQuestion(currentQ-1); }
 
-function prevQuestion() {
-  if (currentQ > 0) showQuestion(currentQ - 1);
-}
-
-// ══════════════════════════════════════
-// TIMER
-// ══════════════════════════════════════
 function startTimer() {
-  stopTimer();
-  timerSecs = 30;
-  updateTimerDisplay();
+  stopTimer(); timerSecs=30; updateTimer();
   timerInterval = setInterval(() => {
-    timerSecs--;
-    updateTimerDisplay();
-    if (timerSecs <= 0) {
-      stopTimer();
-      document.getElementById('ctrl-status').textContent = 'votação encerrada';
-    }
-  }, 1000);
+    timerSecs--; updateTimer();
+    if(timerSecs<=0) { stopTimer(); document.getElementById('ctrl-status').textContent='ENCERRADO'; }
+  },1000);
 }
-
-function stopTimer() {
-  clearInterval(timerInterval);
-  timerInterval = null;
-}
-
-function updateTimerDisplay() {
+function stopTimer() { clearInterval(timerInterval); timerInterval=null; }
+function updateTimer() {
   const el = document.getElementById('ctrl-timer');
-  const s = String(timerSecs).padStart(2, '0');
-  el.textContent = '0:' + s;
-  el.classList.toggle('urgent', timerSecs <= 10);
-  document.getElementById('ctrl-status').textContent = timerSecs > 0 ? 'votação aberta' : 'votação encerrada';
+  el.textContent = '0:'+String(timerSecs).padStart(2,'0');
+  el.classList.toggle('urgent', timerSecs<=10);
+  if(timerSecs>0) document.getElementById('ctrl-status').textContent = 'VOTAÇÃO ABERTA';
 }
 
-// ══════════════════════════════════════
-// SCORE
-// ══════════════════════════════════════
 function showScore() {
   stopTimer();
   db.ref('game/state').set('ended');
-  const screen = document.getElementById('score-screen');
-  screen.style.display = 'flex';
-  screen.style.flexDirection = 'column';
-
-  // Count correct votes per player
+  const sc = document.getElementById('score-screen');
+  sc.style.cssText = 'display:flex;flex-direction:column;';
   db.ref('votes').get().then(snap => {
-    const allVotes = snap.val() || {};
-    const playerCorrect = {};
-
-    DILEMAS.forEach(d => {
-      const qVotes = allVotes[d.id] || {};
-      Object.entries(qVotes).forEach(([pid, choice]) => {
-        if (!playerCorrect[pid]) playerCorrect[pid] = 0;
-        if (choice === d.correctIdx) playerCorrect[pid]++;
-      });
-    });
-
-    db.ref('players').get().then(psnap => {
-      const players = psnap.val() || {};
-      const scoresHtml = Object.entries(players).map(([pid, pdata]) => {
-        const correct = playerCorrect[pid] || 0;
-        return `
-          <div class="sc-card">
-            <div class="sc-name">${pdata.name || 'Participante'}</div>
-            <div class="sc-num">${correct}/${DILEMAS.length}</div>
-            <div class="sc-label">acertos</div>
-          </div>`;
-      }).join('');
-
-      document.getElementById('sc-scores').innerHTML = scoresHtml || '<div class="sc-name" style="color:rgba(255,255,255,.4)">Nenhum voto registrado</div>';
-      document.getElementById('sc-insight').textContent = '"O que muda em um time quando o líder muda? Tudo."';
-      document.getElementById('sc-sub').textContent = 'Três dilemas reais. Três decisões de liderança. O curso Desenvolve Líderes me deu a lente para enxergar — e agir — diferente.';
+    const all = snap.val()||{};
+    const pc = {};
+    DILEMAS.forEach(d => { const qv=all[d.id]||{}; Object.entries(qv).forEach(([pid,c])=>{ if(!pc[pid])pc[pid]=0; if(c===d.correctIdx)pc[pid]++; }); });
+    db.ref('players').get().then(ps => {
+      const players = ps.val()||{};
+      document.getElementById('sc-scores').innerHTML = Object.entries(players).map(([pid,p])=>`
+        <div class="sc-card">
+          <div class="sc-name">${p.name||'Participante'}</div>
+          <div class="sc-num">${pc[pid]||0}/${DILEMAS.length}</div>
+          <div class="sc-label">acertos</div>
+        </div>`).join('')||'<div style="color:rgba(255,255,255,.3);font-size:16px;font-weight:700;">Nenhum voto registrado</div>';
+      document.getElementById('sc-sub').textContent = 'Três dilemas. Três decisões. O Desenvolve Líderes 2026 entregou a lente para enxergar — e agir — diferente.';
     });
   });
 }
