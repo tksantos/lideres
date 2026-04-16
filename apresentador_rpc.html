@@ -378,42 +378,29 @@ nav {
 const DILEMAS = [
   {
     id:'d1', num:'Dilema 01',
-    context:'Caso 01',
-    question:'Um liderado precisa assumir uma reunião de diretoria no seu lugar. O que você faz?',
+    context:'Você percebe que revisa todas as entregas do time antes de saírem. Nada sai errado, mas o time nunca aprende a se corrigir sozinho. Você começa a se perguntar se o gargalo é você.',
+    question:'Você revisa tudo, o time não erra, mas também não cresce. O que você faz?',
     options:[
-      {letter:'A',text:'Vai junto à reunião para apoiá-lo caso precise de ajuda.',style:'Direção compartilhada',color:'#297DC1'},
-      {letter:'B',text:'Passa contexto, objetivos e limites — e deixa conduzir sozinho.',style:'Delegação com clareza',color:'#62BFB4'},
-      {letter:'C',text:'Cancela ou adia — ainda é cedo para esse nível de exposição.',style:'Proteção',color:'#E74038'},
+      {letter:'A',text:'Continua revisando. Qualidade não pode cair, e você faz mais rápido.',style:'Perfeccionismo · M3 travado',color:'#E74038'},
+      {letter:'B',text:'Define critérios claros, delega a revisão e só intervém depois da entrega.',style:'Delegação com clareza',color:'#62BFB4'},
+      {letter:'C',text:'Para de revisar de uma vez. O time precisa aprender errando.',style:'Abandono',color:'#297DC1'},
     ],
     correctIdx:1,
-    revealWhat:'Passei o contexto completo, o objetivo, as regras e o prazo — e deixei Liderado 01 conduzir sozinho.',
-    revealWhy:'A liderança situacional pede que o estilo acompanhe a maturidade na tarefa. Liderado 01 estava pronto — precisava de espaço e clareza, não de presença.',
+    revealWhat:'Fiz a Matriz de Maturidade comigo mesma e me identifiquei como M3 em delegação. Perfeccionismo, preferência pela execução e a crença de que "faço melhor e mais depressa" estavam me travando.',
+    revealWhy:'Liderança situacional aplicada em mim. Passei a delegar com clareza: cenário, objetivo, regras e prazo. Acompanhamento por marcos, sem microgerência. Correção depois da entrega, não durante.',
   },
   {
     id:'d2', num:'Dilema 02',
-    context:'Liderado 02 é proativo e dedicado, mas absorve demandas de outras áreas e começa a perder foco no próprio papel.',
-    question:'Liderado 02 faz hora extra apoiando outros times toda semana — mas as prioridades dele ficam pra depois. O que você faz?',
+    context:'Uma reunião de diretoria de um núcleo está chegando. Sua liderada domina o assunto e já mostrou maturidade, mas nunca conduziu esse tipo de reunião sozinha.',
+    question:'Reunião importante de diretoria. Sua liderada está pronta tecnicamente, mas nunca fez sozinha. O que você faz?',
     options:[
-      {letter:'A',text:'Elogia a dedicação e pede que equilibre melhor o tempo por conta própria.',style:'Feedback genérico',color:'#297DC1'},
-      {letter:'B',text:'Tem uma conversa direta sobre papel, prioridade e onde a contribuição gera mais valor.',style:'Alinhamento intencional',color:'#62BFB4'},
-      {letter:'C',text:'Bloqueia a agenda para que outras áreas parem de acionar.',style:'Controle externo',color:'#E74038'},
+      {letter:'A',text:'Vai junto à reunião para apoiar caso precise de ajuda.',style:'Direção compartilhada',color:'#297DC1'},
+      {letter:'B',text:'Passa cenário, objetivo, regras e prazo. Deixa conduzir sozinha.',style:'Delegação com clareza',color:'#62BFB4'},
+      {letter:'C',text:'Adia. Ainda não é hora para esse nível de exposição.',style:'Proteção',color:'#E74038'},
     ],
     correctIdx:1,
-    revealWhat:'Tive uma conversa direta sobre papel e responsabilidade — e estimulei Liderado 02 a trazer ideias dentro da sua especialidade.',
-    revealWhy:'No pipeline de liderança, o gestor de si precisa entender prioridade e escopo. A conversa intencional gerou amadurecimento real.',
-  },
-  {
-    id:'d3', num:'Dilema 03',
-    context:'Situação crítica no projeto precisa de decisão rápida. Você sabe a resposta — seria mais rápido resolver sozinho.',
-    question:'O time olha para você esperando uma decisão. Você está sem tempo. O que você faz?',
-    options:[
-      {letter:'A',text:'Toma a decisão você mesmo — eficiência em momento crítico é prioridade.',style:'Centralização',color:'#E74038'},
-      {letter:'B',text:'Apresenta os dados rapidamente, facilita a discussão e deixa o time decidir.',style:'Desenvolvimento sob pressão',color:'#62BFB4'},
-      {letter:'C',text:'Adia a decisão para ter tempo de envolver o time do jeito certo.',style:'Processo antes do resultado',color:'#297DC1'},
-    ],
-    correctIdx:1,
-    revealWhat:'Apresentei o cenário, o objetivo e as restrições — e facilitei a decisão do time mesmo sob pressão.',
-    revealWhy:'Liderar não é fazer mais — é desenvolver melhor. Mesmo em momentos críticos, criar espaço para o time decidir constrói maturidade real.',
+    revealWhat:'Passei o contexto completo, o objetivo, as regras e o prazo. Ela conduziu sozinha a reunião de diretoria do núcleo.',
+    revealWhy:'Ela estava pronta. Precisava de espaço e clareza, não de presença. Hoje é referência do time na minha ausência e ponto de apoio do digital quando não estou disponível.',
   },
 ];
 
@@ -468,7 +455,7 @@ function setupGame() {
     document.getElementById('player-label').textContent = count===0?'aguardando...':count+' conectado'+(count>1?'s':'');
     document.getElementById('stat-online').textContent = count;
     document.getElementById('waiting-count').textContent = count;
-    if(count>=1 && !gameStarted) document.getElementById('controls').style.display='flex';
+    if(count>=1) document.getElementById('controls').style.display='flex';
   });
 
   db.ref('votes').on('value', snap => {
