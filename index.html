@@ -280,7 +280,7 @@
   /* Matriz de maturidade dentro do case 02 Loren */
   .maturity {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 12px;
     margin-top: 12px;
   }
@@ -290,18 +290,25 @@
     padding: 14px;
     border-left: 3px solid var(--yellow);
     display: flex; flex-direction: column; gap: 6px;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
   }
   .mat-name {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 20px; letter-spacing: .02em;
     color: var(--ink);
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap;
+    line-height: 1.15;
   }
   .mat-lvl {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 12px; letter-spacing: .1em;
     padding: 2px 8px; border-radius: 10px;
     color: #fff;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .mat-lvl.m2 { background: var(--red); }
   .mat-lvl.m3 { background: var(--blue); }
@@ -310,7 +317,11 @@
     letter-spacing: .08em; text-transform: uppercase;
     color: var(--muted);
   }
-  .mat-line { font-size: 13px; line-height: 1.5; color: #333; }
+  .mat-line {
+    font-size: 13px; line-height: 1.5; color: #333;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
   .mat-line strong { color: var(--ink); }
 
   .case-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 10px; }
@@ -721,7 +732,7 @@
         <div class="case-num">Case 03</div>
       </header>
       <h3 class="case-title">Pipeline de Liderança, Matriz de Maturidade &amp; Liderança Situacional</h3>
-      <div class="case-sub">Aplicado em mim antes de aplicar no time · M3 em delegação</div>
+      <div class="case-sub">Aplicado em mim e no time · com foco em uma colaboradora</div>
       <div class="case-body">
         <div class="case-row">
           <div class="case-k">Objetivo</div>
@@ -732,22 +743,37 @@
           <div class="case-v">
             Comecei trabalhando o meu próprio Pipeline de Liderança pra ser melhor na gestão dos outros e dar mais autonomia ao time. Controlando menos, dando espaço pra eles crescerem, com direcionamentos cada vez mais claros e correção só depois da entrega.
             <br><br>
-            Fiz a Matriz de Maturidade comigo em delegação e me identifiquei como <strong>M3</strong>. Liderança situacional aplicada em mim mesma.
+            Apliquei a Matriz de Maturidade em <strong>duas camadas</strong>: primeiro em mim mesma, identificando o meu nível em delegação e o que precisava ajustar na minha prática; depois no time inteiro, diagnosticando o nível de cada liderado por tarefa e calibrando a Liderança Situacional pessoa a pessoa. Mas o resultado mais expressivo veio de uma <strong>colaboradora específica</strong>, e é o arco dela que trago aqui como evidência.
             <div class="maturity">
               <div class="mat-card">
-                <div class="mat-name">Diagnóstico <span class="mat-lvl m3">M3</span></div>
+                <div class="mat-name"><span class="mat-lvl m2" style="background:var(--ink);">EM MIM</span> Diagnóstico</div>
                 <div class="mat-focus">O que estava me travando como líder</div>
                 <div class="mat-line">• Perfeccionismo</div>
                 <div class="mat-line">• Preferência pessoal pela execução</div>
                 <div class="mat-line">• Crença no "faço melhor e mais depressa"</div>
               </div>
               <div class="mat-card">
-                <div class="mat-name">Ações aplicadas</div>
+                <div class="mat-name"><span class="mat-lvl m2" style="background:var(--ink);">EM MIM</span> Ações aplicadas</div>
                 <div class="mat-focus">O que mudei na minha prática</div>
                 <div class="mat-line">• Delegação com clareza</div>
                 <div class="mat-line">• Mais espaço de decisão</div>
                 <div class="mat-line">• Acompanhamento sem microgerenciamento</div>
                 <div class="mat-line">• Comunicação significativa: cenário, objetivo, regras, prazo e como (quando necessário)</div>
+              </div>
+              <div class="mat-card" style="border-left-color: var(--blue);">
+                <div class="mat-name"><span class="mat-lvl m3">COM ELA</span> Diagnóstico</div>
+                <div class="mat-focus">Onde a colaboradora estava antes</div>
+                <div class="mat-line">• Forte no domínio técnico, mas baixa autonomia na decisão</div>
+                <div class="mat-line">• Buscava validação frequente antes de seguir</div>
+                <div class="mat-line">• Potencial evidente para representar a área, mas ainda em segundo plano</div>
+              </div>
+              <div class="mat-card" style="border-left-color: var(--blue);">
+                <div class="mat-name"><span class="mat-lvl m3">COM ELA</span> Ações aplicadas</div>
+                <div class="mat-focus">Liderança situacional calibrada para ela</div>
+                <div class="mat-line">• Delegação gradual de decisões de maior peso</div>
+                <div class="mat-line">• Espaço para representar a área em momentos-chave</div>
+                <div class="mat-line">• Acompanhamento pós-entrega, sem interferir no processo</div>
+                <div class="mat-line">• Confiança deliberada, construída no tempo dela</div>
               </div>
             </div>
           </div>
@@ -767,8 +793,9 @@
       <div class="case-tags">
         <span class="tag">pipeline de liderança</span>
         <span class="tag">matriz de maturidade</span>
+        <span class="tag">liderança situacional</span>
         <span class="tag">delegação</span>
-        <span class="tag">M3</span>
+        <span class="tag">em mim + com ela</span>
       </div>
     </article>
 
@@ -810,6 +837,8 @@
     </article>
 
   </div>
+
+
 </section>
 
 <!-- CANAIS -->
@@ -851,9 +880,9 @@
       <div class="icon">🗳</div>
       <h4>Enquete ao vivo</h4>
       <div class="sub">Case 01 · TK · Decisão</div>
-      <p>"Você no meu lugar" — plateia vota via QR code em dilemas reais com Liderado 01, 02 e 03. Revelação da decisão e do racional logo depois.</p>
+      <p>"Você no meu lugar": plateia vota via QR code em 02 dilemas reais com colaborador. Revelação da decisão e do racional logo depois.</p>
       <ul>
-        <li>3 dilemas reais de gestão</li>
+        <li>2 dilemas reais de gestão</li>
         <li>Voto pela tela do celular</li>
         <li>Revelação + ferramenta do curso</li>
       </ul>
@@ -871,6 +900,25 @@
       </ul>
     </div>
   </div>
+
+  <div style="display:flex; gap:14px; margin-top:32px; flex-wrap:wrap; justify-content:center;">
+    <a href="#" style="background:var(--red); color:#fff; padding:14px 22px; border-radius:12px; text-decoration:none; font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:.08em; display:inline-flex; align-items:center; gap:10px; opacity:0.65; pointer-events:none;">
+      <span style="color:var(--yellow);">▸</span> VÍDEO · CASE 01
+    </a>
+    <a href="#" style="background:var(--red); color:#fff; padding:14px 22px; border-radius:12px; text-decoration:none; font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:.08em; display:inline-flex; align-items:center; gap:10px; opacity:0.65; pointer-events:none;">
+      <span style="color:var(--yellow);">▸</span> VÍDEO · CASE 02
+    </a>
+    <a href="enquete_apresentador.html" target="_blank" style="background:var(--ink); color:#fff; padding:14px 22px; border-radius:12px; text-decoration:none; font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:.08em; display:inline-flex; align-items:center; gap:10px;">
+      <span style="color:var(--yellow);">▸</span> ENQUETE · CASE 03
+    </a>
+    <a href="enquete_jogador.html" target="_blank" style="background:#fff; color:var(--ink); padding:14px 22px; border-radius:12px; text-decoration:none; font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:.08em; border:2px solid var(--ink); display:inline-flex; align-items:center; gap:10px;">
+      <span style="color:var(--red);">▸</span> ENQUETE · JOGADOR
+    </a>
+    <a href="feed_case2.html" target="_blank" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); color:#fff; padding:14px 22px; border-radius:12px; text-decoration:none; font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:.08em; display:inline-flex; align-items:center; gap:10px;">
+      <span>▸</span> FEED + REEL · CASE 04
+    </a>
+  </div>
+
 </section>
 
 
@@ -942,7 +990,7 @@
     <div class="tl-row">
       <div class="tl-time">08</div>
       <div class="tl-block">Entrega memorável</div>
-      <div class="tl-content"><strong>Fechamento com artefato.</strong> Chaveiro, dobradura ou item que permanece — liderança sai da tela e vai pra mão da plateia.</div>
+      <div class="tl-content"><strong>Fechamento com artefato.</strong> Chaveiro, dobradura ou item que permanece. Liderança sai da tela e vai pra mão da plateia.</div>
       <div class="tl-who who-both">Dupla</div>
     </div>
   </div>

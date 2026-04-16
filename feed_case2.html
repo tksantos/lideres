@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Feed — Case 02 | Desenvolve Líderes</title>
+<title>Feed · Case 02 | Desenvolve Líderes</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
@@ -427,6 +427,93 @@
   .av-c2 { background: linear-gradient(135deg, #f12711, #f5af19); }
   .av-c3 { background: linear-gradient(135deg, #1a2980, #26d0ce); }
 
+  /* Placeholder provisório */
+  .provisional-mark {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: rgba(251, 210, 29, 0.95);
+    color: #1a1a2e;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    z-index: 3;
+  }
+  .placeholder-frame {
+    border: 2px dashed rgba(255,255,255,0.28);
+    border-radius: 10px;
+    padding: 28px 24px;
+    background: rgba(255,255,255,0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    max-width: 90%;
+  }
+  .placeholder-icon {
+    font-size: 44px;
+    opacity: 0.5;
+  }
+  .placeholder-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+
+  /* Carrossel indicador */
+  .carousel-icon {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    z-index: 2;
+  }
+  .carousel-dots {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 2;
+  }
+  .carousel-dots .cd {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+  }
+  .carousel-dots .cd.active {
+    background: #fff;
+  }
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    color: #1a1a2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    z-index: 2;
+  }
+
   @media (max-width: 900px) {
     body { padding: 0; }
     .container {
@@ -495,12 +582,12 @@
     <!-- Stories -->
     <div class="stories">
       <div class="story"><div class="ring"><div class="ring-inner"><div class="av" style="background-image:url('avatar_tk.jpg');"></div></div></div><div class="label">Seu story</div></div>
-      <div class="story"><div class="ring"><div class="ring-inner"><div class="av av-c2">C1</div></div></div><div class="label">case.01</div></div>
+      <div class="story"><div class="ring"><div class="ring-inner"><div class="av" style="background-image:url('silhueta2.svg'); background-color:#261824;"></div></div></div><div class="label">case.01</div></div>
       <div class="story"><div class="ring"><div class="ring-inner"><div class="av" style="background-image:url('silhueta.svg'); background-color:#1a1a2e;"></div></div></div><div class="label">case.02</div></div>
-      <div class="story"><div class="ring"><div class="ring-inner"><div class="av av-c1">LS</div></div></div><div class="label">lid.situacional</div></div>
-      <div class="story"><div class="ring"><div class="ring-inner"><div class="av av-c2">PL</div></div></div><div class="label">pipeline</div></div>
-      <div class="story"><div class="ring"><div class="ring-inner"><div class="av av-c3">FD</div></div></div><div class="label">feedback</div></div>
-      <div class="story"><div class="ring"><div class="ring-inner"><div class="av av-c1">MT</div></div></div><div class="label">maturidade</div></div>
+      <div class="story"><div class="ring"><div class="ring-inner"><div class="av" style="background-image:url('Loren-rpc.png'); background-size:cover; background-position:center;"></div></div></div><div class="label">loren</div></div>
+      <div class="story"><div class="ring"><div class="ring-inner"><div class="av" style="background-image:url('marta-rpc.jpg'); background-size:cover; background-position:center;"></div></div></div><div class="label">martacdemello</div></div>
+      <div class="story"><div class="ring"><div class="ring-inner"><div class="av" style="background-image:url('eduardo-rpc.jpg'); background-size:cover; background-position:center 55%;"></div></div></div><div class="label">eduardo_boschetti</div></div>
+      <div class="story"><div class="ring"><div class="ring-inner"><div class="av" style="background-image:url('rpc-parana.jpg'); background-size:cover; background-position:center;"></div></div></div><div class="label">rpcparaná</div></div>
     </div>
 
     <!-- POST 0 — TK apresenta o time -->
@@ -534,7 +621,116 @@
       <div class="time">AGORA</div>
     </article>
 
-    <!-- POST REEL — segundo post, logo após a apresentação do time -->
+    <!-- POST 02: Quadro de acordos (PROVISÓRIO) -->
+    <article class="post">
+      <div class="post-header">
+        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-tk"></div></div></div>
+        <div class="user-meta">
+          <div class="name">tk.santos <span class="verified">✓</span></div>
+          <div class="loc">Acordos de equipe · Curitiba, PR</div>
+        </div>
+        <div class="more">⋯</div>
+      </div>
+      <div class="post-visual bg7" style="position:relative;">
+        <div class="tag">● Acordo</div>
+        <div class="provisional-mark">📷 Foto real em breve</div>
+        <div class="placeholder-frame">
+          <div class="placeholder-icon">🪧</div>
+          <div class="placeholder-label">Quadro de acordos</div>
+          <div class="phrase" style="font-size:30px; line-height:1.15;">O que acordamos<br>vale mais do que<br>o que é cobrado.</div>
+          <div class="sub" style="margin-top:6px;">Compromisso do time</div>
+        </div>
+        <div class="num">POST 02/06</div>
+      </div>
+      <div class="actions">
+        <span>♡</span><span>💬</span><span>↗</span>
+        <span class="save">🔖</span>
+      </div>
+      <div class="likes">Curtido por <strong>desenvolve.lideres</strong> e <strong>outras 312 pessoas</strong></div>
+      <div class="caption">
+        <span class="u">tk.santos</span>
+        Os acordos do time ficam visíveis no ambiente. Respeito, escuta, iniciativa e corresponsabilidade saem do papel e viram rotina. Cobrança vira combinado.
+        <span class="hash"> #AcordosDeEquipe #Liderança</span>
+      </div>
+      <div class="comments-preview">Ver todos os 48 comentários</div>
+      <div class="time">HÁ 2 HORAS</div>
+    </article>
+
+    <!-- POST 03: Carrossel Matriz de Maturidade (PROVISÓRIO) -->
+    <article class="post">
+      <div class="post-header">
+        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-tk"></div></div></div>
+        <div class="user-meta">
+          <div class="name">tk.santos <span class="verified">✓</span></div>
+          <div class="loc">Matriz de Maturidade · Duas camadas</div>
+        </div>
+        <div class="more">⋯</div>
+      </div>
+      <div class="post-visual bg3" style="position:relative;">
+        <div class="carousel-icon">⧉ 1/4</div>
+        <div class="provisional-mark" style="top: 50px;">Provisório</div>
+        <div class="placeholder-frame">
+          <div class="placeholder-icon">📊</div>
+          <div class="placeholder-label">Carrossel · 4 slides</div>
+          <div class="phrase" style="font-size:28px; line-height:1.15;">Matriz de<br>Maturidade<br>aplicada.</div>
+          <div class="sub" style="margin-top:6px;">Em mim e no time</div>
+        </div>
+        <div class="carousel-dots">
+          <div class="cd active"></div>
+          <div class="cd"></div>
+          <div class="cd"></div>
+          <div class="cd"></div>
+        </div>
+        <div class="carousel-arrow">›</div>
+        <div class="num">POST 03/06</div>
+      </div>
+      <div class="actions">
+        <span>♡</span><span>💬</span><span>↗</span>
+        <span class="save">🔖</span>
+      </div>
+      <div class="likes">Curtido por <strong>maturidade.colaborador</strong> e <strong>outras 284 pessoas</strong></div>
+      <div class="caption">
+        <span class="u">tk.santos</span>
+        Apliquei em duas camadas: primeiro em mim mesma, diagnosticando o meu nível em delegação. Depois no time, liderado por liderado, tarefa por tarefa. Arrasta pro lado pra ver cada etapa.
+        <span class="hash"> #MatrizDeMaturidade #LiderançaSituacional</span>
+      </div>
+      <div class="comments-preview">Ver todos os 37 comentários</div>
+      <div class="time">HÁ 4 HORAS</div>
+    </article>
+
+    <!-- POST 04: Frase de impacto -->
+    <article class="post">
+      <div class="post-header">
+        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-tk"></div></div></div>
+        <div class="user-meta">
+          <div class="name">tk.santos <span class="verified">✓</span></div>
+          <div class="loc">Frase-chave · Reflexão</div>
+        </div>
+        <div class="more">⋯</div>
+      </div>
+      <div class="post-visual bg1">
+        <div class="tag">● Reflexão</div>
+        <div>
+          <div class="phrase">Proatividade<br>sem foco é<br>só ocupação.</div>
+          <div class="sub">A diferença entre agitação e resultado</div>
+        </div>
+        <div class="num">POST 04/06</div>
+      </div>
+      <div class="actions">
+        <span>♡</span><span>💬</span><span>↗</span>
+        <span class="save">🔖</span>
+      </div>
+      <div class="likes">Curtido por <strong>lideranca.situacional</strong> e <strong>outras 612 pessoas</strong></div>
+      <div class="caption">
+        <span class="u">tk.santos</span>
+        Fazer muito sem direção clara não move ninguém. Foco é o que transforma esforço em entrega.
+        <span class="hash"> #FocoEstratégico #DesenvolveLíderes</span>
+      </div>
+      <div class="comments-preview">Ver todos os 91 comentários</div>
+      <div class="time">HÁ 8 HORAS</div>
+    </article>
+
+    <!-- POST 05: Reel -->
     <article class="post">
       <div class="post-header">
         <div class="avatar"><div class="avatar-inner"><div class="av-fill av-tk"></div></div></div>
@@ -556,212 +752,20 @@
       <div class="likes"><strong>2.421 visualizações</strong></div>
       <div class="caption">
         <span class="u">tk.santos</span>
-        O case em 60 segundos. Contexto → virada → ferramenta aplicada → evidência → lição de liderança.
+        O case em 60 segundos. Contexto, virada, ferramenta aplicada, evidência e lição de liderança.
         <span class="hash"> #AprendizadoQueGanhaForma #DesenvolveLíderes</span>
       </div>
       <div class="comments-preview">Ver todos os 91 comentários</div>
-      <div class="time">HÁ 5 MINUTOS</div>
-    </article>
-
-    <!-- POST 1 -->
-    <article class="post">
-      <div class="post-header">
-        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-photo"></div></div></div>
-        <div class="user-meta">
-          <div class="name">case.02 <span class="verified">✓</span></div>
-          <div class="loc">Evidência 02 · Amadurecimento</div>
-        </div>
-        <div class="more">⋯</div>
-      </div>
-      <div class="post-visual bg1">
-        <div class="tag">● Antes</div>
-        <div>
-          <div class="phrase">Proatividade<br>sem foco é<br>só ocupação.</div>
-          <div class="sub">O ponto de partida</div>
-        </div>
-        <div class="num">POST 01/08</div>
-      </div>
-      <div class="actions">
-        <span>♡</span><span>💬</span><span>↗</span>
-        <span class="save">🔖</span>
-      </div>
-      <div class="likes">Curtido por <strong>lideranca.situacional</strong> e <strong>outras 312 pessoas</strong></div>
-      <div class="caption">
-        <span class="u">case.02</span>
-        Antes, o liderado apoiava demandas que não eram dele e gastava energia em suportes paralelos. A proatividade existia, mas sem direção.
-        <span class="hash"> #CaseDesenvolveLíderes #Evidência02</span>
-      </div>
-      <div class="comments-preview">Ver todos os 48 comentários</div>
-      <div class="time">HÁ 2 HORAS</div>
-    </article>
-
-    <!-- POST 2 -->
-    <article class="post">
-      <div class="post-header">
-        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-photo"></div></div></div>
-        <div class="user-meta">
-          <div class="name">case.02 <span class="verified">✓</span></div>
-          <div class="loc">Contexto da virada</div>
-        </div>
-        <div class="more">⋯</div>
-      </div>
-      <div class="post-visual bg2">
-        <div class="tag">● Contexto</div>
-        <div>
-          <div class="phrase">Ajudar todo<br>mundo não<br>é a missão.</div>
-          <div class="sub">Gerar valor onde você é único, é.</div>
-        </div>
-        <div class="num">POST 02/08</div>
-      </div>
-      <div class="actions">
-        <span>♡</span><span>💬</span><span>↗</span>
-        <span class="save">🔖</span>
-      </div>
-      <div class="likes"><strong>284 curtidas</strong></div>
-      <div class="caption">
-        <span class="u">case.02</span>
-        O papel da liderança aqui começa na clareza: sair do “ajudar em tudo” e entrar no “contribuir onde faz diferença”.
-        <span class="hash"> #ClarezaDePapel #Pipeline</span>
-      </div>
-      <div class="comments-preview">Ver todos os 37 comentários</div>
-      <div class="time">HÁ 4 HORAS</div>
-    </article>
-
-    <!-- POST 4 -->
-    <article class="post">
-      <div class="post-header">
-        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-photo"></div></div></div>
-        <div class="user-meta">
-          <div class="name">case.02 <span class="verified">✓</span></div>
-          <div class="loc">Ações de liderança</div>
-        </div>
-        <div class="more">⋯</div>
-      </div>
-      <div class="post-visual bg3">
-        <div class="tag">● Virada</div>
-        <div>
-          <div class="phrase">Alinhei papel.<br>Abri espaço.<br>Cobrei foco.</div>
-          <div class="sub">Liderança intencional</div>
-        </div>
-        <div class="num">POST 04/08</div>
-      </div>
-      <div class="actions">
-        <span>♡</span><span>💬</span><span>↗</span>
-        <span class="save">🔖</span>
-      </div>
-      <div class="likes"><strong>398 curtidas</strong></div>
-      <div class="caption">
-        <span class="u">case.02</span>
-        As três intervenções da liderança: alinhamento de papel, espaço para atuar na especialidade e cobrança de foco com clareza.
-        <span class="hash"> #LiderançaIntencional</span>
-      </div>
-      <div class="comments-preview">Ver todos os 52 comentários</div>
-      <div class="time">HÁ 8 HORAS</div>
-    </article>
-
-    <!-- POST 5 -->
-    <article class="post">
-      <div class="post-header">
-        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-photo"></div></div></div>
-        <div class="user-meta">
-          <div class="name">case.02 <span class="verified">✓</span></div>
-          <div class="loc">Aprendizado do curso</div>
-        </div>
-        <div class="more">⋯</div>
-      </div>
-      <div class="post-visual bg4">
-        <div class="tag">● Aprendizado</div>
-        <div>
-          <div class="phrase">Maturidade é<br>saber onde<br>gerar mais<br>valor.</div>
-          <div class="sub">Pipeline · Gestor de si</div>
-        </div>
-        <div class="num">POST 05/08</div>
-      </div>
-      <div class="actions">
-        <span>♡</span><span>💬</span><span>↗</span>
-        <span class="save">🔖</span>
-      </div>
-      <div class="likes">Curtido por <strong>gestor.de.si</strong> e <strong>outras 612 pessoas</strong></div>
-      <div class="caption">
-        <span class="u">case.02</span>
-        O estágio “gestor de si” pede autonomia, protagonismo, sugestão de melhorias e cumprimento do combinado. Maturidade é gerar valor com inteligência.
-        <span class="hash"> #Pipeline #GestorDeSi</span>
-      </div>
-      <div class="comments-preview">Ver todos os 91 comentários</div>
-      <div class="time">HÁ 12 HORAS</div>
-    </article>
-
-    <!-- POST 6 -->
-    <article class="post">
-      <div class="post-header">
-        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-photo"></div></div></div>
-        <div class="user-meta">
-          <div class="name">case.02 <span class="verified">✓</span></div>
-          <div class="loc">Frase-chave</div>
-        </div>
-        <div class="more">⋯</div>
-      </div>
-      <div class="post-visual bg5">
-        <div class="tag">● Frase-chave</div>
-        <div>
-          <div class="phrase">360 com<br>inteligência,<br>não com<br>sobrecarga.</div>
-          <div class="sub">Clareza de limites</div>
-        </div>
-        <div class="num">POST 06/08</div>
-      </div>
-      <div class="actions">
-        <span>♡</span><span>💬</span><span>↗</span>
-        <span class="save">🔖</span>
-      </div>
-      <div class="likes"><strong>447 curtidas</strong></div>
-      <div class="caption">
-        <span class="u">case.02</span>
-        Atuar em 360 não é abraçar tudo. É escolher onde sua contribuição tem mais peso estratégico.
-        <span class="hash"> #ContribuiçãoEstratégica</span>
-      </div>
-      <div class="comments-preview">Ver todos os 63 comentários</div>
       <div class="time">ONTEM</div>
     </article>
 
-    <!-- POST 7 -->
+    <!-- POST 06: Fechamento -->
     <article class="post">
       <div class="post-header">
-        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-photo"></div></div></div>
+        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-tk"></div></div></div>
         <div class="user-meta">
-          <div class="name">case.02 <span class="verified">✓</span></div>
-          <div class="loc">Evidências do “depois”</div>
-        </div>
-        <div class="more">⋯</div>
-      </div>
-      <div class="post-visual bg6">
-        <div class="tag">● Depois</div>
-        <div>
-          <div class="phrase">Ponto impecável.<br>Sem hora extra.<br>Mais foco.</div>
-          <div class="sub">Evidência prática</div>
-        </div>
-        <div class="num">POST 07/08</div>
-      </div>
-      <div class="actions">
-        <span>♡</span><span>💬</span><span>↗</span>
-        <span class="save">🔖</span>
-      </div>
-      <div class="likes"><strong>356 curtidas</strong></div>
-      <div class="caption">
-        <span class="u">case.02</span>
-        Os sinais da mudança: mais clareza de limites, menos dispersão e uma proatividade mais madura, com novas ideias dentro da especialidade.
-        <span class="hash"> #EvidênciaDeLiderança</span>
-      </div>
-      <div class="comments-preview">Ver todos os 44 comentários</div>
-      <div class="time">ONTEM</div>
-    </article>
-
-    <!-- POST 8 -->
-    <article class="post">
-      <div class="post-header">
-        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-photo"></div></div></div>
-        <div class="user-meta">
-          <div class="name">case.02 <span class="verified">✓</span></div>
-          <div class="loc">Fechamento</div>
+          <div class="name">tk.santos <span class="verified">✓</span></div>
+          <div class="loc">Fechamento · Lição do case</div>
         </div>
         <div class="more">⋯</div>
       </div>
@@ -771,7 +775,7 @@
           <div class="phrase">Liderar não é<br>fazer mais.<br>É desenvolver<br>melhor.</div>
           <div class="sub">#AprendizadoQueGanhaForma</div>
         </div>
-        <div class="num">POST 08/08</div>
+        <div class="num">POST 06/06</div>
       </div>
       <div class="actions">
         <span>♡</span><span>💬</span><span>↗</span>
@@ -779,8 +783,8 @@
       </div>
       <div class="likes">Curtido por <strong>desenvolve.lideres</strong> e <strong>outras 1.143 pessoas</strong></div>
       <div class="caption">
-        <span class="u">case.02</span>
-        Lição final do case 02: a liderança desenvolveu amadurecimento profissional. Menos execução acompanhada, mais autonomia com inteligência.
+        <span class="u">tk.santos</span>
+        A lição que amarra o case: a liderança desenvolveu amadurecimento profissional. Menos execução acompanhada, mais autonomia com inteligência.
         <span class="hash"> #DesenvolveLíderes #Case02</span>
       </div>
       <div class="comments-preview">Ver todos os 142 comentários</div>

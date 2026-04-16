@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Você no Meu Lugar — Desenvolve Líderes 2026</title>
+<title>Você no Meu Lugar · Desenvolve Líderes 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -329,7 +329,7 @@ nav {
         </div>
 
       </div>
-      <div class="controls" id="controls" style="display:none;">
+      <div class="controls" id="controls" style="display:flex;">
         <button class="ctrl-btn ghost" onclick="prevQuestion()">← Anterior</button>
         <button class="ctrl-btn" id="btn-reveal" onclick="toggleReveal()">Revelar resposta</button>
         <button class="ctrl-btn primary" id="btn-next" onclick="nextQuestion()">Próximo dilema →</button>
@@ -359,7 +359,7 @@ nav {
         </div>
         <div class="stat-card">
           <span class="stat-label">Dilema</span>
-          <span class="stat-val" id="stat-q">—</span>
+          <span class="stat-val" id="stat-q">...</span>
         </div>
       </div>
     </div>
@@ -394,8 +394,8 @@ const DILEMAS = [
     context:'Uma reunião de diretoria de um núcleo está chegando. Sua liderada domina o assunto e já mostrou maturidade, mas nunca conduziu esse tipo de reunião sozinha.',
     question:'Reunião importante de diretoria. Sua liderada está pronta tecnicamente, mas nunca fez sozinha. O que você faz?',
     options:[
-      {letter:'A',text:'Vai junto à reunião para apoiar caso precise de ajuda.',style:'Direção compartilhada',color:'#297DC1'},
-      {letter:'B',text:'Passa cenário, objetivo, regras e prazo. Deixa conduzir sozinha.',style:'Delegação com clareza',color:'#62BFB4'},
+      {letter:'A',text:'Vai junto em todas as reuniões para apoiar caso precise de ajuda.',style:'Direção compartilhada',color:'#297DC1'},
+      {letter:'B',text:'Acompanha a primeira para ela ver o modelo. Nas próximas, entrega com cenário, objetivo, regras e prazo. A condução é dela.',style:'Delegação com clareza',color:'#62BFB4'},
       {letter:'C',text:'Adia. Ainda não é hora para esse nível de exposição.',style:'Proteção',color:'#E74038'},
     ],
     correctIdx:1,
@@ -455,7 +455,7 @@ function setupGame() {
     document.getElementById('player-label').textContent = count===0?'aguardando...':count+' conectado'+(count>1?'s':'');
     document.getElementById('stat-online').textContent = count;
     document.getElementById('waiting-count').textContent = count;
-    if(count>=1 && !gameStarted) document.getElementById('controls').style.display='flex';
+    document.getElementById('controls').style.display='flex';
   });
 
   db.ref('votes').on('value', snap => {
@@ -593,7 +593,7 @@ function showScore() {
           <div class="sc-num">${pc[pid]||0}/${DILEMAS.length}</div>
           <div class="sc-label">acertos</div>
         </div>`).join('')||'<div style="color:rgba(255,255,255,.3);font-size:16px;font-weight:700;">Nenhum voto registrado</div>';
-      document.getElementById('sc-sub').textContent = 'Três dilemas. Três decisões. O Desenvolve Líderes 2026 entregou a lente para enxergar — e agir — diferente.';
+      document.getElementById('sc-sub').textContent = 'Três dilemas. Três decisões. O Desenvolve Líderes 2026 entregou a lente para enxergar (e agir) diferente.';
     });
   });
 }
