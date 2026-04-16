@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Você no Meu Lugar — Desenvolve Líderes 2026</title>
+<title>Você no Meu Lugar · Desenvolve Líderes 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -172,6 +172,57 @@ body { background: var(--paper); color: var(--ink); min-height: 100%; display: f
   text-align: center; padding-top: 4px;
 }
 
+/* Comparação de escolhas */
+.rm-choices { display: flex; flex-direction: column; gap: 10px; }
+.choice-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px 14px;
+  border-left: 4px solid #CBD5E1;
+  display: flex; align-items: flex-start; gap: 12px;
+  position: relative;
+}
+.choice-card.correct { border-left-color: #62BFB4; background: #F0FAFA; }
+.choice-card.mismatch { border-left-color: #E74038; background: #FEF2F2; }
+.choice-card.empty { border-left-color: #CBD5E1; background: #F8FAFC; }
+.choice-label-col {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 2px; min-width: 44px; flex-shrink: 0;
+}
+.choice-label {
+  font-size: 9px; font-weight: 800;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: #94A3B8;
+  text-align: center; line-height: 1.1;
+}
+.choice-card.correct .choice-label { color: #62BFB4; }
+.choice-card.mismatch .choice-label { color: #E74038; }
+.choice-letter {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px; line-height: 1;
+  color: #CBD5E1; letter-spacing: .04em;
+}
+.choice-card.correct .choice-letter { color: #62BFB4; }
+.choice-card.mismatch .choice-letter { color: #E74038; }
+.choice-body { flex: 1; min-width: 0; }
+.choice-text {
+  font-size: 13px; font-weight: 600;
+  color: #262626; line-height: 1.4;
+  word-wrap: break-word;
+}
+.choice-style {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: #94A3B8; margin-top: 4px;
+}
+.choice-card.correct .choice-style { color: #62BFB4; }
+.choice-check {
+  position: absolute;
+  top: 10px; right: 12px;
+  font-size: 16px; font-weight: 800;
+  color: #62BFB4;
+}
+
 /* END */
 #end {
   align-items: center; justify-content: center;
@@ -287,6 +338,7 @@ body { background: var(--paper); color: var(--ink); min-height: 100%; display: f
     <div class="rm-result" id="rm-result"></div>
   </div>
   <div class="rm-title" id="rm-title"></div>
+  <div class="rm-choices" id="rm-choices"></div>
   <div class="rm-what" id="rm-what"></div>
   <div class="rm-why" id="rm-why"></div>
   <div class="rm-next" id="rm-next">Aguarde o próximo dilema...</div>
@@ -296,7 +348,7 @@ body { background: var(--paper); color: var(--ink); min-height: 100%; display: f
   <div class="end-brand">DESENVOLVE <span>LÍDERES</span> · 2026</div>
   <div class="end-title">Obrigado<br>por jogar!</div>
   <div class="end-score">
-    <div class="es-num" id="es-num">0/3</div>
+    <div class="es-num" id="es-num">0/2</div>
     <div class="es-label">decisões alinhadas com o curso</div>
   </div>
   <div class="end-sub" id="end-sub"></div>
@@ -304,9 +356,8 @@ body { background: var(--paper); color: var(--ink); min-height: 100%; display: f
 
 <script>
 const DILEMAS = [
-  {id:'d1',num:'Dilema 01',context:'Caso 01',question:'Um liderado precisa assumir uma reunião de diretoria no seu lugar. O que você faz?',options:[{letter:'A',text:'Vai junto à reunião para apoiá-lo caso precise de ajuda.',style:'Direção compartilhada',color:'#297DC1'},{letter:'B',text:'Passa contexto, objetivos e limites — e deixa conduzir sozinho.',style:'Delegação com clareza',color:'#62BFB4'},{letter:'C',text:'Cancela ou adia — ainda é cedo para esse nível de exposição.',style:'Proteção',color:'#E74038'}],correctIdx:1,revealWhat:'Passei o contexto completo, o objetivo, as regras e o prazo — e deixei Liderado 01 conduzir sozinho.',revealWhy:'A liderança situacional pede que o estilo acompanhe a maturidade na tarefa. Liderado 01 estava pronto — precisava de espaço e clareza, não de presença.'},
-  {id:'d2',num:'Dilema 02',context:'Liderado 02 é proativo e dedicado, mas absorve demandas de outras áreas e começa a perder foco no próprio papel.',question:'Liderado 02 faz hora extra apoiando outros times toda semana — mas as prioridades dele ficam pra depois. O que você faz?',options:[{letter:'A',text:'Elogia a dedicação e pede que equilibre melhor o tempo por conta própria.',style:'Feedback genérico',color:'#297DC1'},{letter:'B',text:'Tem uma conversa direta sobre papel, prioridade e onde a contribuição gera mais valor.',style:'Alinhamento intencional',color:'#62BFB4'},{letter:'C',text:'Bloqueia a agenda para que outras áreas parem de acionar.',style:'Controle externo',color:'#E74038'}],correctIdx:1,revealWhat:'Tive uma conversa direta sobre papel e responsabilidade — e estimulei Liderado 02 a trazer ideias dentro da sua especialidade.',revealWhy:'No pipeline de liderança, o gestor de si precisa entender prioridade e escopo. A conversa intencional gerou amadurecimento real.'},
-  {id:'d3',num:'Dilema 03',context:'Situação crítica no projeto precisa de decisão rápida. Você sabe a resposta — seria mais rápido resolver sozinho.',question:'O time olha para você esperando uma decisão. Você está sem tempo. O que você faz?',options:[{letter:'A',text:'Toma a decisão você mesmo — eficiência em momento crítico é prioridade.',style:'Centralização',color:'#E74038'},{letter:'B',text:'Apresenta os dados rapidamente, facilita a discussão e deixa o time decidir.',style:'Desenvolvimento sob pressão',color:'#62BFB4'},{letter:'C',text:'Adia a decisão para ter tempo de envolver o time do jeito certo.',style:'Processo antes do resultado',color:'#297DC1'}],correctIdx:1,revealWhat:'Apresentei o cenário, o objetivo e as restrições — e facilitei a decisão do time mesmo sob pressão.',revealWhy:'Liderar não é fazer mais — é desenvolver melhor. Mesmo em momentos críticos, criar espaço para o time decidir constrói maturidade real.'},
+  {id:'d1',num:'Dilema 01',context:'Você percebe que revisa todas as entregas do time antes de saírem. Nada sai errado, mas o time nunca aprende a se corrigir sozinho. Você começa a se perguntar se o gargalo é você.',question:'Você revisa tudo, o time não erra, mas também não cresce. O que você faz?',options:[{letter:'A',text:'Continua revisando. Qualidade não pode cair, e você faz mais rápido.',style:'Perfeccionismo · M3 travado',color:'#E74038'},{letter:'B',text:'Define critérios claros, delega a revisão e só intervém depois da entrega.',style:'Delegação com clareza',color:'#62BFB4'},{letter:'C',text:'Para de revisar de uma vez. O time precisa aprender errando.',style:'Abandono',color:'#297DC1'}],correctIdx:1,revealWhat:'Fiz a Matriz de Maturidade comigo mesma e me identifiquei como M3 em delegação. Perfeccionismo, preferência pela execução e a crença de que "faço melhor e mais depressa" estavam me travando.',revealWhy:'Liderança situacional aplicada em mim. Passei a delegar com clareza: cenário, objetivo, regras e prazo. Acompanhamento por marcos, sem microgerência. Correção depois da entrega, não durante.'},
+  {id:'d2',num:'Dilema 02',context:'Uma reunião de diretoria de um núcleo está chegando. Sua liderada domina o assunto e já mostrou maturidade, mas nunca conduziu esse tipo de reunião sozinha.',question:'Reunião importante de diretoria. Sua liderada está pronta tecnicamente, mas nunca fez sozinha. O que você faz?',options:[{letter:'A',text:'Vai junto em todas as reuniões para apoiar caso precise de ajuda.',style:'Direção compartilhada',color:'#297DC1'},{letter:'B',text:'Acompanha a primeira para ela ver o modelo. Nas próximas, entrega com cenário, objetivo, regras e prazo. A condução é dela.',style:'Delegação com clareza',color:'#62BFB4'},{letter:'C',text:'Adia. Ainda não é hora para esse nível de exposição.',style:'Proteção',color:'#E74038'}],correctIdx:1,revealWhat:'Passei o contexto completo, o objetivo, as regras e o prazo. Ela conduziu sozinha a reunião de diretoria do núcleo.',revealWhy:'Ela estava pronta. Precisava de espaço e clareza, não de presença. Hoje é referência do time na minha ausência e ponto de apoio do digital quando não estou disponível.'},
 ];
 
 const FIREBASE_CFG = {apiKey:"AIzaSyCgG5weiL9IIJNqEKMnyOfJsFSUXWCPYgw",authDomain:"lideres-32a57.firebaseapp.com",databaseURL:"https://lideres-32a57-default-rtdb.firebaseio.com",projectId:"lideres-32a57"};
@@ -384,7 +435,35 @@ function showReveal(idx){
   if(!hasVoted){resultEl.textContent='Você não votou neste dilema';resultEl.style.color='rgba(255,255,255,0.4)';}
   else if(correct){resultEl.textContent='✓ VOCÊ ACERTOU!';resultEl.style.color='#62BFB4';}
   else{resultEl.textContent='✗ DECISÃO DIFERENTE';resultEl.style.color='#E74038';}
-  document.getElementById('rm-title').textContent=d.num+' — Revelação';
+  document.getElementById('rm-title').textContent=d.num+': Revelação';
+
+  // Comparação de escolhas
+  const choicesEl=document.getElementById('rm-choices');
+  const correctOpt=d.options[d.correctIdx];
+  let html='';
+  if(hasVoted){
+    const myOpt=d.options[myVote];
+    const cls=correct?'correct':'mismatch';
+    html+=`<div class="choice-card ${cls}">`+
+      `<div class="choice-label-col"><div class="choice-letter">${myOpt.letter}</div><div class="choice-label">Sua escolha</div></div>`+
+      `<div class="choice-body"><div class="choice-text">${myOpt.text}</div><div class="choice-style">${myOpt.style}</div></div>`+
+      (correct?'<div class="choice-check">✓</div>':'')+
+      `</div>`;
+  } else {
+    html+=`<div class="choice-card empty">`+
+      `<div class="choice-label-col"><div class="choice-letter">–</div><div class="choice-label">Sua escolha</div></div>`+
+      `<div class="choice-body"><div class="choice-text">Você não votou neste dilema.</div></div>`+
+      `</div>`;
+  }
+  if(!correct){
+    html+=`<div class="choice-card correct">`+
+      `<div class="choice-label-col"><div class="choice-letter">${correctOpt.letter}</div><div class="choice-label">O que eu fiz</div></div>`+
+      `<div class="choice-body"><div class="choice-text">${correctOpt.text}</div><div class="choice-style">${correctOpt.style}</div></div>`+
+      `<div class="choice-check">✓</div>`+
+      `</div>`;
+  }
+  choicesEl.innerHTML=html;
+
   document.getElementById('rm-what').textContent=d.revealWhat;
   document.getElementById('rm-why').textContent=d.revealWhy;
   document.getElementById('rm-next').textContent=idx>=DILEMAS.length-1?'Fim do jogo! Veja a tela principal.':'Aguarde o próximo dilema...';
@@ -393,8 +472,8 @@ function showReveal(idx){
 
 function showEnd(){
   document.getElementById('es-num').textContent=correctCount+'/'+DILEMAS.length;
-  const msgs=['Todas as decisões alinhadas com o curso. Liderança situacional na veia!','Boa parte das decisões alinhadas. Continue desenvolvendo!','Decisões diferentes — esse é o começo da conversa mais importante da liderança.'];
-  document.getElementById('end-sub').textContent=msgs[correctCount===DILEMAS.length?0:correctCount>=2?1:2];
+  const msgs=['As duas decisões alinhadas com o curso. Liderança situacional na veia!','Uma decisão alinhada. Continue desenvolvendo!','Decisões diferentes. Esse é o começo da conversa mais importante da liderança.'];
+  document.getElementById('end-sub').textContent=msgs[correctCount===DILEMAS.length?0:correctCount>=1?1:2];
   showScreen('end');
 }
 </script>
