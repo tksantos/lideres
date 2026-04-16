@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guideline · Desenvolve Líderes 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red:    #E74038;
+    --blue:   #297DC1;
+    --yellow: #FBD21D;
+    --teal:   #62BFB4;
+    --ink:    #1C1C2E;
+    --paper:  #F4F6FB;
+    --card:   #FFFFFF;
+    --muted:  #6b7280;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { font-family: 'Nunito', sans-serif; color: var(--ink); background: var(--paper); scroll-behavior: smooth; }
+
+  /* Top gradient stripe */
+  .stripe {
+    height: 6px;
+    background: linear-gradient(to right, var(--red) 0%, var(--yellow) 33%, var(--teal) 66%, var(--blue) 100%);
+  }
+
+  /* Nav */
+  nav {
+    background: var(--ink);
+    padding: 14px 40px;
+    display: flex; align-items: center; gap: 18px;
+    position: sticky; top: 0; z-index: 20;
+  }
+  .brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px; letter-spacing: .06em; color: #fff;
+  }
+  .brand span { color: var(--yellow); }
+  .nav-sub {
+    color: rgba(255,255,255,0.55);
+    font-size: 12px; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase;
+    border-left: 1px solid rgba(255,255,255,0.15);
+    padding-left: 16px;
+  }
+  .nav-links { margin-left: auto; display: flex; gap: 22px; }
+  .nav-links a {
+    color: rgba(255,255,255,0.65);
+    font-size: 13px; font-weight: 700;
+    letter-spacing: .04em; text-transform: uppercase;
+    text-decoration: none; transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--yellow); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 80px 40px 100px;
+    background:
+      radial-gradient(circle at 12% 20%, rgba(231,64,56,0.12) 0%, transparent 45%),
+      radial-gradient(circle at 88% 75%, rgba(41,125,193,0.14) 0%, transparent 45%),
+      radial-gradient(circle at 55% 90%, rgba(98,191,180,0.12) 0%, transparent 40%),
+      var(--paper);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(28,28,46,0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(28,28,46,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+  .kicker {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--ink); color: var(--yellow);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px; letter-spacing: .15em;
+    padding: 7px 16px; border-radius: 22px;
+    margin-bottom: 24px;
+  }
+  .kicker::before { content:''; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(54px, 8vw, 104px);
+    line-height: 0.92;
+    letter-spacing: .01em;
+    margin-bottom: 24px;
+  }
+  .hero h1 .accent { color: var(--red); }
+  .hero h1 .accent2 { color: var(--blue); }
+  .hero h1 .accent3 { color: var(--teal); }
+  .hero .lede {
+    max-width: 720px;
+    font-size: 20px; line-height: 1.55;
+    color: #2a2a3c; font-weight: 500;
+    margin-bottom: 40px;
+  }
+  .hero .meta {
+    display: flex; flex-wrap: wrap; gap: 14px;
+  }
+  .meta-pill {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .meta-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .d-red { background: var(--red); }
+  .d-blue { background: var(--blue); }
+  .d-teal { background: var(--teal); }
+  .d-yellow { background: var(--yellow); }
+
+  /* Section */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 40px;
+  }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 40px; gap: 30px; flex-wrap: wrap;
+  }
+  .section-head .label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px; letter-spacing: .2em;
+    color: var(--red); margin-bottom: 10px;
+  }
+  .section-head h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px; line-height: 1;
+    max-width: 600px;
+  }
+  .section-head p {
+    max-width: 420px; color: #444;
+    font-size: 15px; line-height: 1.6;
+  }
+
+  /* Concept card */
+  .concept {
+    background: var(--ink); color: #fff;
+    border-radius: 18px;
+    padding: 60px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .concept::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 6px;
+    background: linear-gradient(to right, var(--red), var(--yellow), var(--teal), var(--blue));
+  }
+  .concept .tag {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px; letter-spacing: .2em;
+    color: var(--yellow); margin-bottom: 20px;
+  }
+  .concept h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px; line-height: 1;
+    margin-bottom: 18px;
+  }
+  .concept h3 .y { color: var(--yellow); }
+  .concept p {
+    max-width: 680px;
+    font-size: 17px; line-height: 1.6;
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* Evidência cards */
+  .evidencias { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .evid {
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px 26px;
+    border-top: 6px solid;
+    display: flex; flex-direction: column;
+    gap: 14px;
+    position: relative;
+  }
+  .evid .n {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px; line-height: 1;
+    color: #e5e7eb;
+    position: absolute; top: 22px; right: 22px;
+  }
+  .evid .badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px; letter-spacing: .15em;
+    padding: 4px 12px; border-radius: 20px;
+    align-self: flex-start;
+    color: #fff;
+  }
+  .evid h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px; line-height: 1.05;
+  }
+  .evid p { font-size: 14px; line-height: 1.55; color: #444; }
+  .evid .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+  .evid .tag {
+    font-size: 11px; font-weight: 700;
+    background: #f3f4f6; color: #4b5563;
+    padding: 4px 10px; border-radius: 12px;
+  }
+  .e1 { border-color: var(--red); }
+  .e1 .badge { background: var(--red); }
+  .e2 { border-color: var(--blue); }
+  .e2 .badge { background: var(--blue); }
+  .e3 { border-color: var(--teal); }
+  .e3 .badge { background: var(--teal); color: var(--ink); }
+
+  /* Case da dupla — cards detalhados */
+  .case-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+  .case-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 32px;
+    border: 1px solid #e5e7eb;
+    border-top: 8px solid var(--red);
+    display: flex; flex-direction: column; gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .case-card.loren { border-top-color: var(--red); }
+  .case-card.tk { border-top-color: var(--blue); }
+  .case-head {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .case-who {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px; letter-spacing: .22em;
+    padding: 5px 14px; border-radius: 20px;
+    background: var(--ink); color: #fff;
+  }
+  .case-card.loren .case-who { background: var(--red); }
+  .case-card.tk .case-who { background: var(--blue); }
+  .case-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px; letter-spacing: .2em;
+    color: var(--muted); font-weight: 700;
+  }
+  .case-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 34px; line-height: 1.02; letter-spacing: .01em;
+    color: var(--ink);
+    margin-top: 4px;
+  }
+  .case-sub {
+    font-size: 12px; font-weight: 800;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--muted);
+    margin-top: -8px;
+  }
+  .case-body { display: flex; flex-direction: column; gap: 14px; margin-top: 6px; }
+  .case-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 14px;
+    align-items: start;
+    padding-top: 12px;
+    border-top: 1px dashed #e5e7eb;
+  }
+  .case-row:first-child { border-top: none; padding-top: 0; }
+  .case-k {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--ink);
+    padding-top: 2px;
+  }
+  .case-card.loren .case-k { color: var(--red); }
+  .case-card.tk .case-k { color: var(--blue); }
+  .case-v { font-size: 14px; line-height: 1.6; color: #333; }
+  .case-v strong { color: var(--ink); }
+  .case-v em { color: var(--muted); font-style: italic; }
+
+  /* Matriz de maturidade dentro do case 02 Loren */
+  .maturity {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .mat-card {
+    background: #fafafa;
+    border-radius: 12px;
+    padding: 14px;
+    border-left: 3px solid var(--yellow);
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .mat-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; letter-spacing: .02em;
+    color: var(--ink);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .mat-lvl {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px; letter-spacing: .1em;
+    padding: 2px 8px; border-radius: 10px;
+    color: #fff;
+  }
+  .mat-lvl.m2 { background: var(--red); }
+  .mat-lvl.m3 { background: var(--blue); }
+  .mat-focus {
+    font-size: 11px; font-weight: 800;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .mat-line { font-size: 13px; line-height: 1.5; color: #333; }
+  .mat-line strong { color: var(--ink); }
+
+  .case-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 10px; }
+  .case-tags .tag {
+    font-size: 11px; font-weight: 700;
+    background: #f3f4f6; color: #4b5563;
+    padding: 4px 10px; border-radius: 12px;
+  }
+
+  /* Canais */
+  .canais { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .canal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    border: 1px solid #e5e7eb;
+    position: relative;
+    overflow: hidden;
+    transition: transform .25s;
+  }
+  .canal:hover { transform: translateY(-3px); }
+  .canal .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 100px; line-height: 1;
+    color: var(--paper);
+    position: absolute; top: 6px; right: 20px;
+  }
+  .canal .icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: #fff;
+    margin-bottom: 18px;
+  }
+  .canal h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px; margin-bottom: 8px;
+    position: relative;
+  }
+  .canal .sub {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 16px;
+  }
+  .canal p { font-size: 14px; line-height: 1.6; color: #444; margin-bottom: 14px; }
+  .canal ul { list-style: none; }
+  .canal ul li {
+    font-size: 13px; padding: 4px 0 4px 18px;
+    position: relative; color: #333;
+  }
+  .canal ul li::before {
+    content: '▸'; position: absolute; left: 0;
+    font-weight: 700;
+  }
+  .c1 .icon { background: var(--red); }
+  .c1 ul li::before { color: var(--red); }
+  .c2 .icon { background: var(--yellow); color: var(--ink); }
+  .c2 ul li::before { color: var(--yellow); }
+  .c3 .icon { background: var(--blue); }
+  .c3 ul li::before { color: var(--blue); }
+  .c4 .icon { background: var(--teal); color: var(--ink); }
+  .c4 ul li::before { color: var(--teal); }
+
+  /* Palette */
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .swatch {
+    border-radius: 14px;
+    aspect-ratio: 1/1.1;
+    padding: 18px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    color: #fff;
+    font-weight: 700;
+  }
+  .swatch .name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: .03em; }
+  .swatch .hex { font-family: 'Courier New', monospace; font-size: 12px; }
+  .swatch .role { font-size: 11px; opacity: 0.85; text-transform: uppercase; letter-spacing: .1em; font-weight: 700; }
+  .s-red { background: var(--red); }
+  .s-blue { background: var(--blue); }
+  .s-yellow { background: var(--yellow); color: var(--ink); }
+  .s-teal { background: var(--teal); color: var(--ink); }
+  .s-ink { background: var(--ink); }
+
+  /* Typography */
+  .typo { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .typo-card { background: #fff; border-radius: 14px; padding: 30px; border: 1px solid #e5e7eb; }
+  .typo-card .role { font-size: 11px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--red); margin-bottom: 10px; }
+  .typo-card .name { font-family: 'Bebas Neue', sans-serif; font-size: 44px; line-height: 1; margin-bottom: 8px; }
+  .typo-card .sample { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+  .typo-card .alpha-bebas { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: .05em; }
+  .typo-card .alpha-nunito { font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 700; }
+
+  /* Tom de voz */
+  .tone { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .tone-card { background: #fff; border-radius: 14px; padding: 26px; border-top: 4px solid; }
+  .tone-card.yes { border-color: var(--teal); }
+  .tone-card.no { border-color: var(--red); }
+  .tone-card h5 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: .05em;
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .tone-card .icon {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 14px;
+  }
+  .yes .icon { background: var(--teal); color: var(--ink); }
+  .no .icon { background: var(--red); }
+  .tone-card ul { list-style: none; }
+  .tone-card li {
+    font-size: 14px; padding: 6px 0 6px 22px;
+    position: relative; line-height: 1.45;
+  }
+  .yes li::before { content: '✓'; position: absolute; left: 0; color: var(--teal); font-weight: 800; }
+  .no li::before { content: '✕'; position: absolute; left: 0; color: var(--red); font-weight: 800; }
+
+  /* Phrases */
+  .phrases {
+    background: var(--ink);
+    border-radius: 18px;
+    padding: 50px 40px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .phrases::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 6px;
+    background: linear-gradient(to right, var(--red), var(--yellow), var(--teal), var(--blue));
+  }
+  .phrases h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px; margin-bottom: 30px;
+  }
+  .phrase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .phrase {
+    background: rgba(255,255,255,0.06);
+    border-left: 4px solid;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-size: 18px; font-weight: 700;
+    line-height: 1.4;
+  }
+  .phrase:nth-child(1) { border-color: var(--red); }
+  .phrase:nth-child(2) { border-color: var(--yellow); }
+  .phrase:nth-child(3) { border-color: var(--teal); }
+  .phrase:nth-child(4) { border-color: var(--blue); }
+  .phrase:nth-child(5) { border-color: var(--red); }
+  .phrase:nth-child(6) { border-color: var(--yellow); }
+
+  /* Timeline / Blocos da apresentação */
+  .timeline {
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+  }
+  .tl-row {
+    display: grid;
+    grid-template-columns: 80px 180px 1fr 120px;
+    align-items: center;
+    padding: 22px 30px;
+    border-bottom: 1px solid #f1f1f1;
+    gap: 20px;
+  }
+  .tl-row:last-child { border-bottom: none; }
+  .tl-time {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px; color: var(--red);
+    line-height: 1;
+  }
+  .tl-block {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px; letter-spacing: .12em;
+    color: var(--muted);
+  }
+  .tl-content { font-size: 15px; line-height: 1.5; }
+  .tl-content strong { font-weight: 800; }
+  .tl-who {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 20px;
+    text-align: center; color: #fff;
+  }
+  .who-tk { background: var(--blue); }
+  .who-loren { background: var(--red); }
+  .who-both { background: var(--ink); }
+
+  /* Checklist */
+  .checklist { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .check-group {
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px;
+    border: 1px solid #e5e7eb;
+  }
+  .check-group h5 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; color: var(--blue);
+    margin-bottom: 14px;
+  }
+  .check-group ul { list-style: none; }
+  .check-group li {
+    font-size: 13px; padding: 7px 0 7px 26px;
+    position: relative; line-height: 1.45;
+  }
+  .check-group li::before {
+    content: '';
+    position: absolute; left: 0; top: 9px;
+    width: 16px; height: 16px;
+    border: 2px solid var(--teal);
+    border-radius: 4px;
+  }
+
+  /* Rule of 6 / lembretes */
+  .reminder {
+    background: linear-gradient(135deg, var(--yellow) 0%, #ffd900 100%);
+    border-radius: 18px;
+    padding: 40px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+  .reminder .big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 90px; line-height: 0.9;
+    color: var(--ink);
+  }
+  .reminder h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px; margin-bottom: 8px;
+  }
+  .reminder p { font-size: 15px; line-height: 1.55; font-weight: 500; }
+
+  /* Footer */
+  footer {
+    background: var(--ink);
+    color: #fff;
+    padding: 50px 40px;
+    text-align: center;
+  }
+  footer .brand-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px; letter-spacing: .05em;
+    margin-bottom: 14px;
+  }
+  footer .brand-big span { color: var(--yellow); }
+  footer p { color: rgba(255,255,255,0.6); font-size: 13px; max-width: 560px; margin: 0 auto; line-height: 1.6; }
+  footer .fs {
+    margin-top: 30px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; letter-spacing: .08em;
+    color: var(--yellow);
+  }
+
+  @media (max-width: 900px) {
+    .evidencias, .canais, .palette, .typo, .tone, .phrase-grid, .checklist, .case-grid { grid-template-columns: 1fr; }
+    .tl-row { grid-template-columns: 1fr; gap: 8px; }
+    .case-row { grid-template-columns: 1fr; gap: 6px; }
+    .maturity { grid-template-columns: 1fr; }
+    .case-title { font-size: 28px; }
+    .case-card { padding: 24px; }
+    section, .hero { padding: 50px 22px; }
+    nav { padding: 12px 22px; }
+    .nav-links { display: none; }
+    .section-head h2, .concept h3 { font-size: 36px; }
+    .hero h1 { font-size: 48px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stripe"></div>
+
+<nav>
+  <div class="brand">DESENVOLVE <span>LÍDERES</span></div>
+  <div class="nav-sub">Guideline · 2026</div>
+  <div class="nav-links">
+    <a href="#conceito">Conceito</a>
+    <a href="#evidencias">Cases</a>
+    <a href="#canais">Canais</a>
+    <a href="#tempo">Estrutura</a>
+    <a href="#checklist">Checklist</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding-bottom:100px;">
+  <div class="hero-inner">
+    <div class="kicker">Projeto Desenvolve Líderes · Turma 2026</div>
+    <h1>
+      Aprendizado<br>
+      que <span class="accent">ganha</span><br>
+      <span class="accent2">forma</span><span class="accent3">.</span>
+    </h1>
+    <p class="lede">
+      Quatro cases reais mostram liderança situacional saindo do PPT e virando decisão, acordo e resultado.
+    </p>
+    <div class="meta">
+      <div class="meta-pill"><span class="dot d-red"></span> Dupla · TK + Loren</div>
+      <div class="meta-pill"><span class="dot d-yellow"></span> Apresentação dupla · ~14 min</div>
+      <div class="meta-pill"><span class="dot d-teal"></span> 4 cases · 4 formatos</div>
+      <div class="meta-pill"><span class="dot d-blue"></span> Pra diretoria e turma</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONCEITO -->
+<section id="conceito">
+  <div class="concept">
+    <div class="tag">IDEIA CENTRAL</div>
+    <h3>Aprendizado que <span class="y">ganha forma.</span></h3>
+    <p>Liderança não é apenas teoria. Ela se traduz em decisão, comunicação, escuta, influência, direcionamento e ação prática. Cada canal da apresentação materializa uma etapa dessa transformação, e cada case é uma evidência concreta de aplicação na gestão.</p>
+  </div>
+</section>
+
+<!-- CASES DA DUPLA -->
+<section id="evidencias">
+  <div class="section-head">
+    <div>
+      <div class="label">02 · Cases da dupla</div>
+      <h2>Quatro evidências de liderança aplicada.</h2>
+    </div>
+    <p>Dois cases por Gestor. Cada um traz objetivo, prática e resultado real. Cases da Loren abrem a apresentação em vídeo; cases da TK entram logo depois com enquete ao vivo e feed de Instagram.</p>
+  </div>
+
+  <div class="case-grid">
+
+    <!-- CASE 01 LOREN -->
+    <article class="case-card loren">
+      <header class="case-head">
+        <div class="case-who">Loren</div>
+        <div class="case-num">Case 01</div>
+      </header>
+      <h3 class="case-title">Acordos de equipe</h3>
+      <div class="case-sub">Alinhamento comportamental · Corresponsabilidade</div>
+      <div class="case-body">
+        <div class="case-row">
+          <div class="case-k">Objetivo</div>
+          <div class="case-v">Fortalecer o alinhamento comportamental e a responsabilidade compartilhada na equipe.</div>
+        </div>
+        <div class="case-row">
+          <div class="case-k">Como foi feito</div>
+          <div class="case-v">Construção coletiva de acordos em reunião de equipe, transformados em um quadro visível no ambiente de trabalho, com pilares como respeito, empatia, comunicação clara, comprometimento, senso de time, participação e iniciativa.</div>
+        </div>
+        <div class="case-row">
+          <div class="case-k">Resultado</div>
+          <div class="case-v">Os valores definidos pela equipe viraram compromissos práticos. Aumentou o alinhamento, reduziu ruídos e fortaleceu a corresponsabilidade entre o time e com a gestão.</div>
+        </div>
+      </div>
+      <div class="case-tags">
+        <span class="tag">acordos</span>
+        <span class="tag">alinhamento</span>
+        <span class="tag">corresponsabilidade</span>
+      </div>
+    </article>
+
+    <!-- CASE 02 LOREN -->
+    <article class="case-card loren">
+      <header class="case-head">
+        <div class="case-who">Loren</div>
+        <div class="case-num">Case 02</div>
+      </header>
+      <h3 class="case-title">Liderança Situacional &amp; Matriz de Maturidade</h3>
+      <div class="case-sub">Desenvolvimento individualizado · Diagnóstico por tarefa</div>
+      <div class="case-body">
+        <div class="case-row">
+          <div class="case-k">Objetivo</div>
+          <div class="case-v">Desenvolver a equipe de forma individualizada, a partir do nível de maturidade de cada colaborador.</div>
+        </div>
+        <div class="case-row">
+          <div class="case-k">Como foi feito</div>
+          <div class="case-v">Diagnóstico da maturidade por tarefa, usando a liderança situacional para adaptar a atuação da gestão.
+            <div class="maturity">
+              <div class="mat-card">
+                <div class="mat-name">Thaís <span class="mat-lvl m2">M2</span></div>
+                <div class="mat-focus">Foco em desenvolvimento técnico e comportamental</div>
+                <div class="mat-line"><strong>Ações:</strong> 1:1 frequentes, acompanhamento diário e checklist operacional</div>
+                <div class="mat-line"><strong>PDI:</strong> qualidade, revisão de processos, aprendizado ativo e tomada de decisão</div>
+              </div>
+              <div class="mat-card">
+                <div class="mat-name">Jonathan <span class="mat-lvl m3">M3</span></div>
+                <div class="mat-focus">Foco em desenvolvimento comportamental</div>
+                <div class="mat-line"><strong>Ações:</strong> trocas frequentes, reforço positivo e delegação estratégica (criação de treinamento)</div>
+                <div class="mat-line"><strong>PDI:</strong> visão estratégica, aprofundamento em audiência, desenvolvimento de liderança e firmeza</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="case-row">
+          <div class="case-k">Resultado</div>
+          <div class="case-v">Atuação mais assertiva da liderança, com direcionamentos personalizados que aceleram o desenvolvimento individual e aumentam a qualidade das entregas.</div>
+        </div>
+      </div>
+      <div class="case-tags">
+        <span class="tag">liderança situacional</span>
+        <span class="tag">matriz de maturidade</span>
+        <span class="tag">PDI</span>
+      </div>
+    </article>
+
+    <!-- CASE 03 TK -->
+    <article class="case-card tk">
+      <header class="case-head">
+        <div class="case-who">TK</div>
+        <div class="case-num">Case 03</div>
+      </header>
+      <h3 class="case-title">Pipeline de Liderança, Matriz de Maturidade &amp; Liderança Situacional</h3>
+      <div class="case-sub">Aplicado em mim antes de aplicar no time · M3 em delegação</div>
+      <div class="case-body">
+        <div class="case-row">
+          <div class="case-k">Objetivo</div>
+          <div class="case-v">Aumentar a maturidade e a autonomia do time. O liderado demandava muita validação, e antes de mudar isso nele, precisei mudar isso em mim.</div>
+        </div>
+        <div class="case-row">
+          <div class="case-k">Como foi feito</div>
+          <div class="case-v">
+            Comecei trabalhando o meu próprio Pipeline de Liderança pra ser melhor na gestão dos outros e dar mais autonomia ao time. Controlando menos, dando espaço pra eles crescerem, com direcionamentos cada vez mais claros e correção só depois da entrega.
+            <br><br>
+            Fiz a Matriz de Maturidade comigo em delegação e me identifiquei como <strong>M3</strong>. Liderança situacional aplicada em mim mesma.
+            <div class="maturity">
+              <div class="mat-card">
+                <div class="mat-name">Diagnóstico <span class="mat-lvl m3">M3</span></div>
+                <div class="mat-focus">O que estava me travando como líder</div>
+                <div class="mat-line">• Perfeccionismo</div>
+                <div class="mat-line">• Preferência pessoal pela execução</div>
+                <div class="mat-line">• Crença no "faço melhor e mais depressa"</div>
+              </div>
+              <div class="mat-card">
+                <div class="mat-name">Ações aplicadas</div>
+                <div class="mat-focus">O que mudei na minha prática</div>
+                <div class="mat-line">• Delegação com clareza</div>
+                <div class="mat-line">• Mais espaço de decisão</div>
+                <div class="mat-line">• Acompanhamento sem microgerenciamento</div>
+                <div class="mat-line">• Comunicação significativa: cenário, objetivo, regras, prazo e como (quando necessário)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="case-row">
+          <div class="case-k">Resultado</div>
+          <div class="case-v">
+            <ul style="padding-left:18px; margin:0;">
+              <li>Assumiu reunião de diretoria de um núcleo no meu lugar</li>
+              <li>Virou referência do time na minha ausência</li>
+              <li>Passou a operar com mais autonomia e segurança</li>
+              <li>Virou ponto de apoio do time de digital: quando eu não estou disponível, é com ela que resolvem as demandas da área</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="case-tags">
+        <span class="tag">pipeline de liderança</span>
+        <span class="tag">matriz de maturidade</span>
+        <span class="tag">delegação</span>
+        <span class="tag">M3</span>
+      </div>
+    </article>
+
+    <!-- CASE 04 TK -->
+    <article class="case-card tk">
+      <header class="case-head">
+        <div class="case-who">TK</div>
+        <div class="case-num">Case 04</div>
+      </header>
+      <h3 class="case-title">Pipeline de Liderança "gestor de si"</h3>
+      <div class="case-sub">Amadurecimento de um liderado · De volume para contribuição qualificada</div>
+      <div class="case-body">
+        <div class="case-row">
+          <div class="case-k">Objetivo</div>
+          <div class="case-v">Antes, ele confundia proatividade com absorver demandas que não eram dele. Horas extras sem entregas efetivas na área. Reclamações de cansaço e excesso de trabalho. O objetivo: trocar volume por contribuição qualificada.</div>
+        </div>
+        <div class="case-row">
+          <div class="case-k">Como foi feito</div>
+          <div class="case-v">O desenvolvimento não foi só técnico, foi de maturidade profissional. Trabalhamos o Pipeline no estágio <strong>"gestor de si"</strong>: autonomia, protagonismo, sugestão de melhorias, trabalho em equipe e cumprimento do combinado. Amadurecimento intencional, não acidental.</div>
+        </div>
+        <div class="case-row">
+          <div class="case-k">Resultado</div>
+          <div class="case-v">
+            <ul style="padding-left:18px; margin:0;">
+              <li>Proatividade mais madura, com novas ideias e contribuição qualificada para o time</li>
+              <li>Trabalha dentro do horário, sem horas extras desnecessárias</li>
+              <li>Cumpre o combinado sem desgaste nem reclamação de sobrecarga</li>
+              <li>Virou protagonista e referência no que faz bem</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="case-tags">
+        <span class="tag">pipeline de liderança</span>
+        <span class="tag">gestor de si</span>
+        <span class="tag">amadurecimento</span>
+        <span class="tag">protagonismo</span>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- CANAIS -->
+<section id="canais">
+  <div class="section-head">
+    <div>
+      <div class="label">03 · Canais</div>
+      <h2>Quatro formatos.</h2>
+    </div>
+  </div>
+
+  <div class="canais">
+    <div class="canal c1">
+      <div class="num">01</div>
+      <div class="icon">🎬</div>
+      <h4>Vídeo · Acordos</h4>
+      <div class="sub">Case 01 · Loren · Abertura</div>
+      <p>Vídeo com imagens reais da equipe combinadas com IA. Mostra os acordos vivos no ambiente como compromisso prático.</p>
+      <ul>
+        <li>Imagens reais + IA</li>
+        <li>Quadro de acordos visível</li>
+        <li>Valores como compromisso</li>
+      </ul>
+    </div>
+    <div class="canal c2">
+      <div class="num">02</div>
+      <div class="icon">🎯</div>
+      <h4>Vídeo · Matriz de maturidade</h4>
+      <div class="sub">Case 02 · Loren · Desenvolvimento</div>
+      <p>Vídeo com apoio visual da matriz de maturidade e exemplos práticos do dia a dia. Thaís (M2) e Jonathan (M3) como evidência.</p>
+      <ul>
+        <li>Matriz de maturidade no ar</li>
+        <li>Exemplos reais de ação e PDI</li>
+        <li>Alternativa: storytelling com lettering</li>
+      </ul>
+    </div>
+    <div class="canal c3">
+      <div class="num">03</div>
+      <div class="icon">🗳</div>
+      <h4>Enquete ao vivo</h4>
+      <div class="sub">Case 01 · TK · Decisão</div>
+      <p>"Você no meu lugar" — plateia vota via QR code em dilemas reais com Liderado 01, 02 e 03. Revelação da decisão e do racional logo depois.</p>
+      <ul>
+        <li>3 dilemas reais de gestão</li>
+        <li>Voto pela tela do celular</li>
+        <li>Revelação + ferramenta do curso</li>
+      </ul>
+    </div>
+    <div class="canal c4">
+      <div class="num">04</div>
+      <div class="icon">📱</div>
+      <h4>Feed + Reel</h4>
+      <div class="sub">Case 02 · TK · Síntese</div>
+      <p>Feed navegável estilo Instagram com Reel de 60s embutido em looping. Frases-virada, evidência de mudança e lição de liderança.</p>
+      <ul>
+        <li>Apresentação do time na abertura</li>
+        <li>3 posts · antes · virada · depois</li>
+        <li>Reel 9:16 com áudio original</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ROTEIRO DE TEMPO -->
+<section id="tempo">
+  <div class="section-head">
+    <div>
+      <div class="label">06 · Estrutura da apresentação</div>
+      <h2>Do estúdio C à dobradura.</h2>
+    </div>
+    <p>Sequência completa de blocos: gancho do intervalo, vinhetas de passagem, cases em vídeo, enquete, feed e entrega memorável. Transições curtas e firmes entre um e outro.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-row">
+      <div class="tl-time">00</div>
+      <div class="tl-block">Chamada pro intervalo</div>
+      <div class="tl-content"><strong>Final de bloco · Estúdio C.</strong> Gancho anterior à apresentação chamando para o intervalo.</div>
+      <div class="tl-who who-both">Transição</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">00</div>
+      <div class="tl-block">Black</div>
+      <div class="tl-content"><strong>Tela preta.</strong> Silêncio e pausa antes da vinheta de abertura.</div>
+      <div class="tl-who who-both">Transição</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">01</div>
+      <div class="tl-block">Vinheta de abertura</div>
+      <div class="tl-content"><strong>Liderança nos bastidores.</strong> Vinheta do projeto apresenta o conceito e dá partida na dupla.</div>
+      <div class="tl-who who-both">Dupla</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">02</div>
+      <div class="tl-block">Case 01 · Loren</div>
+      <div class="tl-content"><strong>Acordos de equipe.</strong> Vídeo com imagens reais + IA. Pilares, quadro visível e corresponsabilidade.</div>
+      <div class="tl-who who-loren">Loren</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">03</div>
+      <div class="tl-block">Vinheta real de passagem</div>
+      <div class="tl-content"><strong>Passagem entre cases da Loren.</strong> Microvinheta conecta acordos → liderança situacional.</div>
+      <div class="tl-who who-both">Transição</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">04</div>
+      <div class="tl-block">Case 02 · Loren</div>
+      <div class="tl-content"><strong>Liderança situacional + matriz de maturidade.</strong> Diagnóstico por tarefa, Thaís (M2) e Jonathan (M3) como evidências. <em>(Alt: storytelling com lettering.)</em></div>
+      <div class="tl-who who-loren">Loren</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">05</div>
+      <div class="tl-block">Vinheta final + assinatura</div>
+      <div class="tl-content"><strong>Assinatura do projeto + QR code</strong> da enquete na tela para a plateia entrar no jogo.</div>
+      <div class="tl-who who-both">Transição</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">06</div>
+      <div class="tl-block">Case 01 · TK</div>
+      <div class="tl-content"><strong>Enquete ao vivo "Você no meu lugar".</strong> Plateia vota nos 2 dilemas. Revelação da decisão, da ferramenta e da evidência prática.</div>
+      <div class="tl-who who-tk">TK</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">07</div>
+      <div class="tl-block">Case 02 · TK</div>
+      <div class="tl-content"><strong>Feed de Instagram + Reel embutido.</strong> Apresentação do time, reel em looping e série de posts do case.</div>
+      <div class="tl-who who-tk">TK</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">08</div>
+      <div class="tl-block">Entrega memorável</div>
+      <div class="tl-content"><strong>Fechamento com artefato.</strong> Chaveiro, dobradura ou item que permanece — liderança sai da tela e vai pra mão da plateia.</div>
+      <div class="tl-who who-both">Dupla</div>
+    </div>
+  </div>
+
+  <p class="timeline-note" style="margin-top:14px; font-size:12px; font-weight:700; color: var(--muted); letter-spacing:.08em; text-transform:uppercase;">
+    Números à esquerda = ordem na apresentação, não duração. Duração fina será travada no ensaio com cronômetro.
+  </p>
+</section>
+
+<!-- CHECKLIST DE PRODUÇÃO -->
+<section id="checklist">
+  <div class="section-head">
+    <div>
+      <div class="label">07 · Checklist de produção</div>
+      <h2>Tudo o que precisa ficar pronto.</h2>
+    </div>
+  </div>
+
+  <div class="checklist">
+    <div class="check-group">
+      <h5>Conteúdo</h5>
+      <ul>
+        <li>Roteiro do comercial de TV</li>
+        <li>Texto e dinâmica da enquete</li>
+        <li>Frases do feed finalizadas</li>
+        <li>Roteiro do Reel de 60s</li>
+        <li>Conceito da dobradura</li>
+        <li>Fala de abertura e encerramento</li>
+      </ul>
+    </div>
+    <div class="check-group">
+      <h5>Provas concretas</h5>
+      <ul>
+        <li>Registro de decisão de liderança</li>
+        <li>Evidência de alinhamento</li>
+        <li>Mini estudo de resultado</li>
+        <li>Ferramenta do curso citada por case</li>
+      </ul>
+    </div>
+    <div class="check-group">
+      <h5>Ensaio e operação</h5>
+      <ul>
+        <li>Ensaio com cronômetro (14 min)</li>
+        <li>Transição entre TK e Loren</li>
+        <li>Teste de exibição com comercial, case de enquete e feed na TV/projeção</li>
+        <li>Teste da enquete (plano A e B)</li>
+        <li>Áudio e legenda do Reel</li>
+        <li>Dobraduras impressas e testadas</li>
+        <li>Plano se a tecnologia falhar</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- LEMBRETE FINAL -->
+<section>
+  <div class="reminder">
+    <div class="big">06</div>
+    <div>
+      <h4>Critérios para cada peça</h4>
+      <p>Antes de dar qualquer peça como pronta, passe por estes 6 filtros: <strong>(1)</strong> tem função clara no roteiro, <strong>(2)</strong> fala de pessoas, não de processos, <strong>(3)</strong> traz evidência concreta, <strong>(4)</strong> conecta-se a algo do curso, <strong>(5)</strong> cabe no tempo do bloco.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand-big">DESENVOLVE <span>LÍDERES</span></div>
+  <p>Guideline do Painel de Evidências de Liderança · TK + Loren · 2026. Documento vivo: pode evoluir conforme a dupla avança nos ensaios.</p>
+  <div class="fs">Aprendizado que ganha forma.</div>
+</footer>
+
+</body>
+</html>

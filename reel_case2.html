@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reel · Case 02 · 60s · Desenvolve Líderes</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red:    #E74038;
+    --blue:   #297DC1;
+    --yellow: #FBD21D;
+    --teal:   #62BFB4;
+    --ink:    #1C1C2E;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { min-height: 100%; font-family: 'Nunito', sans-serif; background: #0a0a14; color: #fff; }
+  body {
+    display: flex; align-items: center; justify-content: center;
+    gap: 30px; padding: 20px;
+    min-height: 100vh;
+  }
+
+  /* Embed mode: acionado via ?embed=1 — esconde controles e remove moldura do phone */
+  html.embed, body.embed { height: 100%; }
+  body.embed {
+    padding: 0 !important; gap: 0 !important; margin: 0 !important;
+    background: #0a0a14;
+    display: block !important;
+    min-height: 100%;
+  }
+  body.embed .controls { display: none !important; }
+  body.embed .phone {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    aspect-ratio: auto !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    position: absolute !important;
+    inset: 0 !important;
+  }
+  body.embed .notch { display: none !important; }
+
+  /* Embed: aumenta o conteúdo (~1.5x) para ficar mais legível no feed */
+  body.embed .scene { padding: 80px 40px; }
+  body.embed .th-tag { font-size: 18px; padding: 7px 18px; top: 90px; }
+  body.embed .th-person { width: 240px; height: 240px; margin-bottom: 36px; border-width: 4px; }
+  body.embed .s1 .hook-text { font-size: 46px; }
+  body.embed .s2 .card { font-size: 74px; }
+  body.embed .s2 .voice-over { font-size: 16px; bottom: 110px; left: 40px; right: 40px; padding-left: 16px; }
+  body.embed .s3 .quote-box { padding: 30px 28px; max-width: 380px; }
+  body.embed .s3 .quote-box p { font-size: 24px; }
+  body.embed .s3 .label { font-size: 16px; margin-bottom: 18px; }
+  body.embed .s4 .th-person { width: 180px; height: 180px; margin-bottom: 30px; }
+  body.embed .s4 .lines { font-size: 38px; }
+  body.embed .s4 .th-tag { top: 100px; }
+  body.embed .s5a .big, body.embed .s5b .big, body.embed .s5c .big { font-size: 96px; }
+  body.embed .s5a .num, body.embed .s5b .num, body.embed .s5c .num { font-size: 18px; top: 90px; }
+  body.embed .s6 .big { font-size: 76px; }
+  body.embed .s6 .sub { font-size: 18px; margin-top: 28px; }
+  body.embed .s7 .ev-header { font-size: 24px; margin-bottom: 30px; }
+  body.embed .ev-list { max-width: 380px; gap: 18px; }
+  body.embed .ev-item { padding: 18px 24px; gap: 16px; }
+  body.embed .ev-item .ck { font-size: 30px; }
+  body.embed .ev-item .tx { font-size: 22px; }
+  body.embed .s8 .th-person { width: 200px; height: 200px; margin-bottom: 30px; }
+  body.embed .s8 .th-tag { top: 100px; }
+  body.embed .s8 .lines { font-size: 36px; }
+  body.embed .s9 .final { font-size: 80px; }
+  body.embed .s9 .brand { font-size: 24px; bottom: 54px; }
+  body.embed .ig-top { top: 28px; left: 22px; right: 22px; }
+  body.embed .ig-avatar { width: 42px; height: 42px; }
+  body.embed .ig-user { font-size: 16px; }
+  body.embed .ig-user .sub { font-size: 13px; }
+  body.embed .progress-wrap { top: 12px; left: 22px; right: 22px; height: 4px; }
+
+  /* Phone frame 9:16 */
+  .phone {
+    position: relative;
+    width: min(360px, 90vw, calc(90vh * 9/16));
+    aspect-ratio: 9/16;
+    background: #000;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.6), 0 0 0 8px #1a1a24, 0 0 0 10px #0a0a14;
+    flex-shrink: 0;
+  }
+  .notch {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 90px; height: 22px;
+    background: #000; border-radius: 0 0 14px 14px;
+    z-index: 100;
+  }
+  .stage {
+    width: 100%; height: 100%;
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    position: absolute; top: 8px; left: 16px; right: 16px;
+    height: 3px; background: rgba(255,255,255,0.2);
+    border-radius: 2px; z-index: 90;
+  }
+  .progress-fill {
+    height: 100%; width: 0%;
+    background: #fff; border-radius: 2px;
+  }
+  .progress-wrap.playing .progress-fill {
+    animation: prog 60s linear forwards;
+  }
+  @keyframes prog { to { width: 100%; } }
+
+  /* Top bar IG */
+  .ig-top {
+    position: absolute; top: 20px; left: 16px; right: 16px;
+    display: flex; align-items: center; gap: 10px;
+    z-index: 80; color: #fff;
+  }
+  .ig-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background-image: url('silhueta.svg');
+    background-color: #1a1a2e;
+    background-size: cover;
+    background-position: center;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    font-size: 0;
+  }
+  .ig-user { font-size: 12px; font-weight: 700; }
+  .ig-user .sub { font-size: 10px; opacity: 0.7; font-weight: 500; }
+
+  /* Scene base */
+  .scene {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 60px 28px;
+    opacity: 0;
+    pointer-events: none;
+    text-align: center;
+  }
+  .playing .scene { animation-fill-mode: both; }
+
+  /* SCENE 1 — HOOK (0-6s) talking head placeholder */
+  .s1 {
+    background: radial-gradient(circle at 50% 40%, #2a2a3c 0%, #0f0f1c 100%);
+  }
+  .s1 .th-frame {
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0 10px, transparent 10px 20px),
+      radial-gradient(circle at 50% 45%, rgba(231,64,56,0.15), transparent 60%);
+  }
+  .th-tag {
+    position: absolute; top: 70px; left: 50%; transform: translateX(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px; letter-spacing: .25em;
+    color: var(--red);
+    padding: 5px 14px; border: 1.5px solid var(--red);
+    border-radius: 20px;
+  }
+  .th-person {
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background-image: url('foto_tk_reel.jpg');
+    background-size: cover;
+    background-position: center;
+    border: 3px solid rgba(255,255,255,0.15);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    margin-bottom: 28px;
+    font-size: 0;
+  }
+  .s1 .hook-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px; line-height: 1.05; letter-spacing: .02em;
+    color: #fff;
+  }
+  .s1 .hook-text .y { color: var(--yellow); font-style: italic; }
+
+  .playing .s1 { animation: fadeShow 6s ease forwards; }
+  @keyframes fadeShow { 0%{opacity:0} 8%{opacity:1} 90%{opacity:1} 100%{opacity:0} }
+
+  /* SCENE 2 — CONTEXTO CARTELA (6-10s) */
+  .s2 {
+    background: var(--ink);
+    animation: showS2 4s ease forwards;
+    animation-delay: 6s !important;
+  }
+  .playing .s2 { animation: showS2 4s ease forwards; animation-delay: 6s; }
+  @keyframes showS2 { 0%{opacity:0;transform:scale(1.05)} 10%{opacity:1;transform:scale(1)} 85%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(0.98)} }
+  .s2 .card {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px; line-height: 0.95; letter-spacing: .02em;
+  }
+  .s2 .card .y { color: var(--yellow); display: block; margin-top: 8px; }
+  .s2 .voice-over {
+    position: absolute; bottom: 80px; left: 28px; right: 28px;
+    font-size: 12px; line-height: 1.55; color: rgba(255,255,255,0.55);
+    font-style: italic;
+    border-left: 2px solid var(--yellow);
+    padding-left: 12px; text-align: left;
+  }
+
+  /* SCENE 3 — CONTEXTO OFF (10-16s) */
+  .s3 {
+    background: var(--ink);
+  }
+  .playing .s3 { animation: fadeShowTimed 6s ease forwards; animation-delay: 10s; }
+  @keyframes fadeShowTimed { 0%{opacity:0} 6%{opacity:1} 88%{opacity:1} 100%{opacity:0} }
+  .s3 .quote-box {
+    background: rgba(255,255,255,0.05);
+    border-left: 3px solid var(--red);
+    padding: 22px 22px;
+    border-radius: 0 12px 12px 0;
+    max-width: 280px;
+  }
+  .s3 .quote-box p {
+    font-size: 18px; line-height: 1.4; font-weight: 600;
+    color: rgba(255,255,255,0.92);
+    text-align: left;
+  }
+  .s3 .label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px; letter-spacing: .2em;
+    color: var(--red); margin-bottom: 14px;
+  }
+
+  /* SCENE 4 — TENSÃO talking head (16-24s) */
+  .s4 {
+    background: radial-gradient(circle at 50% 60%, #2a2a3c 0%, #0f0f1c 100%);
+  }
+  .playing .s4 { animation: fadeShowTimed 8s ease forwards; animation-delay: 16s; }
+  .s4 .th-person {
+    width: 130px; height: 130px;
+    margin-bottom: 22px;
+  }
+  .s4 .lines {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px; line-height: 1.08;
+    text-align: center;
+  }
+  .s4 .lines .em { color: var(--yellow); }
+  .s4 .th-tag {
+    top: 80px;
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+
+  /* SCENE 5 — VIRADA 3 CARTELAS (24-30s) */
+  .s5a, .s5b, .s5c { }
+  .playing .s5a { animation: popCard 2s ease forwards; animation-delay: 24s; }
+  .playing .s5b { animation: popCard 2s ease forwards; animation-delay: 26s; }
+  .playing .s5c { animation: popCard 2s ease forwards; animation-delay: 28s; }
+  @keyframes popCard {
+    0%{opacity:0; transform:translateY(30px) scale(.95)}
+    10%{opacity:1; transform:translateY(0) scale(1)}
+    85%{opacity:1; transform:translateY(0) scale(1)}
+    100%{opacity:0; transform:translateY(-20px) scale(1)}
+  }
+  .s5a { background: linear-gradient(135deg, #E74038 0%, #a52c26 100%); }
+  .s5b { background: linear-gradient(135deg, #297DC1 0%, #1a4d7a 100%); }
+  .s5c { background: linear-gradient(135deg, #62BFB4 0%, #3f8780 100%); }
+  .s5a .big, .s5b .big, .s5c .big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 68px; line-height: 1;
+    letter-spacing: .02em;
+  }
+  .s5a .num, .s5b .num, .s5c .num {
+    position: absolute; top: 70px; left: 50%; transform: translateX(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px; letter-spacing: .3em;
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* SCENE 6 — FERRAMENTA (30-37s) */
+  .s6 {
+    background: linear-gradient(135deg, #FBD21D 0%, #ffd900 100%);
+    color: var(--ink);
+  }
+  .playing .s6 { animation: fadeShowTimed 7s ease forwards; animation-delay: 30s; }
+  .s6 .big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 54px; line-height: 0.95;
+    color: var(--ink);
+  }
+  .s6 .sub {
+    margin-top: 22px;
+    font-size: 14px; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(28,28,46,0.7);
+  }
+
+  /* SCENE 7 — EVIDÊNCIA (37-45s) - 3 sinais */
+  .s7 {
+    background: var(--ink);
+  }
+  .playing .s7 { animation: fadeShowTimed 8s ease forwards; animation-delay: 37s; }
+  .s7 .ev-header {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px; letter-spacing: .2em;
+    color: var(--teal);
+    margin-bottom: 24px;
+  }
+  .ev-list { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 280px; }
+  .ev-item {
+    background: rgba(98,191,180,0.08);
+    border-left: 3px solid var(--teal);
+    padding: 14px 18px;
+    border-radius: 0 10px 10px 0;
+    text-align: left;
+    display: flex; align-items: center; gap: 12px;
+    opacity: 0;
+  }
+  .ev-item .ck {
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--teal);
+    font-size: 22px;
+  }
+  .ev-item .tx {
+    font-size: 16px; font-weight: 700;
+    color: #fff;
+  }
+  .playing .ev-item:nth-child(1) { animation: evIn 0.6s ease forwards; animation-delay: 38.5s; }
+  .playing .ev-item:nth-child(2) { animation: evIn 0.6s ease forwards; animation-delay: 39.5s; }
+  .playing .ev-item:nth-child(3) { animation: evIn 0.6s ease forwards; animation-delay: 40.5s; }
+  @keyframes evIn { from{opacity:0; transform:translateX(-15px)} to{opacity:1; transform:translateX(0)} }
+
+  /* SCENE 8 — TALKING HEAD FECHAMENTO (45-54s) */
+  .s8 {
+    background: radial-gradient(circle at 50% 45%, #2a2a3c 0%, #0f0f1c 100%);
+  }
+  .playing .s8 { animation: fadeShowTimed 9s ease forwards; animation-delay: 45s; }
+  .s8 .th-person {
+    width: 140px; height: 140px;
+    margin-bottom: 22px;
+  }
+  .s8 .th-tag {
+    top: 80px;
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+  .s8 .lines {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px; line-height: 1.12;
+  }
+  .s8 .lines .em { color: var(--yellow); }
+
+  /* SCENE 9 — CARTELA FINAL (54-60s) */
+  .s9 {
+    background: var(--ink);
+    position: relative;
+  }
+  .s9::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 5px;
+    background: linear-gradient(to right, var(--red), var(--yellow), var(--teal), var(--blue));
+  }
+  .playing .s9 { animation: fadeShowTimed 6s ease forwards; animation-delay: 54s; }
+  .s9 .final {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px; line-height: 1;
+    color: #fff;
+  }
+  .s9 .final .y { color: var(--yellow); }
+  .s9 .brand {
+    position: absolute; bottom: 40px; left: 0; right: 0;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px; letter-spacing: .15em;
+    color: rgba(255,255,255,0.6);
+  }
+  .s9 .brand span { color: var(--yellow); }
+
+  /* IG bottom bar */
+  .ig-bottom {
+    position: absolute; bottom: 16px; left: 16px; right: 16px;
+    display: flex; align-items: center; gap: 14px;
+    z-index: 80; color: #fff;
+    font-size: 20px;
+  }
+  .ig-bottom .heart { color: var(--red); }
+  .ig-bottom .save { margin-left: auto; }
+
+  /* Controls + timeline */
+  .controls {
+    display: flex; flex-direction: column; gap: 14px;
+    width: 340px;
+  }
+  .ctl-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: .05em;
+    color: #fff;
+  }
+  .ctl-title span { color: var(--yellow); }
+  .play-btn {
+    background: var(--yellow); color: var(--ink);
+    border: none; padding: 14px 22px;
+    border-radius: 12px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; letter-spacing: .05em;
+    cursor: pointer;
+    transition: transform .15s;
+  }
+  .play-btn:hover { transform: translateY(-2px); }
+  .timer {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    color: #fff;
+    text-align: center;
+  }
+  .timer span { color: var(--yellow); }
+  .timeline {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.65);
+    font-family: 'Courier New', monospace;
+  }
+  .tl-row { display: flex; gap: 10px; padding: 3px 0; }
+  .tl-row .t { color: var(--yellow); min-width: 55px; }
+  .tl-row .d { flex: 1; }
+  .note {
+    font-size: 11px; color: rgba(255,255,255,0.4);
+    line-height: 1.5;
+    padding: 10px 12px;
+    background: rgba(231,64,56,0.08);
+    border-left: 2px solid var(--red);
+    border-radius: 0 6px 6px 0;
+  }
+
+  @media (max-width: 780px) {
+    body {
+      flex-direction: column-reverse;
+      gap: 18px;
+      padding: 14px;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .controls {
+      width: 100%;
+      max-width: 420px;
+      order: 2;
+    }
+    .ctl-title { font-size: 18px; }
+    .play-btn { padding: 12px 18px; font-size: 18px; }
+    .timer { font-size: 34px; }
+    .timeline { font-size: 10px; padding: 10px; }
+    .tl-row { gap: 8px; }
+    .note { font-size: 10px; padding: 8px 10px; }
+    .phone {
+      width: min(320px, 88vw);
+      order: 1;
+    }
+    /* Ajustar textos internos do reel para tela menor */
+    .s1 .hook-text { font-size: 26px; }
+    .s2 .card { font-size: 38px; }
+    .s4 .lines, .s8 .lines { font-size: 20px; }
+    .s5a .big, .s5b .big, .s5c .big { font-size: 48px; }
+    .s6 .big { font-size: 38px; }
+    .s9 .final { font-size: 40px; }
+    .th-person { width: 130px !important; height: 130px !important; margin-bottom: 22px; }
+    .s1 .th-person, .s4 .th-person, .s8 .th-person { width: 120px !important; height: 120px !important; }
+    .ev-item .tx { font-size: 14px; }
+  }
+  @media (max-width: 420px) {
+    .phone { width: min(290px, 82vw); }
+    .s1 .hook-text { font-size: 22px; }
+    .s2 .card { font-size: 32px; }
+    .s4 .lines, .s8 .lines { font-size: 17px; }
+    .s5a .big, .s5b .big, .s5c .big { font-size: 40px; }
+    .s6 .big { font-size: 32px; }
+    .s9 .final { font-size: 34px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="ctl-title">REEL · CASE <span>02</span></div>
+  <button class="play-btn" id="playBtn">▶ PLAY 60s</button>
+  <div class="timer" id="timer">00:<span>00</span></div>
+  <div class="timeline">
+    <div class="tl-row"><span class="t">0–6s</span><span class="d">[TALKING HEAD] Hook</span></div>
+    <div class="tl-row"><span class="t">6–10s</span><span class="d">Cartela · "Proatividade sem foco"</span></div>
+    <div class="tl-row"><span class="t">10–16s</span><span class="d">Off · contexto do liderado</span></div>
+    <div class="tl-row"><span class="t">16–24s</span><span class="d">[TALKING HEAD] Tensão</span></div>
+    <div class="tl-row"><span class="t">24–30s</span><span class="d">Virada · 3 cartelas</span></div>
+    <div class="tl-row"><span class="t">30–37s</span><span class="d">Cartela · "360 com inteligência"</span></div>
+    <div class="tl-row"><span class="t">37–45s</span><span class="d">Evidência · 3 sinais</span></div>
+    <div class="tl-row"><span class="t">45–54s</span><span class="d">[TALKING HEAD] Lição</span></div>
+    <div class="tl-row"><span class="t">54–60s</span><span class="d">Cartela final</span></div>
+  </div>
+  <div class="note">
+    <strong>Blocos marcados [TALKING HEAD]</strong> são onde você grava. Use o tempo exato como referência: 6s, 8s, 9s. Os demais blocos podem ir direto para o editor como cartelas.
+  </div>
+</div>
+
+<!-- PHONE / STAGE -->
+<div class="phone">
+  <div class="notch"></div>
+  <div class="stage" id="stage">
+
+    <div class="progress-wrap" id="progWrap"><div class="progress-fill"></div></div>
+
+    <div class="ig-top">
+      <div class="ig-avatar"></div>
+      <div class="ig-user">case.02<div class="sub">Áudio original</div></div>
+    </div>
+
+    <!-- SCENE 1 - HOOK -->
+    <div class="scene s1">
+      <div class="th-frame"></div>
+      <div class="th-tag">TALKING HEAD · 6s</div>
+      <div class="th-person"></div>
+      <div class="hook-text">
+        "TEM PROATIVIDADE<br>QUE <span class="y">ATRAPALHA</span>.<br>
+        EU VI ISSO<br>NO MEU TIME."
+      </div>
+    </div>
+
+    <!-- SCENE 2 - CARTELA CONTEXTO -->
+    <div class="scene s2">
+      <div class="card">
+        PROATIVIDADE<br>SEM FOCO<br>
+        <span class="y">É SÓ OCUPAÇÃO.</span>
+      </div>
+    </div>
+
+    <!-- SCENE 3 - OFF CONTEXTO -->
+    <div class="scene s3">
+      <div>
+        <div class="label">— VOZ EM OFF</div>
+        <div class="quote-box">
+          <p>Um liderado apoiava demandas que não eram dele. Esforço sobrava. Direção, não.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 4 - TALKING HEAD TENSÃO -->
+    <div class="scene s4">
+      <div class="th-tag">TALKING HEAD · 8s</div>
+      <div class="th-person"></div>
+      <div class="lines">
+        EU PODERIA TER<br>COBRADO MAIS.<br>
+        MAS O PROBLEMA<br>NÃO ERA ESFORÇO.<br>
+        ERA <span class="em">LEITURA<br>DE PAPEL</span>.
+      </div>
+    </div>
+
+    <!-- SCENE 5a -->
+    <div class="scene s5a">
+      <div class="num">VIRADA · 01</div>
+      <div class="big">ALINHEI<br>PAPEL.</div>
+    </div>
+    <div class="scene s5b">
+      <div class="num">VIRADA · 02</div>
+      <div class="big">ABRI<br>ESPAÇO.</div>
+    </div>
+    <div class="scene s5c">
+      <div class="num">VIRADA · 03</div>
+      <div class="big">COBREI<br>FOCO.</div>
+    </div>
+
+    <!-- SCENE 6 - FERRAMENTA -->
+    <div class="scene s6">
+      <div>
+        <div class="big">360 COM<br>INTELIGÊNCIA.<br>NÃO COM<br>SOBRECARGA.</div>
+        <div class="sub">Pipeline · Gestor de si</div>
+      </div>
+    </div>
+
+    <!-- SCENE 7 - EVIDÊNCIA -->
+    <div class="scene s7">
+      <div>
+        <div class="ev-header">O QUE MUDOU</div>
+        <div class="ev-list">
+          <div class="ev-item"><div class="ck">✓</div><div class="tx">Ponto impecável</div></div>
+          <div class="ev-item"><div class="ck">✓</div><div class="tx">Sem hora extra</div></div>
+          <div class="ev-item"><div class="ck">✓</div><div class="tx">Ideias novas<br><span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.65)">da especialidade dele</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 8 - TALKING HEAD LIÇÃO -->
+    <div class="scene s8">
+      <div class="th-tag">TALKING HEAD · 9s</div>
+      <div class="th-person"></div>
+      <div class="lines">
+        LIDERANÇA AQUI<br>
+        NÃO FOI FAZER<br>MAIS POR ELE.<br><br>
+        FOI <span class="em">AJUDAR ELE<br>A VER MELHOR</span>.
+      </div>
+    </div>
+
+    <!-- SCENE 9 - FINAL -->
+    <div class="scene s9">
+      <div class="final">
+        LIDERAR NÃO É<br>FAZER MAIS.<br><br>
+        É <span class="y">DESENVOLVER<br>MELHOR.</span>
+      </div>
+      <div class="brand">DESENVOLVE <span>LÍDERES</span> · 2026</div>
+    </div>
+
+    <!-- IG bottom icons -->
+    <div class="ig-bottom">
+      <span class="heart">♥</span>
+      <span>💬</span>
+      <span>↗</span>
+      <span class="save">🔖</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Embed mode via ?embed=1 — esconde controles, remove moldura do phone e dá autoplay
+  const isEmbed = new URLSearchParams(location.search).get('embed') === '1';
+  if (isEmbed) { document.documentElement.classList.add('embed'); document.body.classList.add('embed'); }
+
+  const btn = document.getElementById('playBtn');
+  const stage = document.getElementById('stage');
+  const progWrap = document.getElementById('progWrap');
+  const timer = document.getElementById('timer');
+
+  let playing = false;
+  let startTime = 0;
+  let raf;
+
+  function tick() {
+    if (!playing) return;
+    const elapsed = (Date.now() - startTime) / 1000;
+    if (elapsed >= 60) {
+      if (isEmbed) {
+        // Looping no modo embed
+        stage.classList.remove('playing');
+        progWrap.classList.remove('playing');
+        void stage.offsetWidth;
+        stage.classList.add('playing');
+        progWrap.classList.add('playing');
+        startTime = Date.now();
+        timer.innerHTML = '00:<span>00</span>';
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      stop();
+      timer.innerHTML = '01:<span>00</span>';
+      return;
+    }
+    const s = Math.floor(elapsed);
+    timer.innerHTML = `00:<span>${String(s).padStart(2,'0')}</span>`;
+    raf = requestAnimationFrame(tick);
+  }
+
+  function play() {
+    // force reflow to restart animations
+    stage.classList.remove('playing');
+    progWrap.classList.remove('playing');
+    void stage.offsetWidth;
+    stage.classList.add('playing');
+    progWrap.classList.add('playing');
+    playing = true;
+    startTime = Date.now();
+    btn.textContent = '■ REPLAY';
+    tick();
+  }
+
+  function stop() {
+    playing = false;
+    cancelAnimationFrame(raf);
+    btn.textContent = '▶ PLAY 60s';
+  }
+
+  btn.addEventListener('click', () => {
+    if (playing) { stop(); stage.classList.remove('playing'); progWrap.classList.remove('playing'); timer.innerHTML = '00:<span>00</span>'; }
+    else play();
+  });
+
+  // Em modo embed: clicar no palco faz play/replay e dá auto-play suave após 400ms
+  if (isEmbed) {
+    stage.style.cursor = 'pointer';
+    stage.addEventListener('click', () => {
+      if (playing) { stop(); stage.classList.remove('playing'); progWrap.classList.remove('playing'); timer.innerHTML = '00:<span>00</span>'; }
+      else play();
+    });
+    setTimeout(play, 400);
+  }
+</script>
+
+</body>
+</html>

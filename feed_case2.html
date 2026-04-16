@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feed — Case 02 | Desenvolve Líderes</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  html, body { background: #fafafa; color: #262626; min-height: 100vh; }
+
+  /* Top bar estilo Instagram */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #1C1C2E;
+    border-bottom: 1px solid #0f0f1c;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100%;
+    position: relative;
+  }
+  .topbar::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(to right, #E74038 0%, #FBD21D 33%, #62BFB4 66%, #297DC1 100%);
+  }
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: .06em;
+    color: #fff;
+  }
+  .logo span { color: #FBD21D; }
+  .topbar-icons { color: #fff; }
+  .searchbox { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
+  .searchbox {
+    background: #efefef;
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-size: 14px;
+    color: #8e8e8e;
+    width: 268px;
+  }
+  .topbar-icons { display: flex; gap: 22px; font-size: 22px; color: #262626; }
+
+  /* Layout principal */
+  .container {
+    max-width: 935px;
+    margin: 24px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 28px;
+  }
+
+  /* Stories bar */
+  .stories {
+    grid-column: 1 / 2;
+    background: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    padding: 14px 10px;
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    margin-bottom: 4px;
+  }
+  .story {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 74px;
+    cursor: pointer;
+  }
+  .story .ring {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    padding: 3px;
+  }
+  .story .ring-inner {
+    background: #fff;
+    border-radius: 50%;
+    padding: 2px;
+    width: 100%; height: 100%;
+  }
+  .story .ring-inner .av {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; color: #fff; font-size: 18px;
+    background-size: cover;
+    background-position: center;
+  }
+  .story .label { font-size: 11px; color: #262626; max-width: 74px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Feed column */
+  .feed-col { display: flex; flex-direction: column; gap: 24px; }
+
+  /* Post card */
+  .post {
+    background: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .post-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    padding: 2px;
+    flex-shrink: 0;
+  }
+  .avatar-inner {
+    background: #fff;
+    border-radius: 50%;
+    width: 100%; height: 100%;
+    padding: 2px;
+  }
+  .avatar-inner .av-fill {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; color: #fff; font-size: 13px;
+    background-size: cover;
+    background-position: center;
+  }
+  .av-photo {
+    background-image: url('silhueta.svg') !important;
+    background-color: #1a1a2e !important;
+    background-size: cover !important;
+    background-position: center !important;
+  }
+  .user-meta { flex: 1; line-height: 1.3; }
+  .user-meta .name { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+  .verified { color: #0095f6; font-size: 13px; }
+  .user-meta .sub { font-size: 12px; color: #262626; }
+  .user-meta .loc { font-size: 12px; color: #262626; }
+  .more { color: #262626; font-size: 18px; cursor: pointer; padding: 0 6px; }
+
+  /* Post content - visual slide */
+  .post-visual {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 36px;
+    color: #fff;
+    text-align: center;
+  }
+  .post-visual .tag {
+    position: absolute;
+    top: 16px; left: 16px;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .post-visual .num {
+    position: absolute;
+    bottom: 16px; right: 16px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 2px;
+    opacity: 0.8;
+  }
+  .post-visual .phrase {
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 1.1;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    letter-spacing: -0.5px;
+  }
+  .post-visual .sub {
+    margin-top: 18px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+
+  /* Video post */
+  .video-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/5;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+    padding: 30px;
+  }
+  .video-wrap .play {
+    position: absolute;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    color: #fff;
+  }
+  .video-wrap .timer {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: rgba(0,0,0,0.6);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .video-wrap .audio-tag {
+    position: absolute;
+    bottom: 14px; left: 14px;
+    font-size: 11px;
+    background: rgba(0,0,0,0.5);
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+  .video-wrap .video-cap {
+    position: absolute;
+    bottom: 30%;
+    left: 20px; right: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  }
+
+  /* Actions */
+  .actions {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    gap: 14px;
+    font-size: 24px;
+  }
+  .actions .save { margin-left: auto; }
+  .actions svg { cursor: pointer; }
+
+  .likes {
+    padding: 0 14px 6px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .caption {
+    padding: 0 14px 8px;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .caption .u { font-weight: 600; margin-right: 6px; }
+  .caption .hash { color: #00376b; }
+  .caption .more-btn { color: #8e8e8e; cursor: pointer; }
+  .comments-preview { padding: 0 14px 6px; font-size: 14px; color: #8e8e8e; }
+  .time { padding: 4px 14px 14px; font-size: 10px; color: #8e8e8e; text-transform: uppercase; letter-spacing: 0.3px; }
+
+  /* Right column - suggestions */
+  .sidebar {
+    grid-column: 2 / 3;
+    position: sticky;
+    top: 80px;
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .me {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .me .av-big {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 800; font-size: 18px;
+  }
+  .me .info .name { font-size: 14px; font-weight: 600; }
+  .me .info .desc { font-size: 14px; color: #8e8e8e; }
+  .me .switch { margin-left: auto; font-size: 12px; font-weight: 600; color: #0095f6; cursor: pointer; }
+
+  .suggest-title {
+    display: flex; justify-content: space-between; align-items: center;
+    color: #8e8e8e; font-size: 14px; font-weight: 600;
+  }
+  .suggest-title .link { color: #262626; font-size: 12px; cursor: pointer; }
+  .suggest-item { display: flex; align-items: center; gap: 12px; }
+  .suggest-item .av-sm {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 13px;
+  }
+  .suggest-item .txt { flex: 1; font-size: 14px; }
+  .suggest-item .txt .n { font-weight: 600; }
+  .suggest-item .txt .s { font-size: 12px; color: #8e8e8e; }
+  .suggest-item .follow { color: #0095f6; font-size: 12px; font-weight: 600; cursor: pointer; }
+
+  .foot {
+    font-size: 11px; color: #c7c7c7; line-height: 1.6; margin-top: 10px;
+  }
+
+  /* Gradients por post */
+  .bg1 { background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%); }
+  .bg2 { background: linear-gradient(135deg, #232526 0%, #414345 100%); }
+  .bg3 { background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%); }
+  .bg4 { background: linear-gradient(135deg, #434343 0%, #000000 100%); }
+  .bg5 { background: linear-gradient(135deg, #f12711 0%, #f5af19 100%); }
+  .bg6 { background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%); }
+  .bg7 { background: linear-gradient(135deg, #141e30 0%, #243b55 100%); }
+  .bg8 { background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%); }
+  .bg9 { background: linear-gradient(135deg, #bc1888 0%, #cc2366 50%, #e6683c 100%); }
+
+  /* Foto real do time (POST do TK) */
+  .post-photo {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/5;
+    background-color: #000;
+    background-image: url('time-web-2026.jpg');
+    background-size: cover;
+    background-position: center 35%;
+    background-repeat: no-repeat;
+    overflow: hidden;
+  }
+  .post-photo .tag {
+    position: absolute;
+    top: 16px; left: 16px;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .post-photo .caption-overlay {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 22px 18px 16px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+    color: #fff;
+  }
+  .post-photo .caption-overlay .ttl {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    letter-spacing: .03em;
+    line-height: 1;
+  }
+  .post-photo .caption-overlay .ttl span { color: #FBD21D; }
+  .post-photo .caption-overlay .sub {
+    font-size: 12px;
+    font-weight: 600;
+    opacity: .85;
+    margin-top: 6px;
+    letter-spacing: .3px;
+  }
+  .av-tk { background-image: url('avatar_tk.jpg'); background-size: cover; background-position: center; }
+
+  /* Reel embed (iframe reel_case2.html) */
+  .reel-embed {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9/16;
+    background: #0a0a14;
+    overflow: hidden;
+  }
+  .reel-embed iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #0a0a14;
+  }
+  .reel-embed .reel-fullscreen {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(4px);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    text-decoration: none;
+    z-index: 5;
+    transition: background .15s;
+  }
+  .reel-embed .reel-fullscreen:hover { background: rgba(0,0,0,0.8); }
+  .reel-embed .reel-badge {
+    position: absolute;
+    top: 14px; left: 14px;
+    background: rgba(231,64,56,0.95);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    z-index: 5;
+  }
+
+  .av-c1 { background: linear-gradient(135deg, #302b63, #24243e); }
+  .av-c2 { background: linear-gradient(135deg, #f12711, #f5af19); }
+  .av-c3 { background: linear-gradient(135deg, #1a2980, #26d0ce); }
+
+  @media (max-width: 900px) {
+    body { padding: 0; }
+    .container {
+      grid-template-columns: 1fr;
+      margin: 0 auto;
+      padding: 12px 0;
+      gap: 16px;
+    }
+    .sidebar { display: none; }
+    .stories { grid-column: 1 / -1; border-radius: 0; border-left: none; border-right: none; }
+    .feed-col { gap: 14px; }
+    .post { border-radius: 0; border-left: none; border-right: none; }
+    .post-visual { padding: 24px; }
+    .post-visual .phrase { font-size: 28px; line-height: 1.1; }
+    .post-visual .sub { font-size: 11px; margin-top: 10px; }
+    .post-visual .tag { font-size: 10px; padding: 4px 10px; }
+    .post-visual .num { font-size: 10px; }
+    .searchbox { display: none; }
+    .topbar {
+      padding: 10px 14px;
+    }
+    .logo { font-size: 20px; letter-spacing: .04em; }
+    .topbar-icons { gap: 14px; font-size: 18px; }
+    .topbar-icons span:nth-child(2),
+    .topbar-icons span:nth-child(3) { display: none; }
+    .video-wrap .video-cap { font-size: 16px; bottom: 26%; }
+    .post-photo .caption-overlay { padding: 18px 14px 14px; }
+    .post-photo .caption-overlay .ttl { font-size: 24px; }
+    .post-photo .caption-overlay .sub { font-size: 11px; }
+    .caption, .likes, .comments-preview { font-size: 13px; }
+    .time { font-size: 9px; }
+    .post-header { padding: 10px 12px; }
+    .user-meta .name { font-size: 13px; }
+    .user-meta .sub, .user-meta .loc { font-size: 11px; }
+    .stories { padding: 12px 8px; gap: 10px; }
+    .story { min-width: 64px; }
+    .story .ring { width: 54px; height: 54px; }
+  }
+  @media (max-width: 420px) {
+    .post-visual .phrase { font-size: 24px; }
+    .logo { font-size: 18px; }
+    .topbar-icons { gap: 10px; font-size: 16px; }
+    .topbar-icons span:nth-child(4) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="logo">DESENVOLVE <span>LÍDERES</span></div>
+  <div class="searchbox">🔍  Pesquisar</div>
+  <div class="topbar-icons">
+    <span>⌂</span>
+    <span>✈</span>
+    <span>➕</span>
+    <span>♡</span>
+    <span>👤</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="feed-col">
+
+    <!-- Stories -->
+    <div class="stories">
+      <div class="story"><div class="ring"><div class="ring-inner"><div class="av" style="background-image:url('avatar_tk.jpg');"></div></div></div><div class="label">Seu story</div></div>
+      <div class="story"><div class="ring"><div class="ring-inner"><div class="av av-c2">C1</div></div></div><div class="label">case.01</div></div>
+      <div class="story"><div class="ring"><div class="ring-inner"><div class="av" style="background-image:url('silhueta.svg'); background-color:#1a1a2e;"></div></div></div><div class="label">case.02</div></div>
+      <div class="story"><div class="ring"><div class="ring-inner"><div class="av av-c1">LS</div></div></div><div class="label">lid.situacional</div></div>
+      <div class="story"><div class="ring"><div class="ring-inner"><div class="av av-c2">PL</div></div></div><div class="label">pipeline</div></div>
+      <div class="story"><div class="ring"><div class="ring-inner"><div class="av av-c3">FD</div></div></div><div class="label">feedback</div></div>
+      <div class="story"><div class="ring"><div class="ring-inner"><div class="av av-c1">MT</div></div></div><div class="label">maturidade</div></div>
+    </div>
+
+    <!-- POST 0 — TK apresenta o time -->
+    <article class="post">
+      <div class="post-header">
+        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-tk"></div></div></div>
+        <div class="user-meta">
+          <div class="name">tk.santos <span class="verified">✓</span></div>
+          <div class="loc">Curitiba, PR · RPC</div>
+        </div>
+        <div class="more">⋯</div>
+      </div>
+      <div class="post-photo">
+        <div class="tag">● Time</div>
+        <div class="caption-overlay">
+          <div class="ttl">Esse é o <span>meu time</span>.</div>
+          <div class="sub">E é com eles que eu entendo, na prática, o que é liderar de verdade.</div>
+        </div>
+      </div>
+      <div class="actions">
+        <span>♡</span><span>💬</span><span>↗</span>
+        <span class="save">🔖</span>
+      </div>
+      <div class="likes">Curtido por <strong>desenvolve.lideres</strong> e <strong>outras 198 pessoas</strong></div>
+      <div class="caption">
+        <span class="u">tk.santos</span>
+        Antes de falar de caso, preciso apresentar o time. Cada pessoa aqui me desafiou a sair do lugar de execução e entrar no de liderança. As próximas evidências começam neles.
+        <span class="hash"> #DesenvolveLíderes #MeuTime</span>
+      </div>
+      <div class="comments-preview">Ver todos os 26 comentários</div>
+      <div class="time">AGORA</div>
+    </article>
+
+    <!-- POST REEL — segundo post, logo após a apresentação do time -->
+    <article class="post">
+      <div class="post-header">
+        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-tk"></div></div></div>
+        <div class="user-meta">
+          <div class="name">tk.santos <span class="verified">✓</span></div>
+          <div class="sub">Áudio original · Desenvolve Líderes</div>
+        </div>
+        <div class="more">⋯</div>
+      </div>
+      <div class="reel-embed">
+        <iframe src="reel_case2.html?embed=1" loading="lazy" title="Reel Case 02" allow="autoplay"></iframe>
+        <a class="reel-fullscreen" href="reel_case2.html" target="_blank" title="Abrir em tela cheia">⛶</a>
+        <div class="reel-badge">● REEL</div>
+      </div>
+      <div class="actions">
+        <span>♡</span><span>💬</span><span>↗</span>
+        <span class="save">🔖</span>
+      </div>
+      <div class="likes"><strong>2.421 visualizações</strong></div>
+      <div class="caption">
+        <span class="u">tk.santos</span>
+        O case em 60 segundos. Contexto → virada → ferramenta aplicada → evidência → lição de liderança.
+        <span class="hash"> #AprendizadoQueGanhaForma #DesenvolveLíderes</span>
+      </div>
+      <div class="comments-preview">Ver todos os 91 comentários</div>
+      <div class="time">HÁ 5 MINUTOS</div>
+    </article>
+
+    <!-- POST 1 -->
+    <article class="post">
+      <div class="post-header">
+        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-photo"></div></div></div>
+        <div class="user-meta">
+          <div class="name">case.02 <span class="verified">✓</span></div>
+          <div class="loc">Evidência 02 · Amadurecimento</div>
+        </div>
+        <div class="more">⋯</div>
+      </div>
+      <div class="post-visual bg1">
+        <div class="tag">● Antes</div>
+        <div>
+          <div class="phrase">Proatividade<br>sem foco é<br>só ocupação.</div>
+          <div class="sub">O ponto de partida</div>
+        </div>
+        <div class="num">POST 01/08</div>
+      </div>
+      <div class="actions">
+        <span>♡</span><span>💬</span><span>↗</span>
+        <span class="save">🔖</span>
+      </div>
+      <div class="likes">Curtido por <strong>lideranca.situacional</strong> e <strong>outras 312 pessoas</strong></div>
+      <div class="caption">
+        <span class="u">case.02</span>
+        Antes, o liderado apoiava demandas que não eram dele e gastava energia em suportes paralelos. A proatividade existia, mas sem direção.
+        <span class="hash"> #CaseDesenvolveLíderes #Evidência02</span>
+      </div>
+      <div class="comments-preview">Ver todos os 48 comentários</div>
+      <div class="time">HÁ 2 HORAS</div>
+    </article>
+
+    <!-- POST 2 -->
+    <article class="post">
+      <div class="post-header">
+        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-photo"></div></div></div>
+        <div class="user-meta">
+          <div class="name">case.02 <span class="verified">✓</span></div>
+          <div class="loc">Contexto da virada</div>
+        </div>
+        <div class="more">⋯</div>
+      </div>
+      <div class="post-visual bg2">
+        <div class="tag">● Contexto</div>
+        <div>
+          <div class="phrase">Ajudar todo<br>mundo não<br>é a missão.</div>
+          <div class="sub">Gerar valor onde você é único, é.</div>
+        </div>
+        <div class="num">POST 02/08</div>
+      </div>
+      <div class="actions">
+        <span>♡</span><span>💬</span><span>↗</span>
+        <span class="save">🔖</span>
+      </div>
+      <div class="likes"><strong>284 curtidas</strong></div>
+      <div class="caption">
+        <span class="u">case.02</span>
+        O papel da liderança aqui começa na clareza: sair do “ajudar em tudo” e entrar no “contribuir onde faz diferença”.
+        <span class="hash"> #ClarezaDePapel #Pipeline</span>
+      </div>
+      <div class="comments-preview">Ver todos os 37 comentários</div>
+      <div class="time">HÁ 4 HORAS</div>
+    </article>
+
+    <!-- POST 4 -->
+    <article class="post">
+      <div class="post-header">
+        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-photo"></div></div></div>
+        <div class="user-meta">
+          <div class="name">case.02 <span class="verified">✓</span></div>
+          <div class="loc">Ações de liderança</div>
+        </div>
+        <div class="more">⋯</div>
+      </div>
+      <div class="post-visual bg3">
+        <div class="tag">● Virada</div>
+        <div>
+          <div class="phrase">Alinhei papel.<br>Abri espaço.<br>Cobrei foco.</div>
+          <div class="sub">Liderança intencional</div>
+        </div>
+        <div class="num">POST 04/08</div>
+      </div>
+      <div class="actions">
+        <span>♡</span><span>💬</span><span>↗</span>
+        <span class="save">🔖</span>
+      </div>
+      <div class="likes"><strong>398 curtidas</strong></div>
+      <div class="caption">
+        <span class="u">case.02</span>
+        As três intervenções da liderança: alinhamento de papel, espaço para atuar na especialidade e cobrança de foco com clareza.
+        <span class="hash"> #LiderançaIntencional</span>
+      </div>
+      <div class="comments-preview">Ver todos os 52 comentários</div>
+      <div class="time">HÁ 8 HORAS</div>
+    </article>
+
+    <!-- POST 5 -->
+    <article class="post">
+      <div class="post-header">
+        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-photo"></div></div></div>
+        <div class="user-meta">
+          <div class="name">case.02 <span class="verified">✓</span></div>
+          <div class="loc">Aprendizado do curso</div>
+        </div>
+        <div class="more">⋯</div>
+      </div>
+      <div class="post-visual bg4">
+        <div class="tag">● Aprendizado</div>
+        <div>
+          <div class="phrase">Maturidade é<br>saber onde<br>gerar mais<br>valor.</div>
+          <div class="sub">Pipeline · Gestor de si</div>
+        </div>
+        <div class="num">POST 05/08</div>
+      </div>
+      <div class="actions">
+        <span>♡</span><span>💬</span><span>↗</span>
+        <span class="save">🔖</span>
+      </div>
+      <div class="likes">Curtido por <strong>gestor.de.si</strong> e <strong>outras 612 pessoas</strong></div>
+      <div class="caption">
+        <span class="u">case.02</span>
+        O estágio “gestor de si” pede autonomia, protagonismo, sugestão de melhorias e cumprimento do combinado. Maturidade é gerar valor com inteligência.
+        <span class="hash"> #Pipeline #GestorDeSi</span>
+      </div>
+      <div class="comments-preview">Ver todos os 91 comentários</div>
+      <div class="time">HÁ 12 HORAS</div>
+    </article>
+
+    <!-- POST 6 -->
+    <article class="post">
+      <div class="post-header">
+        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-photo"></div></div></div>
+        <div class="user-meta">
+          <div class="name">case.02 <span class="verified">✓</span></div>
+          <div class="loc">Frase-chave</div>
+        </div>
+        <div class="more">⋯</div>
+      </div>
+      <div class="post-visual bg5">
+        <div class="tag">● Frase-chave</div>
+        <div>
+          <div class="phrase">360 com<br>inteligência,<br>não com<br>sobrecarga.</div>
+          <div class="sub">Clareza de limites</div>
+        </div>
+        <div class="num">POST 06/08</div>
+      </div>
+      <div class="actions">
+        <span>♡</span><span>💬</span><span>↗</span>
+        <span class="save">🔖</span>
+      </div>
+      <div class="likes"><strong>447 curtidas</strong></div>
+      <div class="caption">
+        <span class="u">case.02</span>
+        Atuar em 360 não é abraçar tudo. É escolher onde sua contribuição tem mais peso estratégico.
+        <span class="hash"> #ContribuiçãoEstratégica</span>
+      </div>
+      <div class="comments-preview">Ver todos os 63 comentários</div>
+      <div class="time">ONTEM</div>
+    </article>
+
+    <!-- POST 7 -->
+    <article class="post">
+      <div class="post-header">
+        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-photo"></div></div></div>
+        <div class="user-meta">
+          <div class="name">case.02 <span class="verified">✓</span></div>
+          <div class="loc">Evidências do “depois”</div>
+        </div>
+        <div class="more">⋯</div>
+      </div>
+      <div class="post-visual bg6">
+        <div class="tag">● Depois</div>
+        <div>
+          <div class="phrase">Ponto impecável.<br>Sem hora extra.<br>Mais foco.</div>
+          <div class="sub">Evidência prática</div>
+        </div>
+        <div class="num">POST 07/08</div>
+      </div>
+      <div class="actions">
+        <span>♡</span><span>💬</span><span>↗</span>
+        <span class="save">🔖</span>
+      </div>
+      <div class="likes"><strong>356 curtidas</strong></div>
+      <div class="caption">
+        <span class="u">case.02</span>
+        Os sinais da mudança: mais clareza de limites, menos dispersão e uma proatividade mais madura, com novas ideias dentro da especialidade.
+        <span class="hash"> #EvidênciaDeLiderança</span>
+      </div>
+      <div class="comments-preview">Ver todos os 44 comentários</div>
+      <div class="time">ONTEM</div>
+    </article>
+
+    <!-- POST 8 -->
+    <article class="post">
+      <div class="post-header">
+        <div class="avatar"><div class="avatar-inner"><div class="av-fill av-photo"></div></div></div>
+        <div class="user-meta">
+          <div class="name">case.02 <span class="verified">✓</span></div>
+          <div class="loc">Fechamento</div>
+        </div>
+        <div class="more">⋯</div>
+      </div>
+      <div class="post-visual bg9">
+        <div class="tag">● Lição</div>
+        <div>
+          <div class="phrase">Liderar não é<br>fazer mais.<br>É desenvolver<br>melhor.</div>
+          <div class="sub">#AprendizadoQueGanhaForma</div>
+        </div>
+        <div class="num">POST 08/08</div>
+      </div>
+      <div class="actions">
+        <span>♡</span><span>💬</span><span>↗</span>
+        <span class="save">🔖</span>
+      </div>
+      <div class="likes">Curtido por <strong>desenvolve.lideres</strong> e <strong>outras 1.143 pessoas</strong></div>
+      <div class="caption">
+        <span class="u">case.02</span>
+        Lição final do case 02: a liderança desenvolveu amadurecimento profissional. Menos execução acompanhada, mais autonomia com inteligência.
+        <span class="hash"> #DesenvolveLíderes #Case02</span>
+      </div>
+      <div class="comments-preview">Ver todos os 142 comentários</div>
+      <div class="time">HÁ 2 DIAS</div>
+    </article>
+
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="me">
+      <div class="av-big" style="background-image:url('avatar_tk.jpg'); background-size:cover; background-position:center; font-size:0;"></div>
+      <div class="info">
+        <div class="name">tk.lideranca</div>
+        <div class="desc">Projeto Desenvolve Líderes</div>
+      </div>
+      <div class="switch">Mudar</div>
+    </div>
+
+    <div class="suggest-title">
+      <span>Sugestões para você</span>
+      <span class="link">Ver tudo</span>
+    </div>
+
+    <div class="suggest-item">
+      <div class="av-sm av-c1">C1</div>
+      <div class="txt"><div class="n">case.01</div><div class="s">Evidência · autonomia e delegação</div></div>
+      <div class="follow">Seguir</div>
+    </div>
+    <div class="suggest-item">
+      <div class="av-sm av-c2">LS</div>
+      <div class="txt"><div class="n">lideranca.situacional</div><div class="s">Sugestões para você</div></div>
+      <div class="follow">Seguir</div>
+    </div>
+    <div class="suggest-item">
+      <div class="av-sm av-c3">PL</div>
+      <div class="txt"><div class="n">pipeline.liderança</div><div class="s">Sugestões para você</div></div>
+      <div class="follow">Seguir</div>
+    </div>
+    <div class="suggest-item">
+      <div class="av-sm av-c1">MT</div>
+      <div class="txt"><div class="n">maturidade.colaborador</div><div class="s">Sugestões para você</div></div>
+      <div class="follow">Seguir</div>
+    </div>
+    <div class="suggest-item">
+      <div class="av-sm av-c2">FD</div>
+      <div class="txt"><div class="n">feedback.construção</div><div class="s">Sugestões para você</div></div>
+      <div class="follow">Seguir</div>
+    </div>
+
+    <div class="foot">
+      Sobre · Ajuda · Imprensa · API · Carreiras<br>
+      Privacidade · Termos · Localizações · Idioma<br>
+      Meta Verified<br><br>
+      © 2026 DESENVOLVE LÍDERES · TK
+    </div>
+  </aside>
+
+</div>
+
+</body>
+</html>
